@@ -23,7 +23,7 @@ public class ProjectPDF {
         try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath));
              Workbook workbook = new XSSFWorkbook()) {
 
-            //iterate through all PDF to get extract the data from all the pages
+            //iterate through all PDF to get extracted the data from all the pages
             int Num = pdfDoc.getNumberOfPages();
             for(int i =0; i< Num; i++) {
                 text.append(PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i)));
