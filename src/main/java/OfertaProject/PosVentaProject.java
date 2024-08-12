@@ -15,7 +15,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PosVenta{
+public class PosVentaProject {
 
     public static void main(String[] args) {
         //ask the end to send  the file

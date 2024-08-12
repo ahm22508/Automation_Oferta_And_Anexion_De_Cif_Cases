@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class ProjectPDF {
+public class MinutesProject {
     public static void main(String[] args) {
         //ask the end to send  the file
         Scanner scanFile = new Scanner(System.in);
@@ -35,19 +35,25 @@ public class ProjectPDF {
             Sheet sheet = workbook.createSheet("Fichero");
 
             //create patterns to extract specific data
-            Pattern pattern = Pattern.compile("\\d+\\.\\d+");
+            Pattern pattern = Pattern.compile("\\d+\\.\\d{2,}");
             Matcher matcher = pattern.matcher(text);
-            Pattern pattern1 = Pattern.compile("^(CI90X)|(?!.*\\bPDNEO\\b)\\b[A-Z]{5}\\b");
+            Pattern pattern1 = Pattern.compile("CI90X|(?!.*\\bPDNEO\\b|\\bWORLD\\b|\\bPO[A-Z]{3}\\b|\\bD[A-Z]{4}\\b)\\b[A-Z]{5}\\b");
             Matcher matcher1 = pattern1.matcher(text);
 
             // create Row and cell and iterate through them to populate into them the extracted data from PDF file.
             int i = 0;
             Row row;
-            while (matcher.find() && matcher1.find()) {
+            while (matcher.find()) {
                row = sheet.createRow(i++);
-               row.createCell(0).setCellValue(matcher1.group());
                row.createCell(1).setCellValue(matcher.group());
             }
+            int x = 0;
+            while (matcher1.find()) {
+                row = sheet.getRow(x++);
+                row.createCell(0).setCellValue(matcher1.group());
+            }
+
+
 
             //Create a stream to connect with sheet and write into it the extracted data then saving it.
             try (FileOutputStream outputStream = new FileOutputStream("Fichero.xlsx")) {

@@ -3,6 +3,7 @@ package OfertaProject;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -33,69 +34,61 @@ public class TrenesProject {
             }
             //Create a new sheet into the Excel file to populate it the extracted data.
             Sheet sheet = workbook.createSheet("Trenes");
-            Pattern pattern1 = Pattern.compile("\\d+(\\.\\d+)?+(?=%)");
-            Matcher matcher1 = pattern1.matcher(text);
-            int i = 0;
-
 
             Row row;
-            Pattern pattern = Pattern.compile("D+(?!TFWP)[A-Z]{4}");
+            Cell cell;
+            Pattern pattern = Pattern.compile("DRZRW|(D+(?!TFWP)[A-Z]{4})(?= -)");
             Matcher matcher = pattern.matcher(text);
-            int x = 0;
-//            boolean Pointer = false;
-            List<String> Values = new ArrayList<>();
-            while (matcher.find()) {
-                String FinalValue = matcher.group();
-                if (!Values.contains(FinalValue)) {
-//                    Pointer = true;
-                    Values.add(FinalValue);
+            Pattern pattern1 = Pattern.compile("\\d+(\\.\\d+)?(?=%)");
+            Matcher matcher1 = pattern1.matcher(text);
+
+               int x = 0;
+                while (matcher1.find()){
                     row = sheet.createRow(x++);
-                    row.createCell(0).setCellValue(FinalValue);
-                    while (matcher1.find()) {
-                        row = sheet.getRow(i++);
-                        row.createCell(1).setCellValue(matcher1.group());
-                        break;
-                    }
-                }
-                else {
-                    row = sheet.getRow(i);
                     row.createCell(1).setCellValue(matcher1.group());
-                    row.createCell(1).setCellValue("");
-                        break;
                 }
+
+            int i = 0;
+           ArrayList<String> Values = new ArrayList<>();
+            while (matcher.find()) {
+                Values.add(matcher.group());
+            }
+            for (String value : Values) {
+                row = sheet.getRow(i++);
+               row.createCell(0).setCellValue(value);
             }
 
-//                    row = sheet.createRow(x++);
+//            for(String number: Number){
+//                row = sheet.createRow(i++);
+//                row.createCell(1).setCellValue(number);
+//            }
+//            for(String value: Values){
+//                row = sheet.getRow(x++);
+//                row.createCell(0).setCellValue(value);
+//            }
 
 
-//                    for (String value : Values) {
-//                        row.createCell(0).setCellValue(value);
-//                    }
 
 
-//                for (String value : Values) {
-//                    row = sheet.createRow(x++);
-//                    row.createCell(0).setCellValue(value);
+//            ArrayList<String> Values = new ArrayList<>();
+//            int i = 0;
+//            while (matcher.find()) {
+//                String match = matcher.group();
+//                if (!Values.contains(match)) {
+//                    i++;
+//                    Values.add(matcher.group());
 //                }
-
-//                while (matcher1.find()) {
-//
-//                        row = sheet.createRow(i++);
-//                        row.createCell(1).setCellValue(matcher1.group());
-//                        if(Pointer){
-//                            row.getCell(1).setCellValue("");
-//                        }
-//
+//                else {
+//                    row = sheet.getRow(i++);
+//                    row.createCell(1).setCellValue("");
 //                }
-//                for (String value : Values) {
-//                    row = sheet.getRow(x++);
-//                    row.createCell(0).setCellValue(value);
-//                }
+//            }
+//            for (String value : Values) {
+//                row = sheet.getRow(i++);
+//                row.createCell(0).setCellValue(value);
+//            }
 
-
-
-
-                try (FileOutputStream outputStream = new FileOutputStream("Fichero.xlsx")) {
+            try (FileOutputStream outputStream = new FileOutputStream("Fichero.xlsx")) {
                     workbook.write(outputStream);
                 }
             }
