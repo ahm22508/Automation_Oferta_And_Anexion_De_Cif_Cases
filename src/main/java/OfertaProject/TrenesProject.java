@@ -3,7 +3,6 @@ package OfertaProject;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -36,7 +35,6 @@ public class TrenesProject {
             Sheet sheet = workbook.createSheet("Trenes");
 
             Row row;
-            Cell cell;
             Pattern pattern = Pattern.compile("DRZRW|(D+(?!TFWP)[A-Z]{4})(?= -)");
             Matcher matcher = pattern.matcher(text);
             Pattern pattern1 = Pattern.compile("\\d+(\\.\\d+)?(?=%)");
@@ -57,36 +55,6 @@ public class TrenesProject {
                 row = sheet.getRow(i++);
                row.createCell(0).setCellValue(value);
             }
-
-//            for(String number: Number){
-//                row = sheet.createRow(i++);
-//                row.createCell(1).setCellValue(number);
-//            }
-//            for(String value: Values){
-//                row = sheet.getRow(x++);
-//                row.createCell(0).setCellValue(value);
-//            }
-
-
-
-
-//            ArrayList<String> Values = new ArrayList<>();
-//            int i = 0;
-//            while (matcher.find()) {
-//                String match = matcher.group();
-//                if (!Values.contains(match)) {
-//                    i++;
-//                    Values.add(matcher.group());
-//                }
-//                else {
-//                    row = sheet.getRow(i++);
-//                    row.createCell(1).setCellValue("");
-//                }
-//            }
-//            for (String value : Values) {
-//                row = sheet.getRow(i++);
-//                row.createCell(0).setCellValue(value);
-//            }
 
             try (FileOutputStream outputStream = new FileOutputStream("Fichero.xlsx")) {
                     workbook.write(outputStream);
