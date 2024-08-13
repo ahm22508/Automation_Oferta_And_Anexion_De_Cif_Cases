@@ -40,22 +40,27 @@ public class TrenesProject {
             Pattern pattern1 = Pattern.compile("\\d+(\\.\\d+)?(?=%)");
             Matcher matcher1 = pattern1.matcher(text);
 
-               int x = 0;
-                while (matcher1.find()){
-                    row = sheet.createRow(x++);
-                    row.createCell(1).setCellValue(matcher1.group());
+            int x = 0;
+            while (matcher1.find()){
+                row = sheet.createRow(x++);
+              row.createCell(1).setCellValue(matcher1.group());
+            }
+            int i = 0;
+           LinkedHashSet<String> Values = new LinkedHashSet<>();
+            while(matcher.find()) {
+                    Values.add(matcher.group());
                 }
 
-            int i = 0;
-           ArrayList<String> Values = new ArrayList<>();
-            while (matcher.find()) {
-                Values.add(matcher.group());
-            }
-            for (String value : Values) {
-                row = sheet.getRow(i++);
-               row.createCell(0).setCellValue(value);
-            }
-
+                    for (String value : Values) {
+                        if (value.equals("DRZRW")) {
+                            row = sheet.getRow(i++);
+                            row.createCell(0).setCellValue("DRZRW");
+                            row.createCell(1).setCellValue("100");
+                        } else {
+                            row = sheet.getRow(i++);
+                            row.createCell(0).setCellValue(value);
+                        }
+                    }
             try (FileOutputStream outputStream = new FileOutputStream("Fichero.xlsx")) {
                     workbook.write(outputStream);
                 }
