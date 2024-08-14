@@ -57,7 +57,7 @@ public class TrenesProject {
                         if (value.equals("DRZRW")) {
                             row = sheet.getRow(i++);
                             row.createCell(0).setCellValue("DRZRW");
-                            row.createCell(1).setCellValue("10");
+                            row.createCell(1).setCellValue("100");
                         } else {
                             row = sheet.getRow(i++);
                             row.createCell(0).setCellValue(value);
@@ -65,7 +65,7 @@ public class TrenesProject {
                     }
 
 
-            try (FileOutputStream outputStream = new FileOutputStream("Fichero.xlsx")) {
+            try (FileOutputStream outputStream = new FileOutputStream("Trenes.xlsx")) {
                     workbook.write(outputStream);
                 }
             }

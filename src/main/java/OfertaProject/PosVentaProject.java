@@ -36,20 +36,30 @@ public class PosVentaProject {
             }
 
             //Create a new sheet into the Excel file to populate it the extracted data.
-            Sheet sheet = workbook.createSheet("Posventa");
+            Sheet sheet = workbook.createSheet("PosventaYBROXXX");
 
             Pattern pattern = Pattern.compile("POS+[A-Z]{2}");
             Matcher matcher = pattern.matcher(text);
-            int i = 1;
+            Pattern pattern2 = Pattern.compile("BRW+\\d+");
+            Matcher matcher2 = pattern2.matcher(text);
+            Row HeaderCell = sheet.createRow(0);
+            HeaderCell.createCell(0).setCellValue("Posventa Y BONO");
+            HeaderCell.createCell(1).setCellValue("Value");
             Row row;
+            int i = 1;
             while (matcher.find()) {
-                row = sheet.createRow(i);
+                row = sheet.createRow(i++);
                 row.createCell(0).setCellValue(matcher.group());
             }
-            Pattern pattern1 = Pattern.compile("\\b(0|[1-9]\\d?|[1-9]\\d{2}|1[0-9]{3}|20[0-1][0-9]|202[0-3])\\b(?!\\.\\d)");
+            while (matcher2.find()) {
+                row = sheet.createRow(i++);
+                row.createCell(0).setCellValue(matcher2.group());
+            }
+
+            Pattern pattern1 = Pattern.compile( "(?<!/)(?!\\d+\\.\\d+)\\b([1-9]\\d{0,4}|0)\\b");
             Matcher matcher1 = pattern1.matcher(text);
-            int x = 1;
             List<String> Numbers = new ArrayList<>();
+
             while (matcher1.find()) {
                 Numbers.add(matcher1.group());
             }
@@ -57,12 +67,12 @@ public class PosVentaProject {
             for (String number : Numbers) {
                 if (new java.math.BigInteger(number).compareTo(new java.math.BigInteger(largestNumber)) > 0) {
                     largestNumber = number;
-                    row = sheet.getRow(x);
+                    row = sheet.getRow(1);
                     row.createCell(1).setCellValue(largestNumber);
                 }
         }
 
-        try (FileOutputStream outputStream = new FileOutputStream("Fichero.xlsx")) {
+        try (FileOutputStream outputStream = new FileOutputStream("PosVentaYBRWXX.xlsx")) {
             workbook.write(outputStream);
         }
         //handle any type of error during code process.

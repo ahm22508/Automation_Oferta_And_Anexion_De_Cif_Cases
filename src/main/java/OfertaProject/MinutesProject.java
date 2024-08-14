@@ -32,7 +32,7 @@ public class MinutesProject {
             }
 
             //Create a new sheet into the Excel file to populate it the extracted data.
-            Sheet sheet = workbook.createSheet("Fichero");
+            Sheet sheet = workbook.createSheet("Minutos");
 
             //create patterns to extract specific data
             Pattern pattern = Pattern.compile("\\d+\\.\\d{2,}");
@@ -56,7 +56,7 @@ public class MinutesProject {
 
 
             //Create a stream to connect with sheet and write into it the extracted data then saving it.
-            try (FileOutputStream outputStream = new FileOutputStream("Fichero.xlsx")) {
+            try (FileOutputStream outputStream = new FileOutputStream("Minutos.xlsx")) {
                 workbook.write(outputStream);
             }
             //handle any type of error during code process.
