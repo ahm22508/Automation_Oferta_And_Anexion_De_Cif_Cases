@@ -37,14 +37,16 @@ public class TrenesProject {
             Row row;
             Pattern pattern = Pattern.compile("DRZRW|(D+(?!TFWP)[A-Z]{4})(?= -)");
             Matcher matcher = pattern.matcher(text);
-            Pattern pattern1 = Pattern.compile("\\d+(\\.\\d+)?(?=%)");
+            Pattern pattern1 = Pattern.compile("(\\d+(\\.\\d+)?)(?=%(?!\\stráfico Zona))");
             Matcher matcher1 = pattern1.matcher(text);
 
             int x = 0;
             while (matcher1.find()){
                 row = sheet.createRow(x++);
-              row.createCell(1).setCellValue(matcher1.group());
+                row.createCell(1).setCellValue(matcher1.group());
             }
+
+
             int i = 0;
            LinkedHashSet<String> Values = new LinkedHashSet<>();
             while(matcher.find()) {
@@ -55,12 +57,14 @@ public class TrenesProject {
                         if (value.equals("DRZRW")) {
                             row = sheet.getRow(i++);
                             row.createCell(0).setCellValue("DRZRW");
-                            row.createCell(1).setCellValue("100");
+                            row.createCell(1).setCellValue("10");
                         } else {
                             row = sheet.getRow(i++);
                             row.createCell(0).setCellValue(value);
                         }
                     }
+
+
             try (FileOutputStream outputStream = new FileOutputStream("Fichero.xlsx")) {
                     workbook.write(outputStream);
                 }
