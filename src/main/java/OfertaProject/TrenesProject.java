@@ -37,14 +37,17 @@ public class TrenesProject {
             //Create a new sheet into the Excel file to populate it the extracted data.
             Sheet sheet = workbook.createSheet("Trenes");
 
-            String [] EachLine = Lines.split("\\r?\\n");
-
-
             Row row;
-            Pattern pattern = Pattern.compile("(D+(?!TFWP|ESIM|DRZRW)[A-Z]{4})(?= -)");
+            Pattern pattern = Pattern.compile("DRZRW|(D+(?!TFWP)[A-Z]{4})(?= -)");
             Matcher matcher = pattern.matcher(text);
             Pattern pattern1 = Pattern.compile("(\\d+(\\.\\d+)?)(?=%(?!\\stráfico Zona))");
             Matcher matcher1 = pattern1.matcher(text);
+
+            int x = 0;
+            while (matcher1.find()){
+                row = sheet.createRow(x++);
+                row.createCell(1).setCellValue(matcher1.group());
+            }
 
 
             int i = 0;
@@ -52,34 +55,18 @@ public class TrenesProject {
             while(matcher.find()) {
                 Values.add(matcher.group());
             }
+
             for (String value : Values) {
-                row = sheet.createRow(i++);
-                row.createCell(0).setCellValue(value);
+                if (value.equals("DRZRW")) {
+                    row = sheet.getRow(i++);
+                    row.createCell(0).setCellValue("DRZRW");
+                    row.createCell(1).setCellValue("100");
+                } else {
+                    row = sheet.getRow(i++);
+                    row.createCell(0).setCellValue(value);
+                }
             }
 
-            for (String Line : EachLine) {
-                        if (Line.contains("DRZRW")) {
-                            row = sheet.createRow(i++);
-                            row.createCell(0).setCellValue("DRZRW");
-                            row.createCell(1).setCellValue("100");
-                        } else if (Line.contains("Autorización 1 eSIM")) {
-                            row = sheet.createRow(i++);
-                            row.createCell(0).setCellValue("DESIM");
-                        } else if (Line.contains("Autorización 2 eSIM")) {
-                            row = sheet.createRow(i++);
-                            row.createCell(0).setCellValue(" ");
-                            row.createCell(1).setCellValue(" ");
-                            i--;
-
-                        }
-                    }
-
-
-            int x = 0;
-            while (matcher1.find()){
-                row = sheet.getRow(x++);
-                row.createCell(1).setCellValue(matcher1.group());
-            }
 
             try (FileOutputStream outputStream = new FileOutputStream("Trenes.xlsx")) {
                     workbook.write(outputStream);
