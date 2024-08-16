@@ -28,59 +28,54 @@ public class TrenesProject {
 
             //iterate through all PDF to get extracted the data from all the pages
 
-            String Lines= "";
             int Num = pdfDoc.getNumberOfPages();
+            String FinalText = "";
             for (int i = 1; i < Num; i++) {
-            Lines  = String.valueOf(text.append(PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i))));
+                FinalText = String.valueOf(text.append(PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i))));
 
             }
             //Create a new sheet into the Excel file to populate it the extracted data.
             Sheet sheet = workbook.createSheet("Trenes");
 
-            Row row;
-            Pattern pattern = Pattern.compile("DRZRW|(D+(?!TFWP)[A-Z]{4})(?= -)");
+            Pattern pattern = Pattern.compile("(D+(?!TFWP|DRZRW)[A-Z]{4})(?= -)");
             Matcher matcher = pattern.matcher(text);
-            Pattern pattern1 = Pattern.compile("(\\d+(\\.\\d+)?)(?=%(?!\\stráfico Zona))");
+            Pattern pattern1 = Pattern.compile("(\\d+(\\.\\d+)?)(?=%)");
             Matcher matcher1 = pattern1.matcher(text);
 
             int x = 0;
-            while (matcher1.find()){
-                row = sheet.createRow(x++);
-                row.createCell(1).setCellValue(matcher1.group());
+            Row row;
+            Set<String> FinalValue = new HashSet<>();
+            while (matcher.find()) {
+                String Code = matcher.group();
+                if (!FinalValue.contains(Code)) {
+                    FinalValue.add(Code);
+
+                    if (matcher1.find(matcher.end())) {
+                        row = sheet.createRow(x++);
+                        row.createCell(0).setCellValue(Code);
+                        row.createCell(1).setCellValue(matcher1.group());
+                    }
+                }
             }
 
 
-            int i = 0;
-            LinkedHashSet<String> Values = new LinkedHashSet<>();
-            while(matcher.find()) {
-                Values.add(matcher.group());
-            }
-
-            for (String value : Values) {
-                if (value.equals("DRZRW")) {
-                    row = sheet.getRow(i++);
+                if(FinalText.contains("DRZRW")){
+                    row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DRZRW");
                     row.createCell(1).setCellValue("100");
-                } else {
-                    row = sheet.getRow(i++);
-                    row.createCell(0).setCellValue(value);
-                }
-            }
 
-
-            try (FileOutputStream outputStream = new FileOutputStream("Trenes.xlsx")) {
-                    workbook.write(outputStream);
                 }
-            }
+
+        try (FileOutputStream outputStream = new FileOutputStream("Trenes.xlsx")) {
+            workbook.write(outputStream);
+        }
+    }
             //handle any type of error during code process.
         catch(IOException e){
                 e.getCause();
-            }
         }
     }
-
-
-
+}
 
 
 
