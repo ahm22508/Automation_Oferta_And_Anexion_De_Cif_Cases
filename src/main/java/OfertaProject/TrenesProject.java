@@ -29,11 +29,15 @@ public class TrenesProject {
             //iterate through all PDF to get extracted the data from all the pages
 
             int Num = pdfDoc.getNumberOfPages();
-            String FinalText = "";
+            String PDFText = "";
             for (int i = 1; i < Num; i++) {
-                FinalText = String.valueOf(text.append(PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i))));
-
+                 PDFText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
+                if(PDFText.contains("Referencia")){
+                    break;
+                }
+                text.append(PDFText);
             }
+
             //Create a new sheet into the Excel file to populate it the extracted data.
             Sheet sheet = workbook.createSheet("Trenes");
 
@@ -59,7 +63,7 @@ public class TrenesProject {
             }
 
 
-                if(FinalText.contains("DRZRW")){
+                if(PDFText.contains("DRZRW")){
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DRZRW");
                     row.createCell(1).setCellValue("100");

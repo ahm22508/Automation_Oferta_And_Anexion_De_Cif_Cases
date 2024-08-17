@@ -20,7 +20,6 @@ public class MinutesProject {
         String filePath = scanFile.nextLine();
         //Create StringBuilder to append efficiently the text
         StringBuilder text = new StringBuilder();
-
         //Connect to the pdf File and create a new Excel WorkBook
         try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath));
              Workbook workbook = new XSSFWorkbook()) {
@@ -28,8 +27,13 @@ public class MinutesProject {
             //iterate through all PDF to get extracted the data from all the pages
             int Num = pdfDoc.getNumberOfPages();
             for(int i =1; i< Num; i++) {
-                text.append(PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i)));
+                String PDFText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
+                if (PDFText.contains("Referencia")) {
+                    break;
+                }
+                text.append(PDFText);
             }
+
 
             //Create a new sheet into the Excel file to populate it the extracted data.
             Sheet sheet = workbook.createSheet("Minutos");
@@ -41,17 +45,19 @@ public class MinutesProject {
             Matcher matcher1 = pattern1.matcher(text);
 
             // create Row and cell and iterate through them to populate into them the extracted data from PDF file.
-            int i = 0;
             Row row;
+
+            int i = 0;
             while (matcher.find()) {
-               row = sheet.createRow(i++);
-               row.createCell(1).setCellValue(matcher.group());
+                row = sheet.createRow(i++);
+                row.createCell(1).setCellValue(matcher.group());
             }
+
             int x = 0;
             while (matcher1.find()) {
-                row = sheet.getRow(x++);
-                row.createCell(0).setCellValue(matcher1.group());
-            }
+                    row = sheet.getRow(x++);
+                    row.createCell(0).setCellValue(matcher1.group());
+           }
 
 
 
