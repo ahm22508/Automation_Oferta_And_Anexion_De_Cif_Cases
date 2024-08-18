@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class DescuentoProject {
@@ -23,49 +25,59 @@ public class DescuentoProject {
         Scanner scanFile = new Scanner(System.in);
         System.out.println("Send the file to us...");
         String filePath = scanFile.nextLine();
-        Set<String> foundValues = new LinkedHashSet<>();
+        Set<String> DTSInSheet = new LinkedHashSet<>();
+        Set<String> DTSInPDF = new LinkedHashSet<>();
+        Set<String> OrderedDTS = new LinkedHashSet<>();
+
+
         try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath))) {
             int numberOfPages = pdfDoc.getNumberOfPages();
-
 
 
             try (FileInputStream file = new FileInputStream("C:\\PdfProject\\DTOS.xlsx");
                  Workbook workbook = new XSSFWorkbook(file)) {
 
-                Set<String> excelValues = new LinkedHashSet<>();
                 Sheet sheet = workbook.getSheetAt(0);
                 for (Row row : sheet) {
                     for (Cell cell : row) {
-                        excelValues.add(cell.getStringCellValue());
+                        DTSInSheet.add(cell.getStringCellValue());
                     }
                 }
+
+                StringBuilder text = new StringBuilder();
                 for (int i = 1; i <= numberOfPages; i++) {
-                    String pageText= PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
-                        for (String ExcelValue : excelValues) {
-                            if (pageText.contains(ExcelValue)) {
-                                foundValues.add(ExcelValue);
-                            }
-                        }
+               String pageText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
+                text.append(pageText);
+                }
+
+                Pattern pattern = Pattern.compile("\\bD\\w*\\b");
+                Matcher matcher = pattern.matcher(text);
+                while (matcher.find()) {
+                    DTSInPDF.add(matcher.group());
+                }
+                for (String Descount : DTSInPDF) {
+                    if (DTSInSheet.contains(Descount)) {
+                        OrderedDTS.add(Descount);
                     }
+
+
+                }
+                try (Workbook workbook1 = new XSSFWorkbook();
+                     FileOutputStream fileOut = new FileOutputStream("Descuentos.xlsx")) {
+                    Sheet sheet1 = workbook1.createSheet("Found Values");
+                    int rowNum = 0;
+
+                    for (String value : OrderedDTS) {
+                        Row row1 = sheet1.createRow(rowNum++);
+                        Cell cell1 = row1.createCell(0);
+                        cell1.setCellValue(value);
+                    }
+
+                    workbook1.write(fileOut);
                 }
             }
 
+        }
 
-                        try (Workbook workbook1 = new XSSFWorkbook();
-                             FileOutputStream fileOut = new FileOutputStream("Descuentos.xlsx")) {
-                            Sheet sheet1 = workbook1.createSheet("Found Values");
-                            int rowNum = 0;
-
-                            for (String value : foundValues) {
-                                Row row1 = sheet1.createRow(rowNum++);
-                                Cell cell1 = row1.createCell(0);
-                                cell1.setCellValue(value);
-                            }
-
-                            workbook1.write(fileOut);
-                        }
-                }
-
-            }
-
-
+    }
+}

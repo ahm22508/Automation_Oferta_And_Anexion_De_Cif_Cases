@@ -23,15 +23,16 @@ public class MinutesProject {
         //Connect to the pdf File and create a new Excel WorkBook
         try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath));
              Workbook workbook = new XSSFWorkbook()) {
-
+            String PDFText;
             //iterate through all PDF to get extracted the data from all the pages
             int Num = pdfDoc.getNumberOfPages();
             for(int i =1; i< Num; i++) {
-                String PDFText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
+                 PDFText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
                 if (PDFText.contains("Referencia")) {
                     break;
                 }
-                text.append(PDFText);
+                      text.append(PDFText);
+
             }
 
 
@@ -41,24 +42,27 @@ public class MinutesProject {
             //create patterns to extract specific data
             Pattern pattern = Pattern.compile("\\d+\\.\\d{2,}");
             Matcher matcher = pattern.matcher(text);
-            Pattern pattern1 = Pattern.compile("CI90X|(?!.*\\bPDNEO\\b|\\bWORLD\\b|\\bPO[A-Z]{3}\\b|\\bD[A-Z]{4}\\b)\\b[A-Z]{5}\\b");
+            Pattern pattern1 = Pattern.compile("CIRO1|CIRR1|CP90X|\\bMPI\\w*\\d\\b|CI90X|(?!.*\\bPDNEO\\b|\\bPKPID\\b|\\bWORLD\\b|\\bPO[A-Z]{3}\\b|\\bD[A-Z]{4}\\b)\\b[A-Z]{5}\\b");
             Matcher matcher1 = pattern1.matcher(text);
 
             // create Row and cell and iterate through them to populate into them the extracted data from PDF file.
             Row row;
-
-            int i = 0;
-            while (matcher.find()) {
-                row = sheet.createRow(i++);
-                row.createCell(1).setCellValue(matcher.group());
-            }
-
             int x = 0;
+            int i = 0;
             while (matcher1.find()) {
-                    row = sheet.getRow(x++);
-                    row.createCell(0).setCellValue(matcher1.group());
-           }
+                row = sheet.createRow(x++);
+                row.createCell(0).setCellValue(matcher1.group());
 
+                if (matcher.find(matcher1.end())) {
+                    row = sheet.getRow(i++);
+                    row.createCell(1).setCellValue(matcher.group());
+                }
+            }
+                if (text.toString().contains("PKPID")) {
+                    row = sheet.getRow(0);
+                    row.createCell(2).setCellValue("PKPID");
+                    row.createCell(3).setCellValue("SÍ");
+                }
 
 
             //Create a stream to connect with sheet and write into it the extracted data then saving it.

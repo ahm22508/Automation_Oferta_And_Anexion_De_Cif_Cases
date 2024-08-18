@@ -41,7 +41,7 @@ public class TrenesProject {
             //Create a new sheet into the Excel file to populate it the extracted data.
             Sheet sheet = workbook.createSheet("Trenes");
 
-            Pattern pattern = Pattern.compile("(D+(?!TFWP|DRZRW)[A-Z]{4})(?= -)");
+            Pattern pattern = Pattern.compile("(DV90X|DVM2M|DC2GB|DB90X|\\bD\\w*\\d\\b|D+(?!TFWP|DRZRW)[A-Z]{4})(?= -)");
             Matcher matcher = pattern.matcher(text);
             Pattern pattern1 = Pattern.compile("(\\d+(\\.\\d+)?)(?=%)");
             Matcher matcher1 = pattern1.matcher(text);
