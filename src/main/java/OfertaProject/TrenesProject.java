@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,14 +21,10 @@ public class TrenesProject {
         Scanner scanFile = new Scanner(System.in);
         System.out.println("Send the file to us...");
         String filePath = scanFile.nextLine();
-        //Create StringBuilder to append efficiently the text
         StringBuilder text = new StringBuilder();
 
-        //Connect to the pdf File and create a new Excel WorkBook
         try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath));
              Workbook workbook = new XSSFWorkbook()) {
-
-            //iterate through all PDF to get extracted the data from all the pages
 
             int Num = pdfDoc.getNumberOfPages();
             for (int i = 1; i < Num; i++) {
@@ -39,8 +34,6 @@ public class TrenesProject {
                 }
                 text.append(PDFText);
             }
-
-            //Create a new sheet into the Excel file to populate it the extracted data.
             Sheet sheet = workbook.createSheet("Trenes");
 
             Pattern pattern = Pattern.compile("(DV90X|DVM2M|DC2GB|DB90X|\\bD\\w*\\d\\b|D+(?!TFWP|DRZRW)[A-Z]{4})(?= -)");
@@ -63,7 +56,6 @@ public class TrenesProject {
                     }
                 }
             }
-
                 if(text.toString().contains("DRZRW")){
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DRZRW");
@@ -75,12 +67,12 @@ public class TrenesProject {
                 int L = 0;
                 if(text.toString().contains("MPMVE")){
                     for (String Tren : MPMVE) {
-                            if (!MPMVE[L].contains(FinalValue.iterator().next())) {
-                                row = sheet.createRow(x++);
-                                row.createCell(0).setCellValue(Tren);
-                                row.createCell(1).setCellValue("100");
-                                L++;
-                            }
+                        if (!MPMVE[L].contains(FinalValue.iterator().next())) {
+                            row = sheet.createRow(x++);
+                            row.createCell(0).setCellValue(Tren);
+                            row.createCell(1).setCellValue("100");
+                            L++;
+                        }
                     }
                     if(text.toString().contains("SMS internacionales") && !FinalValue.contains("DVSMR")){
                          row = sheet.createRow(x);
@@ -152,13 +144,10 @@ public class TrenesProject {
                     row.createCell(1).setCellValue("100");
                 }
             }
-
-
         try (FileOutputStream outputStream = new FileOutputStream("Trenes.xlsx")) {
             workbook.write(outputStream);
         }
     }
-            //handle any type of error during code process.
         catch(IOException e){
                 e.getCause();
         }
