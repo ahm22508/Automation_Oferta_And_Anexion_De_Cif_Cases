@@ -9,9 +9,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
 
 public class TrenesProject {
     public static void main(String[] args) throws NullPointerException {
@@ -29,9 +32,8 @@ public class TrenesProject {
             //iterate through all PDF to get extracted the data from all the pages
 
             int Num = pdfDoc.getNumberOfPages();
-            String PDFText = "";
             for (int i = 1; i < Num; i++) {
-                 PDFText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
+                String  PDFText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
                 if(PDFText.contains("Referencia")){
                     break;
                 }
@@ -62,13 +64,95 @@ public class TrenesProject {
                 }
             }
 
-
-                if(PDFText.contains("DRZRW")){
+                if(text.toString().contains("DRZRW")){
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DRZRW");
                     row.createCell(1).setCellValue("100");
-
+                    FinalValue.add("DRZRW");
+                    x++;
                 }
+                String [] MPMVE = {"DVMOV","DVOOM","DVFNA","DVGCU","DVSMV","DVSMO","DVFMV","DVFOM","DVFFN","DVFGC","DRZRW"};
+                int L = 0;
+                if(text.toString().contains("MPMVE")){
+                    for (String Tren : MPMVE) {
+                            if (!MPMVE[L].contains(FinalValue.iterator().next())) {
+                                row = sheet.createRow(x++);
+                                row.createCell(0).setCellValue(Tren);
+                                row.createCell(1).setCellValue("100");
+                                L++;
+                            }
+                    }
+                    if(text.toString().contains("SMS internacionales") && !FinalValue.contains("DVSMR")){
+                         row = sheet.createRow(x);
+                         row.createCell(0).setCellValue("DVSMR");
+                         row.createCell(1).setCellValue("100");
+                         x++;
+                        }
+                    if(text.toString().contains("CIINT") || text.toString().contains("CPINT")  && !FinalValue.contains("DVINT")){
+                        row = sheet.createRow(x);
+                        row.createCell(0).setCellValue("DVINT");
+                        row.createCell(1).setCellValue("100");
+                        x++;
+                    }
+                    if(text.toString().contains("CI90X") || text.toString().contains("CP90X")  && !FinalValue.contains("DV90X")){
+                        row = sheet.createRow(x);
+                        row.createCell(0).setCellValue("DV90X");
+                        row.createCell(1).setCellValue("100");
+                        x++;
+                    }
+                    if(text.toString().contains("CIROZ") && !FinalValue.contains("DVRRE")){
+                        row = sheet.createRow(x);
+                        row.createCell(0).setCellValue("DVRRE");
+                        row.createCell(1).setCellValue("100");
+                        x++;
+                    }
+                    if(text.toString().contains("CIRRZ") && !FinalValue.contains("DVRSA")){
+                        row = sheet.createRow(x);
+                        row.createCell(0).setCellValue("DVRSA");
+                        row.createCell(1).setCellValue("100");
+                    }
+                }
+            String [] MultiCIF = {"DVMOV","DVOOM","DVFNA","DVGCU","DVSMV","DVSMO"};
+            if(text.toString().contains("MultiCIF")){
+                for (String Tren : MPMVE) {
+                    if (!MultiCIF[L].contains(FinalValue.iterator().next())) {
+                        row = sheet.createRow(x++);
+                        row.createCell(0).setCellValue(Tren);
+                        row.createCell(1).setCellValue("100");
+                        L++;
+                    }
+                }
+                if(text.toString().contains("SMS internacionales") && !FinalValue.contains("DVSMR")){
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVSMR");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if(text.toString().contains("CIINT") && !FinalValue.contains("DVINT")){
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVINT");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if(text.toString().contains("CI90X") && !FinalValue.contains("DV90X")){
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DV90X");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if(text.toString().contains("CIROZ") && !FinalValue.contains("DVRRE")){
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVRRE");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if(text.toString().contains("CIRRZ") && !FinalValue.contains("DVRSA")){
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVRSA");
+                    row.createCell(1).setCellValue("100");
+                }
+            }
+
 
         try (FileOutputStream outputStream = new FileOutputStream("Trenes.xlsx")) {
             workbook.write(outputStream);

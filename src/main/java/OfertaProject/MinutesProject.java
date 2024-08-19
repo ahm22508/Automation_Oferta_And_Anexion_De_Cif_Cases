@@ -32,9 +32,7 @@ public class MinutesProject {
                     break;
                 }
                       text.append(PDFText);
-
             }
-
 
             //Create a new sheet into the Excel file to populate it the extracted data.
             Sheet sheet = workbook.createSheet("Minutos");
@@ -63,7 +61,6 @@ public class MinutesProject {
                     row.createCell(2).setCellValue("PKPID");
                     row.createCell(3).setCellValue("SÍ");
                 }
-
 
             //Create a stream to connect with sheet and write into it the extracted data then saving it.
             try (FileOutputStream outputStream = new FileOutputStream("Minutos.xlsx")) {
