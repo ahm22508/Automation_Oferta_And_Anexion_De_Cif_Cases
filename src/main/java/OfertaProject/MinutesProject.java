@@ -5,6 +5,9 @@ import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.awt.*;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
@@ -40,7 +43,7 @@ public class MinutesProject {
             //create patterns to extract specific data
             Pattern pattern = Pattern.compile("\\d+\\.\\d{2,}");
             Matcher matcher = pattern.matcher(text);
-            Pattern pattern1 = Pattern.compile("CIRO1|CIRR1|CP90X|\\bMPI\\w*\\d\\b|CI90X|(?!.*\\bPDNEO\\b|\\bPKPID\\b|\\bWORLD\\b|\\bPO[A-Z]{3}\\b|\\bD[A-Z]{4}\\b)\\b[A-Z]{5}\\b");
+            Pattern pattern1 = Pattern.compile("MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB");
             Matcher matcher1 = pattern1.matcher(text);
 
             // create Row and cell and iterate through them to populate into them the extracted data from PDF file.
@@ -63,8 +66,15 @@ public class MinutesProject {
                 }
 
             //Create a stream to connect with sheet and write into it the extracted data then saving it.
-            try (FileOutputStream outputStream = new FileOutputStream("Minutos.xlsx")) {
+            File FinalFile = new File("Minutos.xlsx");
+            try (FileOutputStream outputStream = new FileOutputStream(FinalFile)) {
                 workbook.write(outputStream);
+            }
+            if(Desktop.isDesktopSupported()){
+                Desktop desktop = Desktop.getDesktop();
+                if (desktop.isSupported(Desktop.Action.OPEN)){
+                    desktop.open(FinalFile);
+                }
             }
             //handle any type of error during code process.
         } catch (IOException e) {

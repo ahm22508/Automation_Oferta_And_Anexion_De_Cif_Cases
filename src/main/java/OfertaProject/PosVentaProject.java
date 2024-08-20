@@ -7,6 +7,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.awt.*;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
@@ -30,7 +33,7 @@ public class PosVentaProject {
             int Num = pdfDoc.getNumberOfPages();
             for (int i = 1; i < Num; i++) {
                 String PDFText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
-                if(PDFText.contains("Referencia")){
+                if (PDFText.contains("Referencia")) {
                     break;
                 }
                 text.append(PDFText);
@@ -38,7 +41,7 @@ public class PosVentaProject {
 
             //Create a new sheet into the Excel file to populate it the extracted data.
             Sheet sheet = workbook.createSheet("PosventaYBROXXX");
-            Pattern pattern1 = Pattern.compile( "(?<!/)(?!\\d+\\.\\d+)\\b([1-9]\\d{0,4}|0)\\b");
+            Pattern pattern1 = Pattern.compile("(?<!/)(?!\\d+\\.\\d+)\\b([1-9]\\d{0,4}|0)\\b");
             Matcher matcher1 = pattern1.matcher(text);
             Pattern pattern = Pattern.compile("POS+[A-Z]{2}");
             Matcher matcher = pattern.matcher(text);
@@ -52,7 +55,7 @@ public class PosVentaProject {
             while (matcher.find()) {
                 row = sheet.createRow(i++);
                 row.createCell(0).setCellValue(matcher.group());
-                if(matcher1.find(matcher.end())){
+                if (matcher1.find(matcher.end())) {
                     row = sheet.getRow(1);
                     row.createCell(1).setCellValue(matcher1.group());
                 }
@@ -63,11 +66,20 @@ public class PosVentaProject {
                 row.createCell(0).setCellValue(matcher2.group());
             }
 
+            File OutPutFile = new File("PosVentaYBRWXX.xlsx");
+            try (FileOutputStream outputStream = new FileOutputStream(OutPutFile)) {
+                workbook.write(outputStream);
 
-        try (FileOutputStream outputStream = new FileOutputStream("PosVentaYBRWXX.xlsx")) {
-            workbook.write(outputStream);
-        }
-        //handle any type of error during code process.
+            }
+
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                if (desktop.isSupported(Desktop.Action.OPEN)) {
+                    desktop.open(OutPutFile);
+                }
+            }
+
+                //handle any type of error during code process.
     } catch(IOException e){
         e.getCause();
     }

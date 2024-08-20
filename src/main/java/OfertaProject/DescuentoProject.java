@@ -9,6 +9,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.awt.*;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -62,8 +64,9 @@ public class DescuentoProject {
 
 
                 }
+                File FinalFile = new File("Descuentos.xlsx");
                 try (Workbook workbook1 = new XSSFWorkbook();
-                     FileOutputStream fileOut = new FileOutputStream("Descuentos.xlsx")) {
+                     FileOutputStream fileOut = new FileOutputStream(FinalFile)) {
                     Sheet sheet1 = workbook1.createSheet("Found Values");
                     int rowNum = 0;
 
@@ -75,6 +78,13 @@ public class DescuentoProject {
 
                     workbook1.write(fileOut);
                 }
+                if (Desktop.isDesktopSupported()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    if (desktop.isSupported(Desktop.Action.OPEN)) {
+                        desktop.open(FinalFile);
+                    }
+                }
+
             }
 
         }
