@@ -18,12 +18,9 @@ import java.util.regex.Pattern;
 
 
 
-public class TrenesProject {
-    public static void main(String[] args) throws NullPointerException {
-        //ask the end to send  the file
-        Scanner scanFile = new Scanner(System.in);
-        System.out.println("Send the file to us...");
-        String filePath = scanFile.nextLine();
+public class Trenes {
+    public void   ExtractTrenes(String filePath) throws NullPointerException {
+
         StringBuilder text = new StringBuilder();
 
         try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath));

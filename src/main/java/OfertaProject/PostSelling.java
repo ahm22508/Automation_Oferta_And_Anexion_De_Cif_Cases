@@ -12,17 +12,13 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PosVentaProject {
+public class PostSelling {
 
-    public static void main(String[] args) {
-        //ask the end to send  the file
-        Scanner scanFile = new Scanner(System.in);
-        System.out.println("Send the file to us...");
-        String filePath = scanFile.nextLine();
+    public void ExtractPostSelling(String filePath) {
+
         //Create StringBuilder to append efficiently the text
         StringBuilder text = new StringBuilder();
         //Connect to the pdf File and create a new Excel WorkBook
