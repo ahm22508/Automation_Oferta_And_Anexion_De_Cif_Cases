@@ -64,7 +64,7 @@ public class Discounts {
 
                     try (Workbook workbook1 = new XSSFWorkbook();
                          FileOutputStream fileOut = new FileOutputStream(FinalFile)) {
-                        Sheet sheet1 = workbook1.createSheet("Found Values");
+                        Sheet sheet1 = workbook1.createSheet("Descuentos");
                         int rowNum = 0;
 
                         for (String value : OrderedDTS) {

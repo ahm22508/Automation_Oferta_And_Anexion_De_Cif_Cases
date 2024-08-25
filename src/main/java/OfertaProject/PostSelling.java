@@ -19,13 +19,11 @@ public class PostSelling {
 
     public void ExtractPostSelling(String filePath) {
 
-        //Create StringBuilder to append efficiently the text
         StringBuilder text = new StringBuilder();
-        //Connect to the pdf File and create a new Excel WorkBook
+
         try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath));
              Workbook workbook = new XSSFWorkbook()) {
 
-            //iterate through all PDF to get extracted the data from all the pages
             int Num = pdfDoc.getNumberOfPages();
             for (int i = 1; i < Num; i++) {
                 String PDFText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
@@ -35,7 +33,6 @@ public class PostSelling {
                 text.append(PDFText);
             }
 
-            //Create a new sheet into the Excel file to populate it the extracted data.
             Sheet sheet = workbook.createSheet("PosventaYBROXXX");
             Pattern pattern1 = Pattern.compile("(?<!/)(?!\\d+\\.\\d+)\\b([1-9]\\d{0,4}|0)\\b");
             Matcher matcher1 = pattern1.matcher(text);
@@ -61,7 +58,6 @@ public class PostSelling {
                 row = sheet.createRow(i++);
                 row.createCell(0).setCellValue(matcher2.group());
             }
-
             File OutPutFile = new File("PosVentaYBRWXX.xlsx");
             try (FileOutputStream outputStream = new FileOutputStream(OutPutFile)) {
                 workbook.write(outputStream);
@@ -75,7 +71,6 @@ public class PostSelling {
                 }
             }
 
-                //handle any type of error during code process.
     } catch(IOException e){
         e.getCause();
     }
