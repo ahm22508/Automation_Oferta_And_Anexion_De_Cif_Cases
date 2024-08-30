@@ -21,13 +21,16 @@ public class CMPlantilla {
         String directoryToSearch = "D:\\CV";
         File PlantillaFile = searchFile(new File(directoryToSearch), ExcelFileName);
 
+
         if (PlantillaFile == null) {
             System.out.println("No Entry");
-        } else {
+        }
+
+        else {
             File Finalfile = new File("PlantillaCM.xlsx");
             try (Workbook workbook1 = new XSSFWorkbook();
                  FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
-                Sheet sheet1 = workbook1.createSheet("PlantillaCM");
+                Sheet sheet1 = workbook1.createSheet("PlantillaCM-Trenes");
                 try (FileInputStream file = new FileInputStream(PlantillaFile.getAbsoluteFile());
                      Workbook workbook = new XSSFWorkbook(file)) {
                     Sheet sheet = workbook.getSheet("Tren");
@@ -51,8 +54,8 @@ public class CMPlantilla {
                         }
                     }
                 }
-                    workbook1.write(fileOutputStream);
-                    if (Desktop.isDesktopSupported()) {
+                       workbook1.write(fileOutputStream);
+                       if (Desktop.isDesktopSupported()) {
                         Desktop desktop = Desktop.getDesktop();
                         if (desktop.isSupported(Desktop.Action.OPEN)) {
                             desktop.open(Finalfile);
@@ -63,7 +66,6 @@ public class CMPlantilla {
         }
         private static File searchFile (File directory, String fileNameToSearch){
             File[] files = directory.listFiles();
-
             if (files != null) {
                 for (File file : files) {
                     if (file.isDirectory()) {
