@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CMPlantilla {
+public class CMPlantilla_Trenes {
 
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
@@ -64,7 +64,7 @@ public class CMPlantilla {
                 }
             }
         }
-        private static File searchFile (File directory, String fileNameToSearch){
+        public static File searchFile (File directory, String fileNameToSearch){
             File[] files = directory.listFiles();
             if (files != null) {
                 for (File file : files) {
