@@ -6,32 +6,28 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedHashSet;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CMPlantilla_Minutos {
-    public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of the CM file as appear in the JO");
-        String ExcelFileName = scanner.nextLine();
+
+    public void ExtractMinutosFromCMP(String ExcelFileName) throws IOException {
+
         String directoryToSearch = "D:\\CV";
-        File PlantillaFile = CMPlantilla_Trenes.searchFile(new File(directoryToSearch), ExcelFileName);
+        File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
 
         if (PlantillaFile == null) {
             System.out.println("No Entry");
         } else {
-            File Finalfile = new File("PlantillaCM.xlsx");
+            File FinalFile = new File("PlantillaCM.xlsx");
 
-            try (Workbook workbook = new XSSFWorkbook();
-                 FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
+            try (FileInputStream fileInputStream = new FileInputStream(FinalFile);
+                 Workbook workbook = new XSSFWorkbook(fileInputStream))
+            {
                 Sheet sheet = workbook.createSheet("PlantillaCM-Minutos");
+
                 try (FileInputStream file = new FileInputStream(PlantillaFile.getAbsoluteFile());
                      Workbook workbook1 = new XSSFWorkbook(file)) {
                     Sheet sheet1 = workbook1.getSheet("Infinity Business");
@@ -67,15 +63,11 @@ public class CMPlantilla_Minutos {
                         }
                     }
 
-                            workbook.write(fileOutputStream);
-                            if (Desktop.isDesktopSupported()) {
-                                Desktop desktop = Desktop.getDesktop();
-                                if (desktop.isSupported(Desktop.Action.OPEN)) {
-                                    desktop.open(Finalfile);
-                                }
-                            }
-                        } catch(
-                                IOException e){
+                    try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
+                        workbook.write(fileOutputStream);
+                    }
+
+                        } catch(IOException e){
                             e.getCause();
                         }
 

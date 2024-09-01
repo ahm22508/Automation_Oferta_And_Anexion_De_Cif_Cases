@@ -8,28 +8,26 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CMPlantilla_Trenes {
 
-    public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of the CM file as appear in the JO");
-        String ExcelFileName = scanner.nextLine();
+    public void ExtractTrenesFromCMP(String ExcelFileName) throws IOException {
+
         String directoryToSearch = "D:\\CV";
-        File PlantillaFile = searchFile(new File(directoryToSearch), ExcelFileName);
+        File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
 
 
         if (PlantillaFile == null) {
             System.out.println("No Entry");
-        }
-
-        else {
+        } else {
             File Finalfile = new File("PlantillaCM.xlsx");
-            try (Workbook workbook1 = new XSSFWorkbook();
-                 FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
+
+            try (FileInputStream fileInputStream = new FileInputStream(Finalfile);
+                 Workbook workbook1 = new XSSFWorkbook(fileInputStream)) {
+
+
                 Sheet sheet1 = workbook1.createSheet("PlantillaCM-Trenes");
                 try (FileInputStream file = new FileInputStream(PlantillaFile.getAbsoluteFile());
                      Workbook workbook = new XSSFWorkbook(file)) {
@@ -48,39 +46,22 @@ public class CMPlantilla_Trenes {
                                         row1 = sheet1.createRow(rowNum++);
                                         row1.createCell(0).setCellValue(matcher.group());
                                         row1.createCell(1).setCellValue(Percentage);
-                                     }
-                                 }
-                             }
-                          }
-                       }
-                    }
-
-                       workbook1.write(fileOutputStream);
-                       if (Desktop.isDesktopSupported()) {
-                        Desktop desktop = Desktop.getDesktop();
-                        if (desktop.isSupported(Desktop.Action.OPEN)) {
-                            desktop.open(Finalfile);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }
-        public static File searchFile (File directory, String fileNameToSearch){
-            File[] files = directory.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if (file.isDirectory()) {
-                        File foundFile = searchFile(file, fileNameToSearch);
-                        if (foundFile != null) {
-                            return foundFile;
-                        }
-                    } else {
-                        if (file.getName().equalsIgnoreCase(fileNameToSearch)) {
-                            return file;
-                        }
+                try (FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
+                    workbook1.write(fileOutputStream);
+                }
+                if (Desktop.isDesktopSupported()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    if (desktop.isSupported(Desktop.Action.OPEN)) {
+                        desktop.open(Finalfile);
                     }
                 }
             }
-            return null;
         }
     }
+}

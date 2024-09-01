@@ -4,23 +4,19 @@ package OfertaProject;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CMPlantilla_Descuentos {
 
-    public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of the CM file as appear in the JO");
-        String ExcelFileName = scanner.nextLine();
+    public void ExtractDescuentosFromCMP(String ExcelFileName) throws IOException {
+
         String directoryToSearch = "D:\\CV";
-        File PlantillaFile = CMPlantilla_Trenes.searchFile(new File(directoryToSearch), ExcelFileName);
+        File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
 
         if (PlantillaFile == null) {
             System.out.println("No Entry");
@@ -57,12 +53,7 @@ public class CMPlantilla_Descuentos {
                         e.getCause();
                     }
                     workbook.write(fileOutputStream);
-                    if (Desktop.isDesktopSupported()) {
-                        Desktop desktop = Desktop.getDesktop();
-                        if (desktop.isSupported(Desktop.Action.OPEN)) {
-                            desktop.open(Finalfile);
-                        }
-                    }
+
                 }
             }
         }

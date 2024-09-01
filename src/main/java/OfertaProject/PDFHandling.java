@@ -11,7 +11,7 @@ public class PDFHandling {
 
         JFrame frame = new JFrame();
         frame.setTitle("PDF Offer Extractor");
-        frame.setSize(600, 600);
+        frame.setSize(950, 600);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -50,14 +50,14 @@ public class PDFHandling {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = GridBagConstraints.RELATIVE;
-        gbc.insets = new Insets(20, 0, 20, 0);
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(20, 0, 20, 600);
+        gbc.anchor = GridBagConstraints.WEST;
 
         JLabel lblFilePath = new JLabel("Enter your PDF Path here to edit it");
         centerPanel.add(lblFilePath, gbc);
 
         JTextField textField = new JTextField();
-        textField.setPreferredSize(new Dimension(500, 30));
+        textField.setPreferredSize(new Dimension(300, 30));
         centerPanel.add(textField, gbc);
 
         JButton btnExtract = new JButton("Extract Offer");

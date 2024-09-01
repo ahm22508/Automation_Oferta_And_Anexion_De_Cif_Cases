@@ -8,8 +8,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -20,9 +20,11 @@ public class PostSelling {
     public void ExtractPostSelling(String filePath) {
 
         StringBuilder text = new StringBuilder();
+        File FinalFile = new File("OfertaPDFDeActivacion.xlsx");
+        try (FileInputStream fileInputStream = new FileInputStream(FinalFile)) {
+            Workbook workbook = new XSSFWorkbook(fileInputStream);
 
-        try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath));
-             Workbook workbook = new XSSFWorkbook()) {
+        try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath))) {
 
             int Num = pdfDoc.getNumberOfPages();
             for (int i = 1; i < Num; i++) {
@@ -58,19 +60,14 @@ public class PostSelling {
                 row = sheet.createRow(i++);
                 row.createCell(0).setCellValue(matcher2.group());
             }
-            File OutPutFile = new File("PosVentaYBRWXX.xlsx");
-            try (FileOutputStream outputStream = new FileOutputStream(OutPutFile)) {
-                workbook.write(outputStream);
 
+            try(FileOutputStream fileOutputStream = new FileOutputStream(FinalFile))
+            {
+            workbook.write(fileOutputStream);
             }
 
-            if (Desktop.isDesktopSupported()) {
-                Desktop desktop = Desktop.getDesktop();
-                if (desktop.isSupported(Desktop.Action.OPEN)) {
-                    desktop.open(OutPutFile);
-                }
-            }
 
+        }
     } catch(IOException e){
         e.getCause();
     }

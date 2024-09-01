@@ -6,30 +6,27 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Scanner;
 
 
-@SuppressWarnings("ALL")
-public class CMPlantilla_Índice {
-    public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of the CM file as appear in the JO");
-        String ExcelFileName = scanner.nextLine();
+
+public class CMPlantilla_Indice {
+    public void ExtractInfoFromCMP(String ExcelFileName) throws IOException {
+
         String directoryToSearch = "D:\\CV";
-        File PlantillaFile = CMPlantilla_Trenes.searchFile(new File(directoryToSearch), ExcelFileName);
+        File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
 
         if (PlantillaFile == null) {
             System.out.println("No Entry");
         } else {
             File Finalfile = new File("PlantillaCM.xlsx");
 
-            try (Workbook workbook = new XSSFWorkbook();
-                 FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
+            try (FileInputStream fileInputStream = new FileInputStream(Finalfile);
+                 Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+
                 Sheet sheet = workbook.createSheet("PlantillaCM-Indice");
                 try (FileInputStream file = new FileInputStream(PlantillaFile.getAbsoluteFile());
                      Workbook workbook1 = new XSSFWorkbook(file)) {
@@ -50,15 +47,13 @@ public class CMPlantilla_Índice {
                         }
                     }
 
+
+                    try (FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
+                        workbook.write(fileOutputStream);
+                    }
+
                 } catch (IOException e) {
                     e.getCause();
-                }
-                workbook.write(fileOutputStream);
-                if (Desktop.isDesktopSupported()) {
-                    Desktop desktop = Desktop.getDesktop();
-                    if (desktop.isSupported(Desktop.Action.OPEN)) {
-                        desktop.open(Finalfile);
-                    }
                 }
             }
         }

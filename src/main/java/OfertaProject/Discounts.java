@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -60,7 +59,7 @@ public class Discounts {
 
 
                     }
-                    File FinalFile = new File("Discounts.xlsx");
+                    File FinalFile = new File("OfertaPDFDeActivacion.xlsx");
 
                     try (Workbook workbook1 = new XSSFWorkbook();
                          FileOutputStream fileOut = new FileOutputStream(FinalFile)) {
@@ -75,12 +74,7 @@ public class Discounts {
 
                         workbook1.write(fileOut);
                     }
-                    if (Desktop.isDesktopSupported()) {
-                        Desktop desktop = Desktop.getDesktop();
-                        if (desktop.isSupported(Desktop.Action.OPEN)) {
-                            desktop.open(FinalFile);
-                        }
-                    }
+
 
                 }
 
