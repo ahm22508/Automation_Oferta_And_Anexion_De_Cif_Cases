@@ -48,12 +48,13 @@ public class CMPlantilla_Trenes {
                                         row1 = sheet1.createRow(rowNum++);
                                         row1.createCell(0).setCellValue(matcher.group());
                                         row1.createCell(1).setCellValue(Percentage);
-                                    }
-                                }
-                            }
-                        }
+                                     }
+                                 }
+                             }
+                          }
+                       }
                     }
-                }
+
                        workbook1.write(fileOutputStream);
                        if (Desktop.isDesktopSupported()) {
                         Desktop desktop = Desktop.getDesktop();
