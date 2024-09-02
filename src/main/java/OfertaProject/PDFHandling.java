@@ -80,26 +80,10 @@ public class PDFHandling {
 
         btnExtract.addActionListener(e -> {
             String filePath = textField.getText();
-            String excelName = textField1.getText();
             if (filePath.isEmpty()) {
                 JOptionPane.showMessageDialog(frame, "Please select a PDF file.");
                 return;
             }
-
-            if (!excelName.isEmpty()) {
-                try {
-                    new Discounts().ExtractDiscounts(excelName);
-                    new Minutes().ExtractMinutes(excelName);
-                    new PostSelling().ExtractPostSelling(excelName);
-                    new Trenes().ExtractTrenes(excelName);
-                    JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
-                }
-            } else {
-                JOptionPane.showMessageDialog(frame, "No Excel file specified. Proceeding with PDF extraction only.");
-            }
-
             try {
                 new Discounts().ExtractDiscounts(filePath);
                 new Minutes().ExtractMinutes(filePath);
@@ -108,6 +92,23 @@ public class PDFHandling {
                 JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
+            }
+        });
+
+        btnExtract1.addActionListener(e ->{
+            String excelName = textField1.getText();
+            if (!excelName.isEmpty() && new CMPlantilla_Descuentos().PlantillaFile != null) {
+                try {
+                   new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(excelName);
+                   new CMPlantilla_Indice().ExtractInfoFromCMP(excelName);
+                   new CMPlantilla_Minutos().ExtractMinutosFromCMP(excelName);
+                   new CMPlantilla_Trenes().ExtractTrenesFromCMP(excelName);
+                    JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(frame, "No Excel file specified. Proceeding with PDF extraction only.");
             }
         });
 
