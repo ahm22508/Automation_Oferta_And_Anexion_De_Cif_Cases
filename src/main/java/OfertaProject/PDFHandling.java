@@ -98,7 +98,6 @@ public class PDFHandling {
                 }
             } else {
                 JOptionPane.showMessageDialog(frame, "No Excel file specified. Proceeding with PDF extraction only.");
-                JOptionPane.
             }
 
             try {
