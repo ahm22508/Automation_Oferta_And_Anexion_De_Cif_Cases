@@ -44,7 +44,7 @@ public class CMPlantilla_Minutos {
                                 Minutos.add(matcher.group());
                                 for (Cell NextCell : row) {
                                     if (NextCell.toString().contains("Cuota Final: ")) {
-                                       if(Minutos.contains(FinalValue)){
+                                        if(Minutos.contains(FinalValue)){
                                             row1 = sheet.createRow(x++);
                                             row1.createCell(0).setCellValue(FinalValue);
                                             String Cleaning = NextCell.getStringCellValue();
@@ -67,13 +67,12 @@ public class CMPlantilla_Minutos {
                         workbook.write(fileOutputStream);
                     }
 
-                        } catch(IOException e){
-                            e.getCause();
-                        }
-
-                    }
+                } catch(IOException e){
+                    e.getCause();
                 }
+
             }
         }
-
+    }
+}
 

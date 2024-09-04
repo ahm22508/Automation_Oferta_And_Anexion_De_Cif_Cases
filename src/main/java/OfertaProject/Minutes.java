@@ -14,12 +14,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class Minutes {
+public class Minutes extends Discounts{
 
     public void ExtractMinutes(String filePath) {
 
         StringBuilder text = new StringBuilder();
-
         File FinalFile = new File("OfertaPDFDeActivacion.xlsx");
         try (FileInputStream fileInputStream = new FileInputStream(FinalFile)) {
             Workbook workbook = new XSSFWorkbook(fileInputStream);

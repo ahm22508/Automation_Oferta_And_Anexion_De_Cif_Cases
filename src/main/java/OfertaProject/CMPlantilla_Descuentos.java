@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CMPlantilla_Descuentos {
-    String  directoryToSearch = "D:\\CV";
+    String  directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
 
     File PlantillaFile;
 

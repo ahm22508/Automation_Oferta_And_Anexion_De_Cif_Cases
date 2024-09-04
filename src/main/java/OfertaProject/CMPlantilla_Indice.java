@@ -16,7 +16,7 @@ import java.io.IOException;
 public class CMPlantilla_Indice {
     public void ExtractInfoFromCMP(String ExcelFileName) throws IOException {
 
-        String directoryToSearch = "D:\\CV";
+        String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
         File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
 
         if (PlantillaFile == null) {

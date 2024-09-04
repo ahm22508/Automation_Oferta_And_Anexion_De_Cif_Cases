@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 
 public class Discounts {
 
+
     public void ExtractDiscounts(String filePath){
 
             Set<String> DTSInSheet = new LinkedHashSet<>();
@@ -59,7 +60,7 @@ public class Discounts {
 
 
                     }
-                    File FinalFile = new File("OfertaPDFDeActivacion.xlsx");
+                  File FinalFile= new File("OfertaPDFDeActivacion.xlsx");
 
                     try (Workbook workbook1 = new XSSFWorkbook();
                          FileOutputStream fileOut = new FileOutputStream(FinalFile)) {

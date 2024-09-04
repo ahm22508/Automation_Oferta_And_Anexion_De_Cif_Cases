@@ -18,12 +18,7 @@ public class PDFHandling {
         ImageIcon imageIcon = new ImageIcon("C:\\PdfProject\\Icon.jpg");
         frame.setIconImage(imageIcon.getImage());
 
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JLabel lblTitle = new JLabel("Welcome To Our App", JLabel.CENTER);
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 24));
-        topPanel.add(lblTitle);
-        frame.add(topPanel, BorderLayout.NORTH);
+
 
         JPanel centerPanel = new JPanel() {
 
@@ -97,7 +92,7 @@ public class PDFHandling {
 
         btnExtract1.addActionListener(e ->{
             String excelName = textField1.getText();
-            if (!excelName.isEmpty() && new CMPlantilla_Descuentos().PlantillaFile != null) {
+            if (!excelName.isEmpty()) {
                 try {
                    new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(excelName);
                    new CMPlantilla_Indice().ExtractInfoFromCMP(excelName);

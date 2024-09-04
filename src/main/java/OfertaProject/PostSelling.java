@@ -15,12 +15,13 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PostSelling {
+public class PostSelling extends Discounts {
 
     public void ExtractPostSelling(String filePath) {
 
         StringBuilder text = new StringBuilder();
         File FinalFile = new File("OfertaPDFDeActivacion.xlsx");
+
         try (FileInputStream fileInputStream = new FileInputStream(FinalFile)) {
             Workbook workbook = new XSSFWorkbook(fileInputStream);
 

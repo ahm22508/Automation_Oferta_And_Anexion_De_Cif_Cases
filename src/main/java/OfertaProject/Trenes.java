@@ -19,12 +19,13 @@ import java.util.regex.Pattern;
 
 
 
-public class Trenes {
+public class Trenes extends Discounts {
     public void   ExtractTrenes(String filePath) throws NullPointerException {
 
         StringBuilder text = new StringBuilder();
 
         File FinalFile = new File("OfertaPDFDeActivacion.xlsx");
+
         try(FileInputStream fileInputStream = new FileInputStream(FinalFile))
         {
         Workbook workbook = new XSSFWorkbook(fileInputStream);
