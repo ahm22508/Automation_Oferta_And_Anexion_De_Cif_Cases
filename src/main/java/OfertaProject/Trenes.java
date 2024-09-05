@@ -24,7 +24,7 @@ public class Trenes extends Discounts {
 
         StringBuilder text = new StringBuilder();
 
-        File FinalFile = new File("OfertaPDFDeActivacion.xlsx");
+        File FinalFile = new File(FileName);
 
         try(FileInputStream fileInputStream = new FileInputStream(FinalFile))
         {

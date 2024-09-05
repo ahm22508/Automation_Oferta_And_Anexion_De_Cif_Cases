@@ -19,7 +19,7 @@ public class Minutes extends Discounts{
     public void ExtractMinutes(String filePath) {
 
         StringBuilder text = new StringBuilder();
-        File FinalFile = new File("OfertaPDFDeActivacion.xlsx");
+        File FinalFile = new File(FileName);
         try (FileInputStream fileInputStream = new FileInputStream(FinalFile)) {
             Workbook workbook = new XSSFWorkbook(fileInputStream);
 

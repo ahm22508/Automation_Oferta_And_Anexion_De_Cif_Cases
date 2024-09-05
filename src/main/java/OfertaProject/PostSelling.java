@@ -20,7 +20,7 @@ public class PostSelling extends Discounts {
     public void ExtractPostSelling(String filePath) {
 
         StringBuilder text = new StringBuilder();
-        File FinalFile = new File("OfertaPDFDeActivacion.xlsx");
+        File FinalFile = new File(FileName);
 
         try (FileInputStream fileInputStream = new FileInputStream(FinalFile)) {
             Workbook workbook = new XSSFWorkbook(fileInputStream);
