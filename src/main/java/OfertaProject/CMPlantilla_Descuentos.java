@@ -13,16 +13,15 @@ import java.util.regex.Pattern;
 
 public class CMPlantilla_Descuentos {
 
-
+String FileName = "PlantillaCM.xlsx";
     public void ExtractDescuentosFromCMP(String ExcelFileName) throws IOException {
-
 
         String  directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
         File  PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
         if (PlantillaFile == null) {
             System.out.println("No Entry");
         } else {
-            File Finalfile = new File("PlantillaCM.xlsx");
+            File Finalfile = new File(FileName);
 
             try (Workbook workbook = new XSSFWorkbook();
                  FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {

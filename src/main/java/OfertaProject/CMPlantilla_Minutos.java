@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CMPlantilla_Minutos {
+public class CMPlantilla_Minutos extends CMPlantilla_Descuentos{
 
     public void ExtractMinutosFromCMP(String ExcelFileName) throws IOException {
 
@@ -21,7 +21,7 @@ public class CMPlantilla_Minutos {
         if (PlantillaFile == null) {
             System.out.println("No Entry");
         } else {
-            File FinalFile = new File("PlantillaCM.xlsx");
+            File FinalFile = new File(FileName);
 
             try (FileInputStream fileInputStream = new FileInputStream(FinalFile);
                  Workbook workbook = new XSSFWorkbook(fileInputStream))

@@ -13,7 +13,8 @@ import java.io.IOException;
 
 
 
-public class CMPlantilla_Indice {
+public class CMPlantilla_Indice extends CMPlantilla_Descuentos{
+
     public void ExtractInfoFromCMP(String ExcelFileName) throws IOException {
 
         String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
@@ -22,7 +23,7 @@ public class CMPlantilla_Indice {
         if (PlantillaFile == null) {
             System.out.println("No Entry");
         } else {
-            File Finalfile = new File("PlantillaCM.xlsx");
+            File Finalfile = new File(FileName);
 
             try (FileInputStream fileInputStream = new FileInputStream(Finalfile);
                  Workbook workbook = new XSSFWorkbook(fileInputStream)) {

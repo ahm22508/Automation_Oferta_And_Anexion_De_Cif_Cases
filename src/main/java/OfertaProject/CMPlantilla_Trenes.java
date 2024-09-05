@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CMPlantilla_Trenes {
+public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
 
     public void ExtractTrenesFromCMP(String ExcelFileName) throws IOException {
 
@@ -22,7 +22,7 @@ public class CMPlantilla_Trenes {
         if (PlantillaFile == null) {
             System.out.println("No Entry");
         } else {
-            File Finalfile = new File("PlantillaCM.xlsx");
+            File Finalfile = new File(FileName);
 
             try (FileInputStream fileInputStream = new FileInputStream(Finalfile);
                  Workbook workbook1 = new XSSFWorkbook(fileInputStream)) {
