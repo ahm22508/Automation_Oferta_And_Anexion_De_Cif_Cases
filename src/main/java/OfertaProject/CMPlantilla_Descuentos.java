@@ -12,13 +12,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CMPlantilla_Descuentos {
-    String  directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
 
-    File PlantillaFile;
 
     public void ExtractDescuentosFromCMP(String ExcelFileName) throws IOException {
 
-        PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
+
+        String  directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
+        File  PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
         if (PlantillaFile == null) {
             System.out.println("No Entry");
         } else {

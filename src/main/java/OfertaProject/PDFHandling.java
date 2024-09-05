@@ -98,6 +98,7 @@ public class PDFHandling {
                    new CMPlantilla_Indice().ExtractInfoFromCMP(excelName);
                    new CMPlantilla_Minutos().ExtractMinutosFromCMP(excelName);
                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(excelName);
+                   new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(excelName);
                     JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());

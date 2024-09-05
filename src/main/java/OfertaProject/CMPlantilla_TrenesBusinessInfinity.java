@@ -7,16 +7,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CMPlantilla_TrenesBusinessInfinity {
 
-    public static void main(String[] args) throws NullPointerException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of the CM file as appear in the JO");
-        String ExcelFileName = scanner.nextLine();
+    public void  ExtractTrenesBIFromCMP (String ExcelFileName){
+
+
         String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
         File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
 
