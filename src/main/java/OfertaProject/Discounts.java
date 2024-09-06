@@ -22,12 +22,11 @@ import java.util.regex.Pattern;
 public class Discounts {
 
 String FileName = "OfertaPDFDeActivacion.xlsx";
-    public void ExtractDiscounts(String filePath){
+public void ExtractDiscounts(String filePath){
 
             Set<String> DTSInSheet = new LinkedHashSet<>();
             Set<String> DTSInPDF = new LinkedHashSet<>();
             Set<String> OrderedDTS = new LinkedHashSet<>();
-
             try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath))) {
                 int numberOfPages = pdfDoc.getNumberOfPages();
 
@@ -42,7 +41,8 @@ String FileName = "OfertaPDFDeActivacion.xlsx";
                         }
                     }
 
-                    StringBuilder text = new StringBuilder();
+                    StringBuilder  text  = new StringBuilder();
+
                     for (int i = 1; i <= numberOfPages; i++) {
                         String pageText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
                         text.append(pageText);

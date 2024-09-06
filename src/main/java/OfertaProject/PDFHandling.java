@@ -2,11 +2,13 @@ package OfertaProject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 
 public class PDFHandling {
 
     public static void main(String[] args) {
+
 
         JFrame frame = new JFrame();
         frame.setTitle("PDF Offer Extractor");
@@ -75,8 +77,9 @@ public class PDFHandling {
 
         btnExtract.addActionListener(e -> {
             String filePath = textField.getText();
-            if (filePath.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "Please select a PDF file.");
+            File Checking = new File(filePath);
+            if (!Checking.exists()) {
+                JOptionPane.showMessageDialog(frame, "Entry No Correct");
                 return;
             }
             try {
@@ -92,7 +95,8 @@ public class PDFHandling {
 
         btnExtract1.addActionListener(e ->{
             String excelName = textField1.getText();
-            if (!excelName.isEmpty()) {
+            File Checking = new File(excelName);
+            if (!Checking.exists()) {
                 try {
                    new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(excelName);
                    new CMPlantilla_Indice().ExtractInfoFromCMP(excelName);

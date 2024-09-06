@@ -33,14 +33,13 @@ public class Trenes extends Discounts {
 
 
             try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath))) {
-
                 int Num = pdfDoc.getNumberOfPages();
                 for (int i = 1; i < Num; i++) {
-                    String PDFText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
-                    if (PDFText.contains("Referencia")) {
+                    String pageText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
+                    if (pageText.contains("Referencia")) {
                         break;
                     }
-                    text.append(PDFText);
+                    text.append(pageText);
                 }
                 Sheet sheet = workbook.createSheet("Trenes");
 
