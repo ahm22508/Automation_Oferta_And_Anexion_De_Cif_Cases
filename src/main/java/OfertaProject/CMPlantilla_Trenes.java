@@ -15,7 +15,7 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
 
     public void ExtractTrenesFromCMP(String ExcelFileName) throws IOException {
 
-        String directoryToSearch = "D:\\CV";
+        String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
         File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
 
 

@@ -1,9 +1,6 @@
 package OfertaProject;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
@@ -15,7 +12,7 @@ public class CMPlantilla_Minutos extends CMPlantilla_Descuentos{
 
     public void ExtractMinutosFromCMP(String ExcelFileName) throws IOException {
 
-        String directoryToSearch = "D:\\CV";
+        String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
         File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
 
         if (PlantillaFile == null) {
