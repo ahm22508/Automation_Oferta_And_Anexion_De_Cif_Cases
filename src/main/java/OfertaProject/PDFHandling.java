@@ -93,23 +93,28 @@ public class PDFHandling {
             }
         });
 
-        btnExtract1.addActionListener(e ->{
+        btnExtract1.addActionListener(e -> {
             String excelName = textField1.getText();
             File Checking = new File(excelName);
-            if (!Checking.exists()) {
-                try {
-                   new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(excelName);
-                   new CMPlantilla_Indice().ExtractInfoFromCMP(excelName);
-                   new CMPlantilla_Minutos().ExtractMinutosFromCMP(excelName);
-                   new CMPlantilla_Trenes().ExtractTrenesFromCMP(excelName);
-                   new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(excelName);
-                    JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
-                }
-            } else {
+            if (Checking.exists()) {
+                JOptionPane.showMessageDialog(frame, "Entry No Correct");
+                return;
+            }
+            else{
                 JOptionPane.showMessageDialog(frame, "No Excel file specified. Proceeding with PDF extraction only.");
             }
+            try {
+                new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(excelName);
+                new CMPlantilla_Indice().ExtractInfoFromCMP(excelName);
+                new CMPlantilla_Minutos().ExtractMinutosFromCMP(excelName);
+                new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(excelName);
+                new CMPlantilla_Trenes().ExtractTrenesFromCMP(excelName);
+                JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
+            }
+
+
         });
 
         frame.add(centerPanel, BorderLayout.CENTER);
