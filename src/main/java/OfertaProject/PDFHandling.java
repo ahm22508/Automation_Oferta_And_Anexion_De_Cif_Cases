@@ -17,7 +17,7 @@ public class PDFHandling {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        ImageIcon imageIcon = new ImageIcon("C:\\PdfProject\\Icon.jpg");
+        ImageIcon imageIcon = new ImageIcon("C:\\Users\\Amr-FouadA\\OneDrive - Vodafone Group\\Desktop\\Oferta Extractor\\data\\Icon.jpg");
         frame.setIconImage(imageIcon.getImage());
 
 
@@ -28,7 +28,7 @@ public class PDFHandling {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
-                ImageIcon VFLogo = new ImageIcon("C:\\PdfProject\\vodafone.png");
+                ImageIcon VFLogo = new ImageIcon("C:\\Users\\Amr-FouadA\\OneDrive - Vodafone Group\\Desktop\\Oferta Extractor\\data\\vodafone.png");
 
                 Graphics2D g2d = (Graphics2D) g.create();
 
@@ -82,6 +82,10 @@ public class PDFHandling {
                 JOptionPane.showMessageDialog(frame, "Entry No Correct");
                 return;
             }
+            if (filePath.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Please enter a valid PDF File.");
+                return;
+            }
             try {
                 new Discounts().ExtractDiscounts(filePath);
                 new Minutes().ExtractMinutes(filePath);
@@ -106,7 +110,6 @@ public class PDFHandling {
                    JOptionPane.showMessageDialog(frame, "Entry No Correct. Please enter a valid File.xlsm or xlsx");
                    return;
                }
-
                 try {
                     new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(excelName);
                     new CMPlantilla_Indice().ExtractInfoFromCMP(excelName);
