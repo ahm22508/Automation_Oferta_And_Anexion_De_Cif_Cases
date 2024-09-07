@@ -13,23 +13,22 @@ import java.io.IOException;
 
 
 
-public class CMPlantilla_Indice extends CMPlantilla_Descuentos{
+public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
 
     public void ExtractInfoFromCMP(String ExcelFileName) throws IOException {
 
         String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
         File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
 
-        if (PlantillaFile == null) {
-            System.out.println("No Entry");
-        } else {
-            File Finalfile = new File(FileName);
 
-            try (FileInputStream fileInputStream = new FileInputStream(Finalfile);
-                 Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+        File Finalfile = new File(FileName);
 
-                Sheet sheet = workbook.createSheet("PlantillaCM-Indice");
-                try (FileInputStream file = new FileInputStream(PlantillaFile.getAbsoluteFile());
+        try (FileInputStream fileInputStream = new FileInputStream(Finalfile);
+             Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+
+            Sheet sheet = workbook.createSheet("PlantillaCM-Indice");
+            if (PlantillaFile != null) {
+                try (FileInputStream file = new FileInputStream(PlantillaFile);
                      Workbook workbook1 = new XSSFWorkbook(file)) {
                     Sheet sheet1 = workbook1.getSheet("Indice");
 

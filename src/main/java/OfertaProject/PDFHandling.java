@@ -95,24 +95,29 @@ public class PDFHandling {
 
         btnExtract1.addActionListener(e -> {
             String excelName = textField1.getText();
-            File Checking = new File(excelName);
-            if (Checking.exists()) {
-                JOptionPane.showMessageDialog(frame, "Entry No Correct");
+            File directory = new File("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data");
+            File CheckFile = SearchFile.searchFile(directory, excelName);
+            System.out.println(CheckFile);
+            if (excelName.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "No Excel file specified. Proceeding with PDF extraction only.");
                 return;
             }
-            else{
-                JOptionPane.showMessageDialog(frame, "No Excel file specified. Proceeding with PDF extraction only.");
-            }
-            try {
-                new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(excelName);
-                new CMPlantilla_Indice().ExtractInfoFromCMP(excelName);
-                new CMPlantilla_Minutos().ExtractMinutosFromCMP(excelName);
-                new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(excelName);
-                new CMPlantilla_Trenes().ExtractTrenesFromCMP(excelName);
-                JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
-            }
+           if(CheckFile == null) {
+                   JOptionPane.showMessageDialog(frame, "Entry No Correct. Please enter a valid File.xlsm or xlsx");
+                   return;
+               }
+
+                try {
+                    new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(excelName);
+                    new CMPlantilla_Indice().ExtractInfoFromCMP(excelName);
+                    new CMPlantilla_Minutos().ExtractMinutosFromCMP(excelName);
+                    new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(excelName);
+                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(excelName);
+                    JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
+                }
+
 
 
         });

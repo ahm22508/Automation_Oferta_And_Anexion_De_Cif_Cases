@@ -13,19 +13,19 @@ import java.util.regex.Pattern;
 
 public class CMPlantilla_Descuentos {
 
-String FileName = "PlantillaCM.xlsx";
+    String FileName = "PlantillaCM.xlsx";
+
     public void ExtractDescuentosFromCMP(String ExcelFileName) throws IOException {
 
-        String  directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
-        File  PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
-        if (PlantillaFile == null) {
-            System.out.println("No Entry");
-        } else {
-            File Finalfile = new File(FileName);
+        String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
+        File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
 
-            try (Workbook workbook = new XSSFWorkbook();
-                 FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
-                Sheet sheet = workbook.createSheet("PlantillaCM-Descuentos");
+        File Finalfile = new File(FileName);
+
+        try (Workbook workbook = new XSSFWorkbook();
+             FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
+            Sheet sheet = workbook.createSheet("PlantillaCM-Descuentos");
+            if (PlantillaFile != null) {
                 try (FileInputStream file = new FileInputStream(PlantillaFile.getAbsoluteFile());
                      Workbook workbook1 = new XSSFWorkbook(file)) {
                     Sheet sheet1 = workbook1.getSheet("Dtos y Tarifas Complementarios");
@@ -38,7 +38,7 @@ String FileName = "PlantillaCM.xlsx";
                             Matcher matcher = pattern.matcher(cell.toString());
                             if (matcher.find()) {
                                 String Codes = matcher.group();
-                                for(Cell CodeCell : row) {
+                                for (Cell CodeCell : row) {
                                     if (CodeCell.toString().equals("SI")) {
                                         row1 = sheet.createRow(rowNum++);
                                         row1.createCell(0).setCellValue(Codes);
@@ -49,15 +49,15 @@ String FileName = "PlantillaCM.xlsx";
                         }
                     }
 
-                    } catch (IOException e) {
-                        e.getCause();
-                    }
-                    workbook.write(fileOutputStream);
-
+                } catch (IOException e) {
+                    e.getCause();
                 }
+                workbook.write(fileOutputStream);
+
             }
         }
     }
+}
 
 
 

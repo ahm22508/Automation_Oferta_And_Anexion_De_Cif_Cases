@@ -3,29 +3,25 @@ package OfertaProject;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
 
-    public void  ExtractTrenesBIFromCMP (String ExcelFileName){
+    public void ExtractTrenesBIFromCMP(String ExcelFileName) throws IOException {
 
 
         String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
         File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
 
-        if (PlantillaFile == null) {
-            System.out.println("No Entry");
-        } else {
-            File FinalFile = new File(FileName);
+        File FinalFile = new File(FileName);
 
-            try (FileInputStream fileInputStream = new FileInputStream(FinalFile);
-                 Workbook workbook = new XSSFWorkbook(fileInputStream)) {
-                Sheet sheet = workbook.createSheet("PlantillaCM-Trenes(BI)");
+        try (FileInputStream fileInputStream = new FileInputStream(FinalFile);
+             Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+            Sheet sheet = workbook.createSheet("PlantillaCM-Trenes(BI)");
+
+            if (PlantillaFile != null) {
                 try (FileInputStream file = new FileInputStream(PlantillaFile.getAbsoluteFile());
                      Workbook workbook1 = new XSSFWorkbook(file)) {
                     Sheet sheet1 = workbook1.getSheet("Infinity Business");
@@ -48,22 +44,20 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
                                             }
                                         }
                                     }
-                                           if (TrenCell.toString().contains("%")) {
-                                            for (Cell percentageCell : row) {
-                                                if (percentageCell.toString().contains("TDV04")) {
-                                                    String PercentageCell = TrenCell.getStringCellValue();
-                                                    String RemoveTren = PercentageCell.replace(ModTren, "");
-                                                    String RemoveSC = RemoveTren.replace("-", "");
-                                                    String CleanPerc = RemoveSC.replace("%", "");
-                                                    try {
-                                                        row1 = sheet.getRow(i++);
-                                                        row1.createCell(1).setCellValue(CleanPerc);
-                                                    }
-                                                    catch (NullPointerException n){
-                                                        row1 = sheet.createRow(i++);
-                                                        row1.createCell(1).setCellValue(CleanPerc);
-                                                        n.getMessage();
-                                                    }
+                                    if (TrenCell.toString().contains("%")) {
+                                        for (Cell percentageCell : row) {
+                                            if (percentageCell.toString().contains("TDV04")) {
+                                                String PercentageCell = TrenCell.getStringCellValue();
+                                                String RemoveTren = PercentageCell.replace(ModTren, "");
+                                                String RemoveSC = RemoveTren.replace("-", "");
+                                                String CleanPerc = RemoveSC.replace("%", "");
+                                                try {
+                                                    row1 = sheet.getRow(i++);
+                                                    row1.createCell(1).setCellValue(CleanPerc);
+                                                } catch (NullPointerException n) {
+                                                    row1 = sheet.createRow(i++);
+                                                    row1.createCell(1).setCellValue(CleanPerc);
+                                                    n.getMessage();
                                                 }
                                             }
                                         }
@@ -72,14 +66,14 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
                             }
                         }
                     }
+                    try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
+                        workbook.write(fileOutputStream);
+                    } catch (IOException e) {
+                        e.getCause();
+                    }
 
-                try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
-                    workbook.write(fileOutputStream);
                 }
-                } catch (IOException e) {
-                    e.getCause();
-                }
-
             }
         }
     }
+}
