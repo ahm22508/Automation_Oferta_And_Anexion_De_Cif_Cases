@@ -97,7 +97,7 @@ public class PDFHandling {
             String excelName = textField1.getText();
             File directory = new File("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data");
             File CheckFile = SearchFile.searchFile(directory, excelName);
-            System.out.println(CheckFile);
+
             if (excelName.isEmpty()) {
                 JOptionPane.showMessageDialog(frame, "No Excel file specified. Proceeding with PDF extraction only.");
                 return;
@@ -117,9 +117,6 @@ public class PDFHandling {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
                 }
-
-
-
         });
 
         frame.add(centerPanel, BorderLayout.CENTER);
