@@ -17,7 +17,7 @@ public class PDFHandling {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        ImageIcon imageIcon = new ImageIcon("C:\\Users\\Amr-FouadA\\OneDrive - Vodafone Group\\Desktop\\Oferta Extractor\\data\\Icon.jpg");
+        ImageIcon imageIcon = new ImageIcon("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data\\Icon.jpg");
         frame.setIconImage(imageIcon.getImage());
 
 
@@ -28,7 +28,7 @@ public class PDFHandling {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
-                ImageIcon VFLogo = new ImageIcon("C:\\Users\\Amr-FouadA\\OneDrive - Vodafone Group\\Desktop\\Oferta Extractor\\data\\vodafone.png");
+                ImageIcon VFLogo = new ImageIcon("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data\\vodafone.png");
 
                 Graphics2D g2d = (Graphics2D) g.create();
 

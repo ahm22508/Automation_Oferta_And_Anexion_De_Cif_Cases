@@ -31,7 +31,7 @@ public void ExtractDiscounts(String filePath){
                 int numberOfPages = pdfDoc.getNumberOfPages();
 
 
-                try (FileInputStream file = new FileInputStream("C:\\Users\\Amr-FouadA\\OneDrive - Vodafone Group\\Desktop\\Oferta Extractor\\data\\DTOS.xlsx");
+                try (FileInputStream file = new FileInputStream("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data\\DTOS.xlsx");
                      Workbook workbook = new XSSFWorkbook(file)) {
 
                     Sheet sheet = workbook.getSheetAt(0);
