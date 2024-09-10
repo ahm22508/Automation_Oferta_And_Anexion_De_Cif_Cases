@@ -27,6 +27,7 @@ public void ExtractDiscounts(String filePath){
             Set<String> DTSInSheet = new LinkedHashSet<>();
             Set<String> DTSInPDF = new LinkedHashSet<>();
             Set<String> OrderedDTS = new LinkedHashSet<>();
+
             try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath))) {
                 int numberOfPages = pdfDoc.getNumberOfPages();
 
