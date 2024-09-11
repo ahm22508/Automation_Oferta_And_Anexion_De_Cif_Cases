@@ -19,10 +19,8 @@ public class Minutes extends Discounts {
         File FinalFile = new File(FileName);
         try (FileInputStream fileInputStream = new FileInputStream(FinalFile)) {
             Workbook workbook = new XSSFWorkbook(fileInputStream);
+            Sheet sheet = workbook.createSheet("Minutos");
 
-
-
-                Sheet sheet = workbook.createSheet("Minutos");
 
                 Pattern pattern = Pattern.compile("\\d+\\.\\d{2,}");
                 Matcher matcher = pattern.matcher(text);

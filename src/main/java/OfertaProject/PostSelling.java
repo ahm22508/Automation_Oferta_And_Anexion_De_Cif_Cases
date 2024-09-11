@@ -23,10 +23,9 @@ public class PostSelling extends Discounts {
 
         try (FileInputStream fileInputStream = new FileInputStream(FinalFile)) {
             Workbook workbook = new XSSFWorkbook(fileInputStream);
+            Sheet sheet = workbook.createSheet("PosventaYBROXXX");
 
 
-
-                Sheet sheet = workbook.createSheet("PosventaYBROXXX");
                 Pattern pattern1 = Pattern.compile("(?<!/)(?!\\d+\\.\\d+)\\b([1-9]\\d{0,4}|0)\\b");
                 Matcher matcher1 = pattern1.matcher(text);
                 Pattern pattern = Pattern.compile("POS+[A-Z]{2}");
@@ -46,23 +45,16 @@ public class PostSelling extends Discounts {
                         row.createCell(1).setCellValue(matcher1.group());
                     }
                 }
-
                 while (matcher2.find()) {
                     row = sheet.createRow(i++);
                     row.createCell(0).setCellValue(matcher2.group());
                 }
-
                 try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
                     workbook.write(fileOutputStream);
                 }
-
-
-
     } catch(IOException e){
         e.getCause();
     }
-
-
     }
 }
 
