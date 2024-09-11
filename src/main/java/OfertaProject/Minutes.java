@@ -1,8 +1,6 @@
 package OfertaProject;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
+
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -14,24 +12,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class Minutes extends Discounts{
+public class Minutes extends Discounts {
 
-    public void ExtractMinutes(String filePath) {
+    public void ExtractMinutes(String text) {
 
-        StringBuilder text = new StringBuilder();
         File FinalFile = new File(FileName);
         try (FileInputStream fileInputStream = new FileInputStream(FinalFile)) {
             Workbook workbook = new XSSFWorkbook(fileInputStream);
-            try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath))) {
 
-                int Num = pdfDoc.getNumberOfPages();
-                for (int i = 1; i < Num; i++) {
-                  String pageText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
-                    if (pageText.contains("Referencia")) {
-                        break;
-                    }
-                    text.append(pageText);
-                }
+
 
                 Sheet sheet = workbook.createSheet("Minutos");
 
@@ -52,7 +41,7 @@ public class Minutes extends Discounts{
                         row.createCell(1).setCellValue(matcher.group());
                     }
                 }
-                if (text.toString().contains("PKPID")) {
+                if (text.contains("PKPID")) {
                     row = sheet.getRow(0);
                     row.createCell(2).setCellValue("PKPID");
                     row.createCell(3).setCellValue("SÍ");
@@ -62,11 +51,9 @@ public class Minutes extends Discounts{
                     workbook.write(fileOutputStream);
                 }
 
-            }
-            } catch (IOException e) {
-                e.getCause();
-            }
 
-
+        } catch (IOException e) {
+            e.getCause();
+        }
     }
 }

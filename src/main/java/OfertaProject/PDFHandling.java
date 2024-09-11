@@ -87,10 +87,11 @@ public class PDFHandling {
                 return;
             }
             try {
-                new Discounts().ExtractDiscounts(filePath);
-                new Minutes().ExtractMinutes(filePath);
-                new PostSelling().ExtractPostSelling(filePath);
-                new Trenes().ExtractTrenes(filePath);
+                String text = new ExtractingData().ReadPdf(filePath);
+                new Discounts().ExtractDiscounts(text);
+                new Minutes().ExtractMinutes(text);
+                new PostSelling().ExtractPostSelling(text);
+                new Trenes().ExtractTrenes(text);
                 JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());

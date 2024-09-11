@@ -1,8 +1,6 @@
 package OfertaProject;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -20,29 +18,15 @@ import java.util.regex.Pattern;
 
 
 public class Trenes extends Discounts {
-    public void   ExtractTrenes(String filePath) throws NullPointerException {
+    public void   ExtractTrenes(String text) throws NullPointerException {
 
-        StringBuilder text = new StringBuilder();
 
         File FinalFile = new File(FileName);
 
-        try(FileInputStream fileInputStream = new FileInputStream(FinalFile))
-        {
-        Workbook workbook = new XSSFWorkbook(fileInputStream);
+            try (FileInputStream fileInputStream = new FileInputStream(FinalFile)) {
+                Workbook workbook = new XSSFWorkbook(fileInputStream);
 
-            Sheet sheet = workbook.createSheet("Trenes");
-
-
-            try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath))) {
-                int Num = pdfDoc.getNumberOfPages();
-                for (int i = 1; i < Num; i++) {
-                    String pageText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
-                    if (pageText.contains("Referencia")) {
-                        break;
-                    }
-                    text.append(pageText);
-                }
-
+                Sheet sheet = workbook.createSheet("Trenes");
 
                 Pattern pattern = Pattern.compile("DVSMO|DVMOV|DV90X|DCFWP|DVOOM|DPIDC|DVGCU|DVFNA|DVSMV|DVINT|DVSMR|DVMMN|DVMMI|DVMED|DVCAR|DVTFX|DVZWX|DVPCG|DVFZX|DVRSA|DVSML|DVSMM|DVSBC|DVSBS|DVSPR|DVSAV|DVSPM|DVIBA|DVIP2|DVIP5|DVTDA|DVTIC|DVPN1|DVPN2|DVPN5|DVPNX|DVBBP|DVBEM|DVBBL|DVBBW|DVBER|DVBDI|DVBMS|DVPOA|DVPOM|DVP11|DVP12|DVSOA|DVSOM|DVHOT|DVPCF|DVVAG|DVFME|DVTAS|DVFES|DVMTM|DVMTA|DVSME|DVLIM|DVM2M|DVDSG|DVRMG|DVRBF|DVALF|DVARA|DVARM|DVXSV|DVXSO|DVXSI|DVXMM|DVXLO|DVFFN|DVFGC|DVFIN|DVFMV|DVFOM|DVRRE|DVSVO|DVSIN|DINZ1|DINZ2|DINZ3|DINZ4|DINZ5|DMBCM|DCT4G|DCO4G|DCT2G|DCT5G|DCT1G|DC2GB|DTIPA|DTIPM|DICR1|DICRR|DSIPC|DSIP1|DSIP2|DSIP5|DSIP6|DSIP7|DSIP8|DSPTF|DSGCU|DLY02|DCONA|DCONL|DPIZ1|DPIZ2|DPIZ3|DPIZ4|DPIZ5|DPRID|DCTSM|DRML1|DRML2|DCTP1|DCTP2|DCTFM|DTMNS|DCTFE|DPITN|DCREB|DCREE|DCRMB|DCRME|DFAXI|DFAXC|DFAXN|DCTCB|DDCRW|DXBRO|DVXBR|DCDMF|DCMMF|DB90X|DTUSA|DSCOV|DCDI5|DCDI4|DCDI3|DCDI2|DCDI1|DBPIN|DBVGE|DBUTE|DBFUN|DBREF|DCSMP|DCSCR|DINP5|DINP4|DINP3|DINP2|DINP1|DINT5|DINT4|DINT3|DINT2|DINT1|DGSH5|DGSH4|DGSH3|DGSH2|DGSH1|DGST5|DGST4|DGST3|DGST2|DGST1|DTRUC|DDECB|DDCRM|DDZRM|DDTRM|DRZMU|DESIM|DAETF|DMETF|DGEST|DIMGS|DITGS|DTRVO|DTRUT|DTRRC|DSMP1|DSMP2|DSMP3|DSMP4|DSMP5|DTROR|DTSM3");
                 Matcher matcher = pattern.matcher(text);
@@ -64,7 +48,7 @@ public class Trenes extends Discounts {
                         }
                     }
                 }
-                if (text.toString().contains("DRZRW")) {
+                if (text.contains("DRZRW")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DRZRW");
                     row.createCell(1).setCellValue("100");
@@ -77,7 +61,7 @@ public class Trenes extends Discounts {
                 String[] MultiCIF = {"DVMOV", "DVOOM", "DVFNA", "DVGCU", "DVSMV", "DVSMO"};
                 String[] MPMVE = {"DVMOV", "DVOOM", "DVFNA", "DVGCU", "DVSMV", "DVSMO", "DVFMV", "DVFOM", "DVFFN", "DVFGC", "DRZRW"};
 
-                if (text.toString().contains("MultiCIF")) {
+                if (text.contains("MultiCIF")) {
                     for (String Tren : MultiCIF) {
                         if (!MultiCIF[L].contains(FinalValue.iterator().next())) {
                             row = sheet.createRow(x++);
@@ -86,35 +70,35 @@ public class Trenes extends Discounts {
                             L++;
                         }
                     }
-                    if (text.toString().contains("SMS internacionales") && !FinalValue.contains("DVSMR")) {
+                    if (text.contains("SMS internacionales") && !FinalValue.contains("DVSMR")) {
                         row = sheet.createRow(x);
                         row.createCell(0).setCellValue("DVSMR");
                         row.createCell(1).setCellValue("100");
                         x++;
                     }
-                    if (text.toString().contains("CIINT") && !FinalValue.contains("DVINT")) {
+                    if (text.contains("CIINT") && !FinalValue.contains("DVINT")) {
                         row = sheet.createRow(x);
                         row.createCell(0).setCellValue("DVINT");
                         row.createCell(1).setCellValue("100");
                         x++;
                     }
-                    if (text.toString().contains("CI90X") && !FinalValue.contains("DV90X")) {
+                    if (text.contains("CI90X") && !FinalValue.contains("DV90X")) {
                         row = sheet.createRow(x);
                         row.createCell(0).setCellValue("DV90X");
                         row.createCell(1).setCellValue("100");
                         x++;
                     }
-                    if (text.toString().contains("CIROZ") && !FinalValue.contains("DVRRE")) {
+                    if (text.contains("CIROZ") && !FinalValue.contains("DVRRE")) {
                         row = sheet.createRow(x);
                         row.createCell(0).setCellValue("DVRRE");
                         row.createCell(1).setCellValue("100");
                         x++;
                     }
-                    if (text.toString().contains("CIRRZ") && !FinalValue.contains("DVRSA")) {
+                    if (text.contains("CIRRZ") && !FinalValue.contains("DVRSA")) {
                         row = sheet.createRow(x);
                         row.createCell(0).setCellValue("DVRSA");
                         row.createCell(1).setCellValue("100");
-                    } else if (text.toString().contains("MPMVE") || text.toString().contains("MultiCIF")) {
+                    } else if (text.contains("MPMVE") || text.contains("MultiCIF")) {
                         for (String Tren : MPMVE) {
                             if (!MPMVE[L].contains(FinalValue.iterator().next())) {
                                 row = sheet.createRow(x++);
@@ -123,31 +107,31 @@ public class Trenes extends Discounts {
                                 L++;
                             }
                         }
-                        if (text.toString().contains("SMS internacionales") && !FinalValue.contains("DVSMR")) {
+                        if (text.contains("SMS internacionales") && !FinalValue.contains("DVSMR")) {
                             row = sheet.createRow(x);
                             row.createCell(0).setCellValue("DVSMR");
                             row.createCell(1).setCellValue("100");
                             x++;
                         }
-                        if (text.toString().contains("CIINT") || text.toString().contains("CPINT") && !FinalValue.contains("DVINT")) {
+                        if (text.contains("CIINT") || text.contains("CPINT") && !FinalValue.contains("DVINT")) {
                             row = sheet.createRow(x);
                             row.createCell(0).setCellValue("DVINT");
                             row.createCell(1).setCellValue("100");
                             x++;
                         }
-                        if (text.toString().contains("CI90X") || text.toString().contains("CP90X") && !FinalValue.contains("DV90X")) {
+                        if (text.contains("CI90X") || text.contains("CP90X") && !FinalValue.contains("DV90X")) {
                             row = sheet.createRow(x);
                             row.createCell(0).setCellValue("DV90X");
                             row.createCell(1).setCellValue("100");
                             x++;
                         }
-                        if (text.toString().contains("CIROZ") && !FinalValue.contains("DVRRE")) {
+                        if (text.contains("CIROZ") && !FinalValue.contains("DVRRE")) {
                             row = sheet.createRow(x);
                             row.createCell(0).setCellValue("DVRRE");
                             row.createCell(1).setCellValue("100");
                             x++;
                         }
-                        if (text.toString().contains("CIRRZ") && !FinalValue.contains("DVRSA")) {
+                        if (text.contains("CIRRZ") && !FinalValue.contains("DVRSA")) {
                             row = sheet.createRow(x);
                             row.createCell(0).setCellValue("DVRSA");
                             row.createCell(1).setCellValue("100");
@@ -167,7 +151,7 @@ public class Trenes extends Discounts {
                 }
 
             }
-        }
+        
         catch(IOException e){
                 e.getCause();
         }

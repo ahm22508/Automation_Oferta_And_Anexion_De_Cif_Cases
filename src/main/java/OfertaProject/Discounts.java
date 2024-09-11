@@ -1,8 +1,6 @@
 package OfertaProject;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -22,15 +20,11 @@ import java.util.regex.Pattern;
 public class Discounts {
 
 String FileName = "OfertaPDFDeActivacion.xlsx";
-public void ExtractDiscounts(String filePath){
+    public void ExtractDiscounts(String text){
 
             Set<String> DTSInSheet = new LinkedHashSet<>();
             Set<String> DTSInPDF = new LinkedHashSet<>();
             Set<String> OrderedDTS = new LinkedHashSet<>();
-
-            try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath))) {
-                int numberOfPages = pdfDoc.getNumberOfPages();
-
 
                 try (FileInputStream file = new FileInputStream("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data\\DTOS.xlsx");
                      Workbook workbook = new XSSFWorkbook(file)) {
@@ -42,13 +36,6 @@ public void ExtractDiscounts(String filePath){
                         }
                     }
 
-                    StringBuilder  text  = new StringBuilder();
-
-                    for (int i = 1; i <= numberOfPages; i++) {
-                        String pageText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
-                        text.append(pageText);
-                    }
-
                     Pattern pattern = Pattern.compile("\\bD\\w*\\b");
                     Matcher matcher = pattern.matcher(text);
                     while (matcher.find()) {
@@ -58,8 +45,6 @@ public void ExtractDiscounts(String filePath){
                         if (DTSInSheet.contains(Discount)) {
                             OrderedDTS.add(Discount);
                         }
-
-
                     }
                   File FinalFile= new File(FileName);
 
@@ -73,17 +58,13 @@ public void ExtractDiscounts(String filePath){
                             Cell cell1 = row1.createCell(0);
                             cell1.setCellValue(value);
                         }
-
                         workbook1.write(fileOut);
                     }
 
-
                 }
 
-            }
             catch (IOException e) {
                 e.getCause();
             }
-
         }
     }
