@@ -60,7 +60,6 @@ String FileName = "OfertaPDFDeActivacion.xlsx";
                         }
                         workbook1.write(fileOut);
                     }
-
                 }
             catch (IOException e) {
                 e.getCause();

@@ -26,7 +26,6 @@ public class Minutes extends Discounts {
                 Matcher matcher = pattern.matcher(text);
                 Pattern pattern1 = Pattern.compile("MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB");
                 Matcher matcher1 = pattern1.matcher(text);
-
                 Row row;
                 int x = 0;
                 int i = 0;
@@ -45,11 +44,10 @@ public class Minutes extends Discounts {
                     row.createCell(3).setCellValue("SÍ");
                 }
 
+
                 try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
                     workbook.write(fileOutputStream);
                 }
-
-
         } catch (IOException e) {
             e.getCause();
         }
