@@ -14,17 +14,16 @@ public class CMPlantilla_Minutos extends CMPlantilla_Descuentos {
 
         String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
         File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
-
+        if (PlantillaFile != null) {
+            try (FileInputStream file = new FileInputStream(PlantillaFile.getAbsoluteFile());
+                Workbook workbook1 = new XSSFWorkbook(file)) {
+                Sheet sheet1 = workbook1.getSheet("Infinity Business");
 
         File FinalFile = new File(FileName);
-
         try (FileInputStream fileInputStream = new FileInputStream(FinalFile);
-             Workbook workbook = new XSSFWorkbook(fileInputStream)) {
-            Sheet sheet = workbook.createSheet("PlantillaCM-Minutos");
-            if (PlantillaFile != null) {
-                try (FileInputStream file = new FileInputStream(PlantillaFile.getAbsoluteFile());
-                     Workbook workbook1 = new XSSFWorkbook(file)) {
-                    Sheet sheet1 = workbook1.getSheet("Infinity Business");
+        Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+        Sheet sheet = workbook.createSheet("PlantillaCM-Minutos");
+
                     Pattern pattern = Pattern.compile("(?<!-\\s)\\b(MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB)\\b");
                     LinkedHashSet<String> Minutos = new LinkedHashSet<>();
                     int x = 0;
@@ -32,7 +31,6 @@ public class CMPlantilla_Minutos extends CMPlantilla_Descuentos {
                     for (Row row : sheet1) {
                         for (Cell cell : row) {
                             Matcher matcher = pattern.matcher(cell.toString());
-
                             if (matcher.find()) {
                                 String FinalValue = matcher.group();
                                 Minutos.add(matcher.group());

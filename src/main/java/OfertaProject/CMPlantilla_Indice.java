@@ -19,19 +19,15 @@ public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
 
         String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
         File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
-
+        if (PlantillaFile != null) {
+            try (FileInputStream file = new FileInputStream(PlantillaFile);
+                 Workbook workbook1 = new XSSFWorkbook(file)) {
+                Sheet sheet1 = workbook1.getSheet("Indice");
 
         File Finalfile = new File(FileName);
-
         try (FileInputStream fileInputStream = new FileInputStream(Finalfile);
-             Workbook workbook = new XSSFWorkbook(fileInputStream)) {
-
-            Sheet sheet = workbook.createSheet("PlantillaCM-Indice");
-            if (PlantillaFile != null) {
-                try (FileInputStream file = new FileInputStream(PlantillaFile);
-                     Workbook workbook1 = new XSSFWorkbook(file)) {
-                    Sheet sheet1 = workbook1.getSheet("Indice");
-
+        Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+        Sheet sheet = workbook.createSheet("PlantillaCM-Indice");
 
                     Row row1;
                     for (Row row : sheet1) {
@@ -46,8 +42,6 @@ public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
                             }
                         }
                     }
-
-
                     try (FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
                         workbook.write(fileOutputStream);
                     }
