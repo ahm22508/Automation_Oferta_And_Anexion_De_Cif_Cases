@@ -112,11 +112,12 @@ public class PDFHandling {
                    return;
                }
                 try {
-                    new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(excelName);
-                    new CMPlantilla_Indice().ExtractInfoFromCMP(excelName);
-                    new CMPlantilla_Minutos().ExtractMinutosFromCMP(excelName);
-                    new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(excelName);
-                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(excelName);
+                    String file = CheckFile.getAbsoluteFile().toString();
+                    new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(file);
+                    new CMPlantilla_Indice().ExtractInfoFromCMP(file);
+                    new CMPlantilla_Minutos().ExtractMinutosFromCMP(file);
+                    new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(file);
+                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(file);
                     JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());

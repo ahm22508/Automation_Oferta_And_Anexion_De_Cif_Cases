@@ -15,41 +15,37 @@ import java.io.IOException;
 
 public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
 
-    public void ExtractInfoFromCMP(String ExcelFileName) throws IOException {
+    public void ExtractInfoFromCMP(String file) throws IOException {
 
-        String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
-        File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
-        if (PlantillaFile != null) {
-            try (FileInputStream file = new FileInputStream(PlantillaFile);
-                 Workbook workbook1 = new XSSFWorkbook(file)) {
-                Sheet sheet1 = workbook1.getSheet("Indice");
+        try (FileInputStream fileInputStream = new FileInputStream(file);
+             Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+            Sheet sheet = workbook.getSheet("Indice");
 
-        File Finalfile = new File(FileName);
-        try (FileInputStream fileInputStream = new FileInputStream(Finalfile);
-        Workbook workbook = new XSSFWorkbook(fileInputStream)) {
-        Sheet sheet = workbook.createSheet("PlantillaCM-Indice");
+            File Finalfile = new File(FileName);
+            try (FileInputStream fileInputStream1 = new FileInputStream(Finalfile);
+                 Workbook workbook1 = new XSSFWorkbook(fileInputStream1)) {
+                Sheet sheet1 = workbook1.createSheet("PlantillaCM-Indice");
 
                     Row row1;
-                    for (Row row : sheet1) {
+                    for (Row row : sheet) {
                         for (Cell cell : row) {
                             if (cell.toString().contains("Comentarios CM")) {
                                 Cell NextCell = row.getCell(cell.getColumnIndex() + 1);
                                 if (NextCell != null) {
                                     String Comment = NextCell.getStringCellValue();
-                                    row1 = sheet.createRow(0);
+                                    row1 = sheet1.createRow(0);
                                     row1.createCell(0).setCellValue(Comment);
                                 }
                             }
                         }
                     }
                     try (FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
-                        workbook.write(fileOutputStream);
+                        workbook1.write(fileOutputStream);
+                    } catch (IOException e) {
+                        e.getCause();
                     }
-
-                } catch (IOException e) {
-                    e.getCause();
                 }
             }
         }
     }
-}
+

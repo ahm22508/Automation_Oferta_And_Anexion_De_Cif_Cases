@@ -10,25 +10,24 @@ import java.util.regex.Pattern;
 
 public class CMPlantilla_Minutos extends CMPlantilla_Descuentos {
 
-    public void ExtractMinutosFromCMP(String ExcelFileName) throws IOException {
+    public void ExtractMinutosFromCMP(String file) throws IOException {
 
-        String directoryToSearch = "C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data";
-        File PlantillaFile = SearchFile.searchFile(new File(directoryToSearch), ExcelFileName);
-        if (PlantillaFile != null) {
-            try (FileInputStream file = new FileInputStream(PlantillaFile.getAbsoluteFile());
-                Workbook workbook1 = new XSSFWorkbook(file)) {
-                Sheet sheet1 = workbook1.getSheet("Infinity Business");
+        try (FileInputStream fileInputStream = new FileInputStream(file);
+             Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+            Sheet sheet = workbook.getSheet("Infinity Business");
 
-        File FinalFile = new File(FileName);
-        try (FileInputStream fileInputStream = new FileInputStream(FinalFile);
-        Workbook workbook = new XSSFWorkbook(fileInputStream)) {
-        Sheet sheet = workbook.createSheet("PlantillaCM-Minutos");
+
+            File FinalFile = new File(FileName);
+            try (FileInputStream fileInputStream1 = new FileInputStream(FinalFile);
+                 Workbook workbook1 = new XSSFWorkbook(fileInputStream1)) {
+                 Sheet sheet1 = workbook1.createSheet("PlantillaCM-Minutos");
+
 
                     Pattern pattern = Pattern.compile("(?<!-\\s)\\b(MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB)\\b");
                     LinkedHashSet<String> Minutos = new LinkedHashSet<>();
                     int x = 0;
                     Row row1;
-                    for (Row row : sheet1) {
+                    for (Row row : sheet) {
                         for (Cell cell : row) {
                             Matcher matcher = pattern.matcher(cell.toString());
                             if (matcher.find()) {
@@ -37,7 +36,7 @@ public class CMPlantilla_Minutos extends CMPlantilla_Descuentos {
                                 for (Cell NextCell : row) {
                                     if (NextCell.toString().contains("Cuota Final: ")) {
                                         if (Minutos.contains(FinalValue)) {
-                                            row1 = sheet.createRow(x++);
+                                            row1 = sheet1.createRow(x++);
                                             row1.createCell(0).setCellValue(FinalValue);
                                             String Cleaning = NextCell.getStringCellValue();
                                             String FinalNumber = Cleaning.replace("Cuota Final: ", "");
@@ -56,14 +55,13 @@ public class CMPlantilla_Minutos extends CMPlantilla_Descuentos {
                     }
 
                     try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
-                        workbook.write(fileOutputStream);
+                        workbook1.write(fileOutputStream);
+                    } catch (IOException e) {
+                        e.getCause();
                     }
 
-                } catch (IOException e) {
-                    e.getCause();
                 }
-
             }
         }
     }
-}
+
