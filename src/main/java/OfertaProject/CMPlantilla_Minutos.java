@@ -20,48 +20,49 @@ public class CMPlantilla_Minutos extends CMPlantilla_Descuentos {
             File FinalFile = new File(FileName);
             try (FileInputStream fileInputStream1 = new FileInputStream(FinalFile);
                  Workbook workbook1 = new XSSFWorkbook(fileInputStream1)) {
-                 Sheet sheet1 = workbook1.createSheet("PlantillaCM-Minutos");
+                int SheetNums = workbook.getNumberOfSheets();
+                for(int i = 0; i < SheetNums; i++){
+                    String SheetName = workbook.getSheetName(i);
+                    if (!workbook.isSheetHidden(i) && SheetName.contains("Infinity Business")) {
 
+                        Sheet sheet1 = workbook1.createSheet("PlantillaCM-Minutos");
 
-                    Pattern pattern = Pattern.compile("(?<!-\\s)\\b(MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB)\\b");
-                    LinkedHashSet<String> Minutos = new LinkedHashSet<>();
-                    int x = 0;
-                    Row row1;
-                    for (Row row : sheet) {
-                        for (Cell cell : row) {
-                            Matcher matcher = pattern.matcher(cell.toString());
-                            if (matcher.find()) {
-                                String FinalValue = matcher.group();
-                                Minutos.add(matcher.group());
-                                for (Cell NextCell : row) {
-                                    if (NextCell.toString().contains("Cuota Final: ")) {
-                                        if (Minutos.contains(FinalValue)) {
-                                            row1 = sheet1.createRow(x++);
-                                            row1.createCell(0).setCellValue(FinalValue);
-                                            String Cleaning = NextCell.getStringCellValue();
-                                            String FinalNumber = Cleaning.replace("Cuota Final: ", "");
-                                            row1.createCell(1).setCellValue(FinalNumber);
+                        Pattern pattern = Pattern.compile("(?<!-\\s)\\b(MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB)\\b");
+                        LinkedHashSet<String> Minutos = new LinkedHashSet<>();
+                        int x = 0;
+                        Row row1;
+                        for (Row row : sheet) {
+                            for (Cell cell : row) {
+                                Matcher matcher = pattern.matcher(cell.toString());
+                                if (matcher.find()) {
+                                    String FinalValue = matcher.group();
+                                    Minutos.add(matcher.group());
+                                    for (Cell NextCell : row) {
+                                        if (NextCell.toString().contains("Cuota Final: ")) {
+                                            if (Minutos.contains(FinalValue)) {
+                                                row1 = sheet1.createRow(x++);
+                                                row1.createCell(0).setCellValue(FinalValue);
+                                                String Cleaning = NextCell.getStringCellValue();
+                                                String FinalNumber = Cleaning.replace("Cuota Final: ", "");
+                                                row1.createCell(1).setCellValue(FinalNumber);
+                                            }
                                         }
                                     }
-                                }
-                                if (cell.toString().contains("PKPID")) {
-                                    row1 = sheet.getRow(0);
-                                    row1.createCell(2).setCellValue("PKPID");
-                                    row1.createCell(3).setCellValue("SÍ");
+                                    if (cell.toString().contains("PKPID")) {
+                                        row1 = sheet.getRow(0);
+                                        row1.createCell(2).setCellValue("PKPID");
+                                        row1.createCell(3).setCellValue("SÍ");
+                                    }
                                 }
                             }
-
+                        }
+                        try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
+                            workbook1.write(fileOutputStream);
                         }
                     }
-
-                    try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
-                        workbook1.write(fileOutputStream);
-                    } catch (IOException e) {
-                        e.getCause();
-                    }
-
                 }
+
             }
         }
     }
-
+}

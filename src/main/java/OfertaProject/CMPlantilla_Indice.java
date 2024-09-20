@@ -24,28 +24,34 @@ public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
             File Finalfile = new File(FileName);
             try (FileInputStream fileInputStream1 = new FileInputStream(Finalfile);
                  Workbook workbook1 = new XSSFWorkbook(fileInputStream1)) {
-                Sheet sheet1 = workbook1.createSheet("PlantillaCM-Indice");
+                int SheetNums = workbook.getNumberOfSheets();
+                for(int i = 0; i < SheetNums; i++){
+                    String SheetName = workbook.getSheetName(i);
+                    if (!workbook.isSheetHidden(i) && SheetName.contains("Indice")) {
 
-                    Row row1;
-                    for (Row row : sheet) {
-                        for (Cell cell : row) {
-                            if (cell.toString().contains("Comentarios CM")) {
-                                Cell NextCell = row.getCell(cell.getColumnIndex() + 1);
-                                if (NextCell != null) {
-                                    String Comment = NextCell.getStringCellValue();
-                                    row1 = sheet1.createRow(0);
-                                    row1.createCell(0).setCellValue(Comment);
+                        Sheet sheet1 = workbook1.createSheet("PlantillaCM-Indice");
+                        Row row1;
+                        for (Row row : sheet) {
+                            for (Cell cell : row) {
+                                if (cell.toString().contains("Comentarios CM")) {
+                                    Cell NextCell = row.getCell(cell.getColumnIndex() + 1);
+                                    if (NextCell != null) {
+                                        String Comment = NextCell.getStringCellValue();
+                                        row1 = sheet1.createRow(0);
+                                        row1.createCell(0).setCellValue(Comment);
+                                    }
                                 }
                             }
                         }
-                    }
-                    try (FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
-                        workbook1.write(fileOutputStream);
-                    } catch (IOException e) {
-                        e.getCause();
+                        try (FileOutputStream fileOutputStream = new FileOutputStream(Finalfile)) {
+                            workbook1.write(fileOutputStream);
+                        }
                     }
                 }
             }
         }
     }
+}
+
+
 
