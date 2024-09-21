@@ -13,56 +13,43 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class Discounts {
 
-String FileName = "OfertaPDFDeActivacion.xlsx";
-    public void ExtractDiscounts(String text){
+    String FileName = "OfertaPDFDeActivacion.xlsx";
 
-            Set<String> DTSInSheet = new LinkedHashSet<>();
-            Set<String> DTSInPDF = new LinkedHashSet<>();
-            Set<String> OrderedDTS = new LinkedHashSet<>();
+    public void ExtractDiscounts(String text) throws IOException {
 
-                try (FileInputStream file = new FileInputStream("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data\\DTOS.xlsx");
-                     Workbook workbook = new XSSFWorkbook(file)) {
+        //Create new Excel File and new Sheet
+        File FinalFile = new File(FileName);
+        try (Workbook workbook = new XSSFWorkbook();
+             FileOutputStream fileOut = new FileOutputStream(FinalFile)) {
+            Sheet sheet = workbook.createSheet("Descuentos");
 
-                    Sheet sheet = workbook.getSheetAt(0);
-                    for (Row row : sheet) {
-                        for (Cell cell : row) {
-                            DTSInSheet.add(cell.getStringCellValue());
+            //open the DTOS File and search into it.
+            try (FileInputStream file = new FileInputStream("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data\\DTOS.xlsx");
+                 Workbook workbook1 = new XSSFWorkbook(file)) {
+                Sheet sheet1 = workbook1.getSheetAt(0);
+
+                //Extract specific data
+                int rowNum = 0;
+                for (Row row : sheet1) {
+                    for (Cell cell : row) {
+                        if (text.contains(cell.toString())) {
+                            Set<String> DTOS = new LinkedHashSet<>();
+                            DTOS.add(cell.toString());
+                            for (String Descuento : DTOS) {
+                                Row row1 = sheet.createRow(rowNum++);
+                                Cell cell1 = row1.createCell(0);
+                                cell1.setCellValue(Descuento);
+                            }
                         }
-                    }
-
-                    Pattern pattern = Pattern.compile("\\bD\\w*\\b");
-                    Matcher matcher = pattern.matcher(text);
-                    while (matcher.find()) {
-                        DTSInPDF.add(matcher.group());
-                    }
-                    for (String Discount : DTSInPDF) {
-                        if (DTSInSheet.contains(Discount)) {
-                            OrderedDTS.add(Discount);
-                        }
-                    }
-                  File FinalFile= new File(FileName);
-
-                    try (Workbook workbook1 = new XSSFWorkbook();
-                         FileOutputStream fileOut = new FileOutputStream(FinalFile)) {
-                        Sheet sheet1 = workbook1.createSheet("Descuentos");
-                        int rowNum = 0;
-
-                        for (String value : OrderedDTS) {
-                            Row row1 = sheet1.createRow(rowNum++);
-                            Cell cell1 = row1.createCell(0);
-                            cell1.setCellValue(value);
-                        }
-                        workbook1.write(fileOut);
                     }
                 }
-            catch (IOException e) {
-                e.getCause();
+                //save the data in the new file.
+                workbook.write(fileOut);
             }
         }
     }
+}

@@ -16,16 +16,15 @@ import java.util.regex.Pattern;
 
 public class PostSelling extends Discounts {
 
-    public void ExtractPostSelling(String text) {
+    public void ExtractPostSelling(String text) throws IOException {
 
-
+        //Create new Excel File and new Sheet
         File FinalFile = new File(FileName);
-
         try (FileInputStream fileInputStream = new FileInputStream(FinalFile)) {
             Workbook workbook = new XSSFWorkbook(fileInputStream);
             Sheet sheet = workbook.createSheet("PosventaYBROXXX");
 
-
+               //Extract specific data
                 Pattern pattern1 = Pattern.compile("(?<!/)(?!\\d+\\.\\d+)\\b([1-9]\\d{0,4}|0)\\b");
                 Matcher matcher1 = pattern1.matcher(text);
                 Pattern pattern = Pattern.compile("POS+[A-Z]{2}");
@@ -49,12 +48,12 @@ public class PostSelling extends Discounts {
                     row = sheet.createRow(i++);
                     row.createCell(0).setCellValue(matcher2.group());
                 }
-                try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
+
+            //save the data in the new file.
+            try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
                     workbook.write(fileOutputStream);
                 }
-    } catch(IOException e){
-        e.getCause();
-    }
-    }
-}
+            }
+         }
+      }
 
