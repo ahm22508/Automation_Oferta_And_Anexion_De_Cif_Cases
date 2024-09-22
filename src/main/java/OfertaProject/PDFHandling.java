@@ -2,6 +2,9 @@ package OfertaProject;
 
 import javax.swing.*;
 import java.awt.*;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
 
@@ -52,7 +55,27 @@ public class PDFHandling {
 
         JTextField textField = new JTextField();
         textField.setPreferredSize(new Dimension(300, 30));
-        centerPanel.add(textField, gbc);
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem pasteItem = new JMenuItem("Paste");
+        pasteItem.addActionListener(e -> textField.paste());
+        popupMenu.add(pasteItem);
+        textField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        });
+
+       centerPanel.add(textField, gbc);
 
         JButton btnExtract = new JButton("Extract Offer From PDF");
         btnExtract.setPreferredSize(new Dimension(200, 30));
@@ -63,11 +86,28 @@ public class PDFHandling {
         gbc1.gridy = GridBagConstraints.RELATIVE;
         gbc1.insets = new Insets(20, 20, 20, 20);
         gbc1.anchor = GridBagConstraints.WEST;
-
+        JTextField textField1 = new JTextField();
         JLabel lblCMPlantilla = new JLabel("<html>Enter Excel Name of PCM here to extract the offer<br>(Optional: only if the file of CM is existed)</html>");
         centerPanel.add(lblCMPlantilla, gbc1);
+        JPopupMenu jPopupMenu1 = new JPopupMenu();
+        JMenuItem jMenuItem = new JMenuItem("Paste");
+        jMenuItem.addActionListener(a-> textField1.paste());
+        jPopupMenu1.add(jMenuItem);
+        textField1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    jPopupMenu1.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+            @Override
+            public void mouseReleased(MouseEvent e){
+                if(e.isPopupTrigger()){
+                    jPopupMenu1.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        });
 
-        JTextField textField1 = new JTextField();
         textField1.setPreferredSize(new Dimension(300, 30));
         centerPanel.add(textField1, gbc1);
 
