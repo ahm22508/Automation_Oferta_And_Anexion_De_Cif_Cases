@@ -12,7 +12,7 @@ public class ExtractingData {
             int numberOfPages = pdfDoc.getNumberOfPages();
             for (int i = 1; i <= numberOfPages; i++) {
                 String pageText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
-                if (pageText.contains("Referencia")) {
+                if (pageText.contains("Referencia") || pageText.contains("Productos a dar de Baja")) {
                     break;
                 }
                 text.append(pageText);

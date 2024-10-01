@@ -28,7 +28,7 @@ public class Discounts {
             Sheet sheet = workbook.createSheet("Descuentos");
 
             //open the DTOS File and search into it.
-            try (FileInputStream file = new FileInputStream("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data\\DTOS.xlsx");
+            try (FileInputStream file = new FileInputStream("C:\\Oferta Extractor\\data\\DTOS.xlsx");
                  Workbook workbook1 = new XSSFWorkbook(file)) {
                 Sheet sheet1 = workbook1.getSheetAt(0);
 

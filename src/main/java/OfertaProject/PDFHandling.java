@@ -20,7 +20,7 @@ public class PDFHandling {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        ImageIcon imageIcon = new ImageIcon("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data\\Icon.jpg");
+        ImageIcon imageIcon = new ImageIcon("C:\\Oferta Extractor\\data\\Icon.jpg");
         frame.setIconImage(imageIcon.getImage());
 
 
@@ -31,7 +31,7 @@ public class PDFHandling {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
-                ImageIcon VFLogo = new ImageIcon("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data\\vodafone.png");
+                ImageIcon VFLogo = new ImageIcon("C:\\Oferta Extractor\\data\\vodafone.png");
 
                 Graphics2D g2d = (Graphics2D) g.create();
 
@@ -140,11 +140,11 @@ public class PDFHandling {
 
         btnExtract1.addActionListener(e -> {
             String excelName = textField1.getText();
-            File directory = new File("C:\\Users\\DELL\\OneDrive\\Escritorio\\Oferta Extractor\\data");
+            File directory = new File("C:\\Oferta Extractor\\data");
             File CheckFile = SearchFile.searchFile(directory, excelName);
 
             if (excelName.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "No Excel file specified. Proceeding with PDF extraction only.");
+                JOptionPane.showMessageDialog(frame, "No Excel file specified.");
                 return;
             }
            if(CheckFile == null) {
@@ -163,7 +163,6 @@ public class PDFHandling {
                     JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
                 }
         });
-
         frame.add(centerPanel, BorderLayout.CENTER);
 
         frame.setVisible(true);
