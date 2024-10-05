@@ -13,7 +13,10 @@ public class SearchFile {
                         return foundFile;
                     }
                 } else {
-                        if (file.getName().contains(fileNameToSearch)) {
+                  String FileNameWithPath = directory+"\\"+fileNameToSearch+".xlsm";
+                  String FileNameWithPath1 = directory+"\\"+fileNameToSearch+".xlsx";
+                  String FileNameWithPath2 = directory+"\\"+fileNameToSearch+".xls";
+                        if (file.toString().equals(FileNameWithPath)||file.toString().equals(FileNameWithPath1)||file.toString().equals(FileNameWithPath2)){
                             return file;
                         }
                     }
