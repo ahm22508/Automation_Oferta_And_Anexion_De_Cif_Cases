@@ -39,13 +39,18 @@ public class PostSelling extends Discounts {
                 while (matcher.find()) {
                     row = sheet.createRow(i++);
                     row.createCell(0).setCellValue(matcher.group());
+                    String ServicePostSelling = matcher.group();
+                    String AccountPostSelling = ServicePostSelling.replace("S" , "C");
+                    row = sheet.createRow(2);
+                    row.createCell(0).setCellValue(AccountPostSelling);
+                    row.createCell(1).setCellValue("Servicio Suplementario a nivel de linea/servicio");
                     if (matcher1.find(matcher.end())) {
                         row = sheet.getRow(1);
                         row.createCell(1).setCellValue(matcher1.group());
                     }
                 }
                 while (matcher2.find()) {
-                    row = sheet.createRow(i++);
+                    row = sheet.createRow(3);
                     row.createCell(0).setCellValue(matcher2.group());
                 }
 

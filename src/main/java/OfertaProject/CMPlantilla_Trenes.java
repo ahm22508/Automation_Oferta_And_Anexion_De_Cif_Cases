@@ -29,7 +29,7 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                 int SheetNums = workbook.getNumberOfSheets();
                 for(int i = 0; i < SheetNums; i++){
                     String SheetName = workbook.getSheetName(i);
-                    if (!workbook.isSheetHidden(i) && SheetName.contains("Dtos y Tarifas Complementarios")) {
+                    if (!workbook.isSheetHidden(i) && SheetName.contains("Tren")) {
 
                         //create new Sheet in the new file
                         Sheet sheet1 = workbook1.createSheet("PlantillaCM-Trenes");
