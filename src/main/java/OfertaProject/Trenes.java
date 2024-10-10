@@ -55,18 +55,16 @@ public class Trenes extends Discounts {
                 x++;
             }
 
-            int L = 0;
-
-            String[] MultiCIF = {"DVMOV", "DVOOM", "DVFNA", "DVGCU", "DVSMV", "DVSMO"};
             String[] MPMVE = {"DVMOV", "DVOOM", "DVFNA", "DVGCU", "DVSMV", "DVSMO", "DVFMV", "DVFOM", "DVFFN", "DVFGC", "DRZRW"};
 
-            if (text.contains("MultiCIF")) {
-                for (String Tren : MultiCIF) {
-                    if (!MultiCIF[L].contains(FinalValue.iterator().next())) {
+
+            if (text.contains("MPMVE") || text.contains("MultiCIF")) {
+
+                for (String Tren : MPMVE) {
+                    if (!FinalValue.contains(Tren)) {
                         row = sheet.createRow(x++);
                         row.createCell(0).setCellValue(Tren);
                         row.createCell(1).setCellValue("100");
-                        L++;
                     }
                 }
                 if (text.contains("SMS internacionales") && !FinalValue.contains("DVSMR")) {
@@ -75,13 +73,13 @@ public class Trenes extends Discounts {
                     row.createCell(1).setCellValue("100");
                     x++;
                 }
-                if (text.contains("CIINT") && !FinalValue.contains("DVINT")) {
+                if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVINT")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVINT");
                     row.createCell(1).setCellValue("100");
                     x++;
                 }
-                if (text.contains("CI90X") && !FinalValue.contains("DV90X")) {
+                if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DV90X")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DV90X");
                     row.createCell(1).setCellValue("100");
@@ -97,45 +95,7 @@ public class Trenes extends Discounts {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVRSA");
                     row.createCell(1).setCellValue("100");
-                } else if (text.contains("MPMVE") || text.contains("MultiCIF")) {
-                    for (String Tren : MPMVE) {
-                        if (!MPMVE[L].contains(FinalValue.iterator().next())) {
-                            row = sheet.createRow(x++);
-                            row.createCell(0).setCellValue(Tren);
-                            row.createCell(1).setCellValue("100");
-                            L++;
-                        }
-                    }
-                    if (text.contains("SMS internacionales") && !FinalValue.contains("DVSMR")) {
-                        row = sheet.createRow(x);
-                        row.createCell(0).setCellValue("DVSMR");
-                        row.createCell(1).setCellValue("100");
-                        x++;
-                    }
-                    if (text.contains("CIINT") || text.contains("CPINT") && !FinalValue.contains("DVINT")) {
-                        row = sheet.createRow(x);
-                        row.createCell(0).setCellValue("DVINT");
-                        row.createCell(1).setCellValue("100");
-                        x++;
-                    }
-                    if (text.contains("CI90X") || text.contains("CP90X") && !FinalValue.contains("DV90X")) {
-                        row = sheet.createRow(x);
-                        row.createCell(0).setCellValue("DV90X");
-                        row.createCell(1).setCellValue("100");
-                        x++;
-                    }
-                    if (text.contains("CIROZ") && !FinalValue.contains("DVRRE")) {
-                        row = sheet.createRow(x);
-                        row.createCell(0).setCellValue("DVRRE");
-                        row.createCell(1).setCellValue("100");
-                        x++;
-                    }
-                    if (text.contains("CIRRZ") && !FinalValue.contains("DVRSA")) {
-                        row = sheet.createRow(x);
-                        row.createCell(0).setCellValue("DVRSA");
-                        row.createCell(1).setCellValue("100");
 
-                    }
                 }
             }
 

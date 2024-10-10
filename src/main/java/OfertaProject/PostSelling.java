@@ -40,7 +40,7 @@ public class PostSelling extends Discounts {
                     row = sheet.createRow(i++);
                     row.createCell(0).setCellValue(matcher.group());
                     String ServicePostSelling = matcher.group();
-                    String AccountPostSelling = ServicePostSelling.replace("S" , "C");
+                    String AccountPostSelling = ServicePostSelling.replace("POS" , "POC");
                     row = sheet.createRow(2);
                     row.createCell(0).setCellValue(AccountPostSelling);
                     row.createCell(1).setCellValue("Servicio Suplementario a nivel de linea/servicio");
