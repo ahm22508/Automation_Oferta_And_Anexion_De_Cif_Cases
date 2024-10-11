@@ -54,6 +54,19 @@ public class PostSelling extends Discounts {
                     row.createCell(0).setCellValue(matcher2.group());
                 }
 
+                if(text.contains("POV") && text.contains("SOA")) {
+                    row = sheet.createRow(4);
+                    row.createCell(0).setCellValue("Esa Oferta lleva POVFS y SOA, entonces hay que cargarla en el Gescore");
+                }
+                else if (text.contains("SOA")) {
+                    row = sheet.createRow(4);
+                    row.createCell(0).setCellValue("Esa Oferta lleva SOA, entonces hay que cargarla en el Gescore");
+                } else if (text.contains("POF")) {
+                    row = sheet.createRow(4);
+                    row.createCell(0).setCellValue("Esa Oferta lleva POVFS, entonces hay que cargarla en el Gescore");
+                }
+
+
             //save the data in the new file.
             try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
                     workbook.write(fileOutputStream);

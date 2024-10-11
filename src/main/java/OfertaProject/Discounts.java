@@ -34,6 +34,7 @@ public class Discounts {
 
                 //Extract specific data
                 int rowNum = 0;
+                Row row2;
                 for (Row row : sheet1) {
                     for (Cell cell : row) {
                         if (text.contains(cell.toString())) {
@@ -46,6 +47,11 @@ public class Discounts {
                             }
                         }
                     }
+                }
+                if(text.contains("DVOPD")){
+                    row2 = sheet.createRow(rowNum);
+                    row2.createCell(0).setCellValue("DOVPD");
+
                 }
                 //save the data in the new file.
                 workbook.write(fileOut);
