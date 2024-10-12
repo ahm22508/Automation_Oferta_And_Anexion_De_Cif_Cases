@@ -44,8 +44,12 @@ public class Trenes extends Discounts {
                         row = sheet.createRow(x++);
                         row.createCell(0).setCellValue(Code);
                         row.createCell(1).setCellValue(matcher1.group());
+                        if(Code.contains("DVF")){
+                            row.createCell(2).setCellValue("Ese Descuento Pertenece a la oferta Primaria");
+                        }
                     }
                 }
+
             }
             if (text.contains("DRZRW")) {
                 row = sheet.createRow(x);
