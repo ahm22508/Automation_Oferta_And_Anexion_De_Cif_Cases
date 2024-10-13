@@ -42,8 +42,11 @@ public class Discounts {
                             DTOS.add(cell.toString());
                             for (String Descuento : DTOS) {
                                 Row row1 = sheet.createRow(rowNum++);
-                                Cell cell1 = row1.createCell(0);
-                                cell1.setCellValue(Descuento);
+                                row1.createCell(0).setCellValue(Descuento);
+                                for(Cell NextCell : row) {
+                                    String Catalog = NextCell.getStringCellValue();
+                                    row1.createCell(1).setCellValue(Catalog);
+                                }
                             }
                         }
                     }
@@ -51,6 +54,7 @@ public class Discounts {
                 if(text.contains("DVOPD")){
                     row2 = sheet.createRow(rowNum);
                     row2.createCell(0).setCellValue("DOVPD");
+                    row2.createCell(1).setCellValue("Descuentos Empresas");
 
                 }
                 //save the data in the new file.
