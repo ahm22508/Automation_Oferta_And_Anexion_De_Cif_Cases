@@ -1,10 +1,7 @@
 package OfertaProject;
 
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
@@ -34,6 +31,7 @@ public class Discounts {
 
                 //Extract specific data
                 int rowNum = 0;
+
                 Row row2;
                 for (Row row : sheet1) {
                     for (Cell cell : row) {
@@ -41,25 +39,35 @@ public class Discounts {
                             Set<String> DTOS = new LinkedHashSet<>();
                             DTOS.add(cell.toString());
                             for (String Descuento : DTOS) {
-                                Row row1 = sheet.createRow(rowNum++);
-                                row1.createCell(0).setCellValue(Descuento);
-                                for(Cell NextCell : row) {
-                                    String Catalog = NextCell.getStringCellValue();
-                                    row1.createCell(1).setCellValue(Catalog);
+                                for (Cell NextCell : row) {
+                                    if (NextCell.toString().contains("Descuentos") || NextCell.toString().contains("Fibra") || NextCell.toString().contains("Internos") || NextCell.toString().contains("Catalogo") || NextCell.toString().contains("Descuento")) {
+                                        for (Cell OfertaCell : row) {
+                                            if (OfertaCell.toString().contains("All types") || OfertaCell.toString().contains("Primaria Normal") || OfertaCell.toString().contains("Red Box") || OfertaCell.toString().contains("Red Empresa") || OfertaCell.toString().contains("SIP Normal") || OfertaCell.toString().contains("M2M") || OfertaCell.toString().contains("Dival") || OfertaCell.toString().contains("DIVAL") || OfertaCell.toString().contains("infinity") || OfertaCell.toString().contains("Integrada") || OfertaCell.toString().contains("Colectiva") || OfertaCell.toString().contains("Normal")) {
+                                                Row row1 = sheet.createRow(rowNum++);
+                                                row1.createCell(0).setCellValue(Descuento);
+                                                String Catalog = NextCell.getStringCellValue();
+                                                row1.createCell(1).setCellValue(Catalog);
+                                                row1.createCell(2).setCellValue(OfertaCell.toString());
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                if(text.contains("DVOPD")){
-                    row2 = sheet.createRow(rowNum);
-                    row2.createCell(0).setCellValue("DOVPD");
-                    row2.createCell(1).setCellValue("Descuentos Empresas");
 
+
+
+                    if (text.contains("DVOPD")) {
+                        row2 = sheet.createRow(rowNum);
+                        row2.createCell(0).setCellValue("DOVPD");
+                        row2.createCell(1).setCellValue("Descuentos Empresas");
+
+                    }
+                    //save the data in the new file.
+                    workbook.write(fileOut);
                 }
-                //save the data in the new file.
-                workbook.write(fileOut);
             }
         }
     }
-}

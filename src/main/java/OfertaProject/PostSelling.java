@@ -31,6 +31,8 @@ public class PostSelling extends Discounts {
                 Matcher matcher = pattern.matcher(text);
                 Pattern pattern2 = Pattern.compile("BRW+\\d+");
                 Matcher matcher2 = pattern2.matcher(text);
+                Pattern pattern3 = Pattern.compile("POC+[A-Z]{2}");
+                Matcher matcher3 = pattern3.matcher(text);
                 Row HeaderCell = sheet.createRow(0);
                 HeaderCell.createCell(0).setCellValue("Posventa Y BONO");
                 HeaderCell.createCell(1).setCellValue("Value");
@@ -49,6 +51,12 @@ public class PostSelling extends Discounts {
                         row.createCell(1).setCellValue(matcher1.group());
                     }
                 }
+            if(!matcher.find()) {
+                while (matcher3.find()) {
+                    row = sheet.createRow(i++);
+                    row.createCell(0).setCellValue(matcher3.group());
+                }
+            }
                 while (matcher2.find()) {
                     row = sheet.createRow(3);
                     row.createCell(0).setCellValue(matcher2.group());
