@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -31,7 +33,8 @@ public class Discounts {
 
                 //Extract specific data
                 int rowNum = 0;
-
+                Set<String> descuentosKeywords = new HashSet<>(Arrays.asList("Descuentos", "Fibra", "Internos", "Catalogo", "Descuento"));
+                Set<String> ofertaKeywords = new HashSet<>(Arrays.asList("All types", "Primaria Normal", "Red Box", "Red Empresa", "SIP Normal", "M2M", "Dival", "DIVAL", "infinity", "Integrada", "Colectiva", "Normal"));
                 Row row2;
                 for (Row row : sheet1) {
                     for (Cell cell : row) {
@@ -40,9 +43,9 @@ public class Discounts {
                             DTOS.add(cell.toString());
                             for (String Descuento : DTOS) {
                                 for (Cell NextCell : row) {
-                                    if (NextCell.toString().contains("Descuentos") || NextCell.toString().contains("Fibra") || NextCell.toString().contains("Internos") || NextCell.toString().contains("Catalogo") || NextCell.toString().contains("Descuento")) {
+                                    if (descuentosKeywords.stream().anyMatch(keyword -> NextCell.toString().contains(keyword))) {
                                         for (Cell OfertaCell : row) {
-                                            if (OfertaCell.toString().contains("All types") || OfertaCell.toString().contains("Primaria Normal") || OfertaCell.toString().contains("Red Box") || OfertaCell.toString().contains("Red Empresa") || OfertaCell.toString().contains("SIP Normal") || OfertaCell.toString().contains("M2M") || OfertaCell.toString().contains("Dival") || OfertaCell.toString().contains("DIVAL") || OfertaCell.toString().contains("infinity") || OfertaCell.toString().contains("Integrada") || OfertaCell.toString().contains("Colectiva") || OfertaCell.toString().contains("Normal")) {
+                                            if (ofertaKeywords.stream().anyMatch(keyword -> OfertaCell.toString().contains(keyword))) {
                                                 Row row1 = sheet.createRow(rowNum++);
                                                 row1.createCell(0).setCellValue(Descuento);
                                                 String Catalog = NextCell.getStringCellValue();
@@ -56,9 +59,6 @@ public class Discounts {
                         }
                     }
                 }
-
-
-
                     if (text.contains("DVOPD")) {
                         row2 = sheet.createRow(rowNum);
                         row2.createCell(0).setCellValue("DOVPD");
