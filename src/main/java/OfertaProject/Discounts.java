@@ -34,12 +34,13 @@ public class Discounts {
                 //Extract specific data
                 int rowNum = 0;
                 Set<String> descuentosKeywords = new HashSet<>(Arrays.asList("Descuentos", "Fibra", "Internos", "Catalogo", "Descuento"));
-                Set<String> ofertaKeywords = new HashSet<>(Arrays.asList("All types", "Primaria Normal", "Red Box", "Red Empresa", "SIP Normal", "M2M", "Dival", "DIVAL", "infinity", "Integrada", "Colectiva", "Normal"));
+                Set<String> ofertaKeywords = new HashSet<>(Arrays.asList("All types", "RED BOX", "Red empresa", "SIP Normal", "M2M", "DIVAL", "Infinity, Integrada, colectiva", "Infinity, Integrada, colectiva, DIVAL, Normal", "infinity, integrada, colectiva, M2M", "Normal, Dival", "Primaria Normal, SIP Normal", "Primaria Normal, SIP Normal, Normal", "ADSL", "M2M, Infinity, Integrada"));
                 Row row2;
+
+                Set<String> DTOS = new LinkedHashSet<>();
                 for (Row row : sheet1) {
                     for (Cell cell : row) {
                         if (text.contains(cell.toString())) {
-                            Set<String> DTOS = new LinkedHashSet<>();
                             DTOS.add(cell.toString());
                             for (String Descuento : DTOS) {
                                 for (Cell NextCell : row) {
@@ -59,6 +60,7 @@ public class Discounts {
                         }
                     }
                 }
+
                     if (text.contains("DVOPD")) {
                         row2 = sheet.createRow(rowNum);
                         row2.createCell(0).setCellValue("DOVPD");

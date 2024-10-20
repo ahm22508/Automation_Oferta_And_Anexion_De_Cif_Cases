@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,8 +37,18 @@ public class PostSelling extends Discounts {
                 Row HeaderCell = sheet.createRow(0);
                 HeaderCell.createCell(0).setCellValue("Posventa Y BONO");
                 HeaderCell.createCell(1).setCellValue("Value");
+
+            Set<String> TariffTypes = new HashSet<>(Arrays.asList("XPS" , "LVAPC", "MVCS"));
+            Set<String> CodesInPdf =new HashSet<>();
+            Map<String, String> Description= new HashMap<>();
+            Description.put("XPS" , "REDBOX");
+            Description.put("LVAPC" , "Primaria");
+            Description.put("MVCS" , "Normal");
+
+
                 Row row;
                 int i = 1;
+                int NumRow = 5;
                 while (matcher.find()) {
                     row = sheet.createRow(i++);
                     row.createCell(0).setCellValue(matcher.group());
@@ -73,6 +84,27 @@ public class PostSelling extends Discounts {
                     row = sheet.createRow(4);
                     row.createCell(0).setCellValue("Esa Oferta lleva POVFS, entonces hay que cargarla en el Gescore");
                 }
+                for(String Type : TariffTypes) {
+                    if (text.contains(Type)) {
+                        row = sheet.createRow(NumRow++);
+                        row.createCell(0).setCellValue("Ese PDF contiene la siguiente Tarifa " + Type);
+                        CodesInPdf.add(Type);
+                    }
+                }
+                        if (CodesInPdf.size() > 1) {
+                            row = sheet.createRow(NumRow++);
+                            row.createCell(0).setCellValue("Ese PDF contiene más de una tarifa como:");
+                        }
+                            for(String Code : CodesInPdf){
+                                row = sheet.createRow(NumRow++);
+                                row.createCell(0).setCellValue(Code);
+                              String Tarifa = Description.get(Code);
+                              if(Tarifa != null){
+                                  row.createCell(1).setCellValue(Tarifa);
+                              }
+                            }
+
+
 
 
             //save the data in the new file.
