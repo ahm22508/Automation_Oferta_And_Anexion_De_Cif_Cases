@@ -10,7 +10,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 
@@ -37,20 +36,22 @@ public class Discounts {
                 Set<String> ofertaKeywords = new HashSet<>(Arrays.asList("All types", "RED BOX", "Red empresa", "SIP Normal", "M2M", "DIVAL", "Infinity, Integrada, colectiva", "Infinity, Integrada, colectiva, DIVAL, Normal", "infinity, integrada, colectiva, M2M", "Normal, Dival", "Primaria Normal, SIP Normal", "Primaria Normal, SIP Normal, Normal", "ADSL", "M2M, Infinity, Integrada"));
                 Row row2;
 
-                Set<String> DTOS = new LinkedHashSet<>();
+                HashSet<String> DTOS = new HashSet<>();
                 for (Row row : sheet1) {
-                    for (Cell cell : row) {
-                        if (text.contains(cell.toString())) {
-                            DTOS.add(cell.toString());
-                            for (String Descuento : DTOS) {
-                                for (Cell NextCell : row) {
-                                    if (descuentosKeywords.stream().anyMatch(keyword -> NextCell.toString().contains(keyword))) {
-                                        for (Cell OfertaCell : row) {
-                                            if (ofertaKeywords.stream().anyMatch(keyword -> OfertaCell.toString().contains(keyword))) {
+                    Cell DiscountCell = row.getCell(0);
+                    if (DiscountCell != null) {
+                        if (text.contains(DiscountCell.getStringCellValue())) {
+                            DTOS.add(DiscountCell.toString());
+                            Cell CatalogCell = row.getCell(1);
+                            if (CatalogCell != null) {
+                                if (descuentosKeywords.stream().anyMatch(keyword -> CatalogCell.toString().contains(keyword))) {
+                                    Cell OfertaCell = row.getCell(2);
+                                    if (OfertaCell != null) {
+                                        if (ofertaKeywords.stream().anyMatch(keyword -> OfertaCell.toString().contains(keyword))) {
+                                            if (!DiscountCell.toString().contains(DTOS.toString())) {
                                                 Row row1 = sheet.createRow(rowNum++);
-                                                row1.createCell(0).setCellValue(Descuento);
-                                                String Catalog = NextCell.getStringCellValue();
-                                                row1.createCell(1).setCellValue(Catalog);
+                                                row1.createCell(0).setCellValue(DiscountCell.toString());
+                                                row1.createCell(1).setCellValue(CatalogCell.toString());
                                                 row1.createCell(2).setCellValue(OfertaCell.toString());
                                             }
                                         }
