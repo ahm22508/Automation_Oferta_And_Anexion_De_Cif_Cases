@@ -23,9 +23,9 @@ public class Minutes extends Discounts {
             Sheet sheet = workbook.createSheet("Minutos");
 
             //Extract specific data
-            Pattern pattern = Pattern.compile("\\d+\\.\\d{2,}");
+            Pattern pattern = Pattern.compile("\\d+\\.\\d{1,2}");
                 Matcher matcher = pattern.matcher(text);
-                Pattern pattern1 = Pattern.compile("MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB");
+                Pattern pattern1 = Pattern.compile("MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB|CIPNT");
                 Matcher matcher1 = pattern1.matcher(text);
                 Row row;
                 int x = 0;
@@ -43,6 +43,11 @@ public class Minutes extends Discounts {
                     row = sheet.getRow(0);
                     row.createCell(2).setCellValue("PKPID");
                     row.createCell(3).setCellValue("SÍ");
+                }
+                if(text.contains("MPMVE")){
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("MPMVE");
+                    row.createCell(1).setCellValue("0");
                 }
 
             //save the data in the new file.

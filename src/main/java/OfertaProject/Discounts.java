@@ -8,9 +8,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
+
 
 
 public class Discounts {
@@ -32,11 +31,9 @@ public class Discounts {
 
                 //Extract specific data
                 int rowNum = 0;
-                Set<String> descuentosKeywords = new HashSet<>(Arrays.asList("Descuentos", "Fibra", "Internos", "Catalogo", "Descuento"));
-                Set<String> ofertaKeywords = new HashSet<>(Arrays.asList("All types", "RED BOX", "Red empresa", "SIP Normal", "M2M", "DIVAL", "Infinity, Integrada, colectiva", "Infinity, Integrada, colectiva, DIVAL, Normal", "infinity, integrada, colectiva, M2M", "Normal, Dival", "Primaria Normal, SIP Normal", "Primaria Normal, SIP Normal, Normal", "ADSL", "M2M, Infinity, Integrada"));
                 Row row2;
-
                 HashSet<String> DTOS = new HashSet<>();
+
                 for (Row row : sheet1) {
                     Cell DiscountCell = row.getCell(0);
                     if (DiscountCell != null) {
@@ -44,10 +41,8 @@ public class Discounts {
                             DTOS.add(DiscountCell.toString());
                             Cell CatalogCell = row.getCell(1);
                             if (CatalogCell != null) {
-                                if (descuentosKeywords.stream().anyMatch(keyword -> CatalogCell.toString().contains(keyword))) {
                                     Cell OfertaCell = row.getCell(2);
                                     if (OfertaCell != null) {
-                                        if (ofertaKeywords.stream().anyMatch(keyword -> OfertaCell.toString().contains(keyword))) {
                                             if (!DiscountCell.toString().contains(DTOS.toString())) {
                                                 Row row1 = sheet.createRow(rowNum++);
                                                 row1.createCell(0).setCellValue(DiscountCell.toString());
@@ -59,13 +54,13 @@ public class Discounts {
                                 }
                             }
                         }
-                    }
-                }
+
 
                     if (text.contains("DVOPD")) {
                         row2 = sheet.createRow(rowNum);
                         row2.createCell(0).setCellValue("DOVPD");
                         row2.createCell(1).setCellValue("Descuentos Empresas");
+                        row2.createCell(2).setCellValue("All Types");
 
                     }
                     //save the data in the new file.
