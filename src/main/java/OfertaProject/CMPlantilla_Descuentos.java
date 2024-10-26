@@ -92,12 +92,12 @@ public class CMPlantilla_Descuentos {
                                 }
                             }
                         }
-
-                        //save the new file with the extracted data
-                        workbook1.write(fileOutputStream);
                     }
                 }
-                    }
+                //save the new file with the extracted data
+                workbook1.write(fileOutputStream);
+
+            }
                 }
             }
         }

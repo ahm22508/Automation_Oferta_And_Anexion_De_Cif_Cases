@@ -41,11 +41,11 @@ public class Trenes extends Discounts {
                     FinalValue.add(Code);
 
                     if (matcher1.find(matcher.end())) {
-                        row = sheet.createRow(x++);
-                        row.createCell(0).setCellValue(Code);
-                        row.createCell(1).setCellValue(matcher1.group());
-                        if(Code.contains("DVF")){
-                            row.createCell(2).setCellValue("Ese Descuento Pertenece a la oferta Primaria");
+                        String Num = matcher1.group();
+                        if(!Num.equals("0")) {
+                            row = sheet.createRow(x++);
+                            row.createCell(0).setCellValue(Code);
+                            row.createCell(1).setCellValue(matcher1.group());
                         }
                     }
                 }
@@ -86,6 +86,18 @@ public class Trenes extends Discounts {
                 if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DV90X")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DV90X");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVFIN")) {
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVFIN");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DVFES")) {
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVFES");
                     row.createCell(1).setCellValue("100");
                     x++;
                 }

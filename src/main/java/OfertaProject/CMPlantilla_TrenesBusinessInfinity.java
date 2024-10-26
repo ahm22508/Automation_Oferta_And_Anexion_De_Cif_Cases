@@ -20,11 +20,7 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
             try (FileInputStream fileInputStream1 = new FileInputStream(FinalFile);
                  Workbook workbook1 = new XSSFWorkbook(fileInputStream1)) {
 
-                //check if the sheet is found or not
-                int SheetNums = workbook.getNumberOfSheets();
-                        for(int S = 0; S < SheetNums; S++){
-                            String SheetName = workbook.getSheetName(S);
-                            if (!workbook.isSheetHidden(S) && SheetName.contains("Dtos y Tarifas Complementarios")) {
+
 
                                 //create new Sheet in the new file
                                 Sheet sheet1 = workbook1.createSheet("PlantillaCM-Trenes(IB)");
@@ -36,41 +32,41 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
                                   Row row1;
                                   String ModTren = "";
                                   for (Row row : sheet) {
-                                  for (Cell cell : row) {
-                                 Matcher matcher = pattern.matcher(cell.toString());
-                                if (matcher.find()) {
-                                    for (Cell TrenCell : row) {
-                                        if (TrenCell.toString().contains("TDV04")) {
-                                            for (Cell FinalTrenCell : row) {
-                                                if (FinalTrenCell.toString().contains("Descuento")) {
-                                                    ModTren = matcher.group();
-                                                    row1 = sheet1.createRow(rowNum++);
-                                                    row1.createCell(0).setCellValue(matcher.group());
-                                                }
-                                            }
-                                        }
-                                        if (TrenCell.toString().contains("%")) {
-                                            for (Cell percentageCell : row) {
-                                                if (percentageCell.toString().contains("TDV04")) {
-                                                    String PercentageCell = TrenCell.getStringCellValue();
-                                                    String RemoveTren = PercentageCell.replace(ModTren, "");
-                                                    String RemoveSC = RemoveTren.replace("-", "");
-                                                    String CleanPerc = RemoveSC.replace("%", "");
-                                                    try {
-                                                        row1 = sheet1.getRow(i++);
-                                                        row1.createCell(1).setCellValue(CleanPerc);
-                                                    } catch (NullPointerException n) {
-                                                        row1 = sheet1.createRow(i++);
-                                                        row1.createCell(1).setCellValue(CleanPerc);
-                                                        n.getMessage();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                                      for (Cell cell : row) {
+                                          Matcher matcher = pattern.matcher(cell.toString());
+                                          if (matcher.find()) {
+                                              for (Cell TrenCell : row) {
+                                                  if (TrenCell.toString().contains("TDV04")) {
+                                                      for (Cell FinalTrenCell : row) {
+                                                          if (FinalTrenCell.toString().contains("Descuento")) {
+                                                              ModTren = matcher.group();
+                                                              row1 = sheet1.createRow(rowNum++);
+                                                              row1.createCell(0).setCellValue(matcher.group());
+                                                          }
+                                                      }
+                                                  }
+                                                  if (TrenCell.toString().contains("%")) {
+                                                      for (Cell percentageCell : row) {
+                                                          if (percentageCell.toString().contains("TDV04")) {
+                                                              String PercentageCell = TrenCell.getStringCellValue();
+                                                              String RemoveTren = PercentageCell.replace(ModTren, "");
+                                                              String RemoveSC = RemoveTren.replace("-", "");
+                                                              String CleanPerc = RemoveSC.replace("%", "");
+                                                              try {
+                                                                  row1 = sheet1.getRow(i++);
+                                                                  row1.createCell(1).setCellValue(CleanPerc);
+                                                              } catch (NullPointerException n) {
+                                                                  row1 = sheet1.createRow(i++);
+                                                                  row1.createCell(1).setCellValue(CleanPerc);
+                                                                  n.getMessage();
+                                                              }
+                                                          }
+                                                      }
+                                                  }
+                                              }
+                                          }
+                                      }
+                                  }
                                 //save the new file with the extracted data
                                 try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
                                     workbook1.write(fileOutputStream);
@@ -81,5 +77,3 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
 
             }
         }
-    }
-}
