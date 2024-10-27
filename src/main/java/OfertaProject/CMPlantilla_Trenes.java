@@ -19,6 +19,7 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
             try (FileInputStream fileInputStream = new FileInputStream(file);
              Workbook workbook = new XSSFWorkbook(fileInputStream)) {
             Sheet sheet = workbook.getSheet("Tren");
+//            Sheet SheetCheck = workbook.getSheet("Infinity Business");
 
             //Create New Excel File
             File Finalfile = new File(FileName);
@@ -52,6 +53,29 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                                 row1.createCell(1).setCellValue(Percentage);
                                             }
                                         }
+//                                        if (NextCell.getCellType() == CellType.STRING) {
+//                                            for (Row CheckRow : SheetCheck) {
+//                                                for (Cell CheckCell : CheckRow) {
+//                                                    if (NextCell.toString().contains(CheckCell.toString())) {
+//                                                        row1 = sheet1.createRow(rowNum++);
+//                                                        row1.createCell(0).setCellValue(NextCell.toString());
+//                                                        for (Cell TrenCell : CheckRow) {
+//                                                            if (TrenCell.toString().contains("%")) {
+//                                                                for(Cell PercentageCell : CheckRow) {
+//                                                                    if(PercentageCell.toString().contains("TDV04")) {
+//                                                                        String RemovePerc = TrenCell.getStringCellValue();
+//                                                                        String RemoveTren = RemovePerc.replace(PercentageCell.toString(), "");
+//                                                                        String RemoveSC = RemoveTren.replace("-", "");
+//                                                                        String CleanPerc = RemoveSC.replace("%", "");
+//                                                                        row1.createCell(1).setCellValue(CleanPerc);
+//                                                                    }
+//                                                                }
+//                                                            }
+//                                                        }
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
                                     }
                                 }
                             }
