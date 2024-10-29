@@ -30,7 +30,7 @@ public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
                 int SheetNums = workbook.getNumberOfSheets();
                 for(int i = 0; i < SheetNums; i++){
                     String SheetName = workbook.getSheetName(i);
-                    if (!workbook.isSheetHidden(i) && SheetName.contains("Indice")) {
+                    if (!workbook.isSheetHidden(i) && SheetName.equals("Indice")) {
 
                         //create new Sheet in the new file
                         Sheet sheet1 = workbook1.createSheet("PlantillaCM-Indice");
