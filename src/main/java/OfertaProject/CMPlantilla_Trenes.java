@@ -1,6 +1,5 @@
 package OfertaProject;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -30,13 +29,16 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                 //create new Sheet in the new file
                 Sheet sheet1 = workbook1.getSheet("PlantillaCM-Trenes");
 
-
                 //check if the sheet is found or not
                 int SheetNums = workbook.getNumberOfSheets();
                 for (int i = 0; i < SheetNums; i++) {
                     String SheetName = workbook.getSheetName(i);
                     if (!workbook.isSheetHidden(i) && SheetName.equals("Tren")) {
+                        Row HeaderRow = sheet1.getRow(0);
+                        Cell HeaderCell = HeaderRow.createCell(0);
+                        HeaderCell.setCellValue("All Trenes From CM-Plantilla...");
 
+                        //Sheet analisis.
                         HashSet<String> DuplicationTrenes = new HashSet<>();
                         int RowNum = 0;
                         for (Row TrenRow : sheet1) {
@@ -47,6 +49,7 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                             for (Cell TrenCell : TrenRow) {
                                 RowNum = TrenCell.getRow().getRowNum()+1;
                             }
+
                         }
 
 
@@ -76,10 +79,18 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                     }
                 }
 
+
                 for (int i = 0; i < SheetNums; i++) {
                     String SheetName = workbook.getSheetName(i);
                     if (workbook.isSheetHidden(i) && SheetName.equals("Tren")) {
-                        Row HeaderRow = sheet1.createRow(1);
+                        int OtherRowNum = 0;
+
+                        for (Row TrenRow : sheet1) {
+                            for (Cell TrenCell : TrenRow) {
+                                OtherRowNum = TrenCell.getRow().getRowNum()+1;
+                            }
+                        }
+                        Row HeaderRow = sheet1.createRow(OtherRowNum);
                         Cell HeaderCell = HeaderRow.createCell(2);
                         HeaderCell.setCellValue("el Fichero de Tren en la plantilla del CM no Existe.");
                     }
