@@ -38,13 +38,20 @@ public class PostSelling extends Discounts {
                 HeaderCell.createCell(0).setCellValue("Posventa Y BONO");
                 HeaderCell.createCell(1).setCellValue("Value");
 
-            Set<String> TariffTypes = new HashSet<>(Arrays.asList("XPS" , "LVAPC", "MVCS"));
+            Set<String> TariffTypes = new HashSet<>(Arrays.asList("XPS", "LVAPC", "MVCS", "M2M", "SIP01", "MPMVA", "MPMVD", "TIDCA", "MPCOU"));
             Set<String> CodesInPdf =new HashSet<>();
             Map<String, String> Description= new HashMap<>();
             Description.put("XPS" , "REDBOX");
-            Description.put("LVAPC" , "Primaria");
+            Description.put("LVAPC" , "Primaria Antigua");
             Description.put("MVCS" , "Normal");
-
+            Description.put("M2M", "M2M");
+            Description.put("SIP01", "SIP");
+            Description.put("MPMVA", "Integrado");
+            Description.put("MPMVD", "Integrado SIP");
+            Description.put("MPMVE" , "Integrada Primaria Actual");
+            Description.put("TIDCA", "Infinity");
+            Description.put("MPCOU" , "Integrado Colaboración");
+            Description.put("MPIA2", "Integrada 2.0");
 
                 Row row;
                 int i = 1;

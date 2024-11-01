@@ -36,6 +36,12 @@ public class Minutes extends Discounts {
                     if(matcher1.group().contains("CIPNT")) {
                         row.createCell(0).setCellValue("CPINT");
                     }
+                    if(matcher1.group().contains("MPCOB")){
+                        row.createCell(0).setCellValue("MPCOU");
+                    }
+                    if(matcher1.group().contains("MPCOL")){
+                        row.createCell(0).setCellValue("MPCSC");
+                    }
                     if (matcher.find(matcher1.end())) {
                         row = sheet.getRow(i++);
                         row.createCell(1).setCellValue(matcher.group());

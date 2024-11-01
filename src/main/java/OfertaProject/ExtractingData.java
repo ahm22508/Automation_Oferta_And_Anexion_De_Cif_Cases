@@ -3,8 +3,6 @@ package OfertaProject;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
-
-
 import java.io.IOException;
 
 public class ExtractingData {
