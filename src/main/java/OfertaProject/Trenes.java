@@ -59,15 +59,22 @@ public class Trenes extends Discounts {
                 x++;
             }
 
-            String[] MPMVE = {"DVMOV", "DVOOM", "DVFNA", "DVGCU", "DVSMV", "DVSMO", "DVFMV", "DVFOM", "DVFFN", "DVFGC", "DRZRW"};
-
+            String[] CommonTrenes = {"DVMOV", "DVOOM", "DVFNA", "DVGCU", "DVSMV", "DVSMO", "DRZRW"};
+            String [] MPMVE = {"DVFGC","DVFFN","DVFOM","DVFMV"};
 
             if (text.contains("MPMVE") || text.contains("MultiCIF")) {
 
-                for (String Tren : MPMVE) {
+                for (String Tren : CommonTrenes) {
                     if (!FinalValue.contains(Tren)) {
                         row = sheet.createRow(x++);
                         row.createCell(0).setCellValue(Tren);
+                        row.createCell(1).setCellValue("100");
+                    }
+                }
+                for (String TrenMPMVE : MPMVE) {
+                    if (text.contains("MPMVE")) {
+                        row = sheet.createRow(x++);
+                        row.createCell(0).setCellValue(TrenMPMVE);
                         row.createCell(1).setCellValue("100");
                     }
                 }
@@ -89,13 +96,13 @@ public class Trenes extends Discounts {
                     row.createCell(1).setCellValue("100");
                     x++;
                 }
-                if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVFIN")) {
+                if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVFIN") && text.contains("MPMVE")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVFIN");
                     row.createCell(1).setCellValue("100");
                     x++;
                 }
-                if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DVFES")) {
+                if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DVFES") && text.contains("MPMVE")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVFES");
                     row.createCell(1).setCellValue("100");
