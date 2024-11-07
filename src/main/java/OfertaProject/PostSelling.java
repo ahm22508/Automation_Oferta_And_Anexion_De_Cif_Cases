@@ -87,7 +87,7 @@ public class PostSelling extends Discounts {
                 else if (text.contains("SOA")) {
                     row = sheet.createRow(4);
                     row.createCell(0).setCellValue("Esa Oferta lleva SOA, entonces hay que cargarla en el Gescore");
-                } else if (text.contains("POF")) {
+                } else if (text.contains("POF") || text.contains("POVF")) {
                     row = sheet.createRow(4);
                     row.createCell(0).setCellValue("Esa Oferta lleva POVFS, entonces hay que cargarla en el Gescore");
                 }
