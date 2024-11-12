@@ -32,6 +32,7 @@ public class Trenes extends Discounts {
             Pattern pattern1 = Pattern.compile("(\\d+(\\.\\d+)?)(?=%)");
             Matcher matcher1 = pattern1.matcher(text);
 
+
             int x = 0;
             Row row;
             Set<String> FinalValue = new HashSet<>();
@@ -39,18 +40,19 @@ public class Trenes extends Discounts {
                 String Code = matcher.group();
                 if (!FinalValue.contains(Code)) {
                     FinalValue.add(Code);
-
                     if (matcher1.find(matcher.end())) {
-                        String Num = matcher1.group();
-                        if(!Num.equals("0")) {
-                            row = sheet.createRow(x++);
-                            row.createCell(0).setCellValue(Code);
-                            row.createCell(1).setCellValue(matcher1.group());
+                        if (matcher1.start() - matcher.end() <= 14) {
+                                String Num = matcher1.group();
+                                if (!Num.equals("0")) {
+                                    row = sheet.createRow(x++);
+                                    row.createCell(0).setCellValue(Code);
+                                    row.createCell(1).setCellValue(matcher1.group());
+                                }
+                            }
                         }
                     }
-                }
-
             }
+
             if (text.contains("DRZRW")) {
                 row = sheet.createRow(x);
                 row.createCell(0).setCellValue("DRZRW");

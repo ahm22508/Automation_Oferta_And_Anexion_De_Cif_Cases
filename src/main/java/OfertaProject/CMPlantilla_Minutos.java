@@ -48,7 +48,8 @@ public class CMPlantilla_Minutos extends CMPlantilla_Descuentos {
                                                 row1 = sheet1.createRow(x++);
                                                 row1.createCell(0).setCellValue(FinalValue);
                                                 String Cleaning = NextCell.getStringCellValue();
-                                                String FinalNumber = Cleaning.replace("Cuota Final: ", "");
+                                                String FinalNumber = Cleaning.replace("Cuota Final: ", "").replace("," , ".");
+
                                                 row1.createCell(1).setCellValue(FinalNumber);
                                             }
                                         }
