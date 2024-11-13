@@ -41,16 +41,18 @@ public class Trenes extends Discounts {
                 if (!FinalValue.contains(Code)) {
                     FinalValue.add(Code);
                     if (matcher1.find(matcher.end())) {
-                        if (matcher1.start() - matcher.end() <= 14) {
-                                String Num = matcher1.group();
-                                if (!Num.equals("0")) {
-                                    row = sheet.createRow(x++);
-                                    row.createCell(0).setCellValue(Code);
-                                    row.createCell(1).setCellValue(matcher1.group());
-                                }
+                        if (matcher1.start() - matcher.end() <= 30) {
+                            System.out.println(matcher1.start());
+                            System.out.println(matcher.end());
+                            String Num = matcher1.group();
+                            if (!Num.equals("0")) {
+                                row = sheet.createRow(x++);
+                                row.createCell(0).setCellValue(Code);
+                                row.createCell(1).setCellValue(matcher1.group());
                             }
                         }
                     }
+                }
             }
 
             if (text.contains("DRZRW")) {
@@ -58,70 +60,6 @@ public class Trenes extends Discounts {
                 row.createCell(0).setCellValue("DRZRW");
                 row.createCell(1).setCellValue("100");
                 FinalValue.add("DRZRW");
-                x++;
-            }
-
-            String[] CommonTrenes = {"DVMOV", "DVOOM", "DVFNA", "DVGCU", "DVSMV", "DVSMO", "DRZRW"};
-            String [] MPMVE = {"DVFGC","DVFFN","DVFOM","DVFMV"};
-
-            if (text.contains("MPMVE") || text.contains("MultiCIF")) {
-
-                for (String Tren : CommonTrenes) {
-                    if (!FinalValue.contains(Tren)) {
-                        row = sheet.createRow(x++);
-                        row.createCell(0).setCellValue(Tren);
-                        row.createCell(1).setCellValue("100");
-                    }
-                }
-                for (String TrenMPMVE : MPMVE) {
-                    if (text.contains("MPMVE")) {
-                        row = sheet.createRow(x++);
-                        row.createCell(0).setCellValue(TrenMPMVE);
-                        row.createCell(1).setCellValue("100");
-                    }
-                }
-                if (text.contains("SMS internacionales") && !FinalValue.contains("DVSMR")) {
-                    row = sheet.createRow(x);
-                    row.createCell(0).setCellValue("DVSMR");
-                    row.createCell(1).setCellValue("100");
-                    x++;
-                }
-                if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVINT")) {
-                    row = sheet.createRow(x);
-                    row.createCell(0).setCellValue("DVINT");
-                    row.createCell(1).setCellValue("100");
-                    x++;
-                }
-                if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DV90X")) {
-                    row = sheet.createRow(x);
-                    row.createCell(0).setCellValue("DV90X");
-                    row.createCell(1).setCellValue("100");
-                    x++;
-                }
-                if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVFIN") && text.contains("MPMVE")) {
-                    row = sheet.createRow(x);
-                    row.createCell(0).setCellValue("DVFIN");
-                    row.createCell(1).setCellValue("100");
-                    x++;
-                }
-                if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DVFES") && text.contains("MPMVE")) {
-                    row = sheet.createRow(x);
-                    row.createCell(0).setCellValue("DVFES");
-                    row.createCell(1).setCellValue("100");
-                    x++;
-                }
-                if (text.contains("CIROZ") && !FinalValue.contains("DVRRE")) {
-                    row = sheet.createRow(x);
-                    row.createCell(0).setCellValue("DVRRE");
-                    row.createCell(1).setCellValue("100");
-                    x++;
-                }
-                if (text.contains("CIRRZ") && !FinalValue.contains("DVRSA")) {
-                    row = sheet.createRow(x);
-                    row.createCell(0).setCellValue("DVRSA");
-                    row.createCell(1).setCellValue("100");
-
-                }
             }
 
             //save the data in the new file.
