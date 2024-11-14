@@ -42,8 +42,6 @@ public class Trenes extends Discounts {
                     FinalValue.add(Code);
                     if (matcher1.find(matcher.end())) {
                         if (matcher1.start() - matcher.end() <= 30) {
-                            System.out.println(matcher1.start());
-                            System.out.println(matcher.end());
                             String Num = matcher1.group();
                             if (!Num.equals("0")) {
                                 row = sheet.createRow(x++);

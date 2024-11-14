@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class PostSelling extends Discounts {
 
     public void ExtractPostSelling(String text) throws IOException {
@@ -55,55 +56,67 @@ public class PostSelling extends Discounts {
 
                 Row row;
                 int i = 1;
-                int NumRow = 5;
+                int FirstValue = 0;
+            HashSet <String> Posventas = new HashSet<>();
                 while (matcher.find()) {
-                    row = sheet.createRow(i++);
-                    row.createCell(0).setCellValue(matcher.group());
-                    String ServicePostSelling = matcher.group();
-                    String AccountPostSelling = ServicePostSelling.replace("POS" , "POC");
-                    row = sheet.createRow(2);
-                    row.createCell(0).setCellValue(AccountPostSelling);
-                    row.createCell(1).setCellValue("Servicio Suplementario a nivel de linea/servicio");
                     if (matcher1.find(matcher.end())) {
-                        row = sheet.getRow(1);
-                        row.createCell(1).setCellValue(matcher1.group());
+                    String Posventa = matcher.group();
+                    if (!Posventas.contains(Posventa)) {
+                        Posventas.add(Posventa);
+                        row = sheet.createRow(i++);
+                        row.createCell(0).setCellValue(Posventa);
+                        FirstValue = Integer.parseInt(matcher1.group());
+                        String ServicePostSelling = matcher.group().replace("POS", "POC");
+                        row = sheet.createRow(i++);
+                        row.createCell(0).setCellValue(ServicePostSelling);
+                        row.createCell(1).setCellValue("Servicio Suplementario a nivel de Cuenta");
+                    }
+                    if(Posventas.contains(Posventa)) {
+                    if (matcher1.find(matcher.end())) {
+                    int Num = Integer.parseInt(matcher1.group());
+                        row = sheet.getRow(i-2);
+                        row.createCell(1).setCellValue(Math.max(Num, FirstValue));
+                        }
+                    }
+
+
                     }
                 }
-            if(!matcher.find()) {
+            if(Posventas.isEmpty()) {
                 while (matcher3.find()) {
                     row = sheet.createRow(i++);
                     row.createCell(0).setCellValue(matcher3.group());
                 }
             }
                 while (matcher2.find()) {
-                    row = sheet.createRow(3);
+                    row = sheet.createRow(i++);
                     row.createCell(0).setCellValue(matcher2.group());
                 }
 
                 if(text.contains("POV") && text.contains("SOA")) {
-                    row = sheet.createRow(4);
+                    row = sheet.createRow(i);
                     row.createCell(0).setCellValue("Esa Oferta lleva POVFS y SOA, entonces hay que cargarla en el Gescore");
                 }
                 else if (text.contains("SOA")) {
-                    row = sheet.createRow(4);
+                    row = sheet.createRow(i);
                     row.createCell(0).setCellValue("Esa Oferta lleva SOA, entonces hay que cargarla en el Gescore");
                 } else if (text.contains("POF") || text.contains("POVF")) {
-                    row = sheet.createRow(4);
+                    row = sheet.createRow(i);
                     row.createCell(0).setCellValue("Esa Oferta lleva POVFS, entonces hay que cargarla en el Gescore");
                 }
                 for(String Type : TariffTypes) {
                     if (text.contains(Type)) {
-                        row = sheet.createRow(NumRow++);
+                        row = sheet.createRow(i++);
                         row.createCell(0).setCellValue("Ese PDF contiene la siguiente Tarifa " + Type);
                         CodesInPdf.add(Type);
                     }
                 }
                         if (CodesInPdf.size() > 1) {
-                            row = sheet.createRow(NumRow++);
+                            row = sheet.createRow(i++);
                             row.createCell(0).setCellValue("Ese PDF contiene más de una tarifa como:");
                         }
                             for(String Code : CodesInPdf){
-                                row = sheet.createRow(NumRow++);
+                                row = sheet.createRow(i++);
                                 row.createCell(0).setCellValue(Code);
                               String Tarifa = Description.get(Code);
                               if(Tarifa != null){
