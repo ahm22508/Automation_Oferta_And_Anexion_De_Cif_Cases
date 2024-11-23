@@ -58,6 +58,69 @@ public class Trenes extends Discounts {
                 row.createCell(0).setCellValue("DRZRW");
                 row.createCell(1).setCellValue("100");
                 FinalValue.add("DRZRW");
+
+            }
+            String[] CommonTrenes = {"DVMOV", "DVOOM", "DVFNA", "DVGCU", "DVSMV", "DVSMO", "DRZRW"};
+            String [] MPMVE = {"DVFGC","DVFFN","DVFOM","DVFMV"};
+
+            if (text.contains("MPMVE") || text.contains("MultiCIF")) {
+
+                for (String Tren : CommonTrenes) {
+                    if (!FinalValue.contains(Tren)) {
+                        row = sheet.createRow(x++);
+                        row.createCell(0).setCellValue(Tren);
+                        row.createCell(1).setCellValue("100");
+                    }
+                }
+                for (String TrenMPMVE : MPMVE) {
+                    if (text.contains("MPMVE")) {
+                        row = sheet.createRow(x++);
+                        row.createCell(0).setCellValue(TrenMPMVE);
+                        row.createCell(1).setCellValue("100");
+                    }
+                }
+                if (text.contains("SMS internacionales") && !FinalValue.contains("DVSMR")) {
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVSMR");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVINT")) {
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVINT");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DV90X")) {
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DV90X");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVFIN") && text.contains("MPMVE")) {
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVFIN");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DVFES") && text.contains("MPMVE")) {
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVFES");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if (text.contains("CIROZ") && !FinalValue.contains("DVRRE")) {
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVRRE");
+                    row.createCell(1).setCellValue("100");
+                    x++;
+                }
+                if (text.contains("CIRRZ") && !FinalValue.contains("DVRSA")) {
+                    row = sheet.createRow(x);
+                    row.createCell(0).setCellValue("DVRSA");
+                    row.createCell(1).setCellValue("100");
+
+                }
             }
 
             //save the data in the new file.
