@@ -58,7 +58,7 @@ public class Trenes extends Discounts {
                 row.createCell(0).setCellValue("DRZRW");
                 row.createCell(1).setCellValue("100");
                 FinalValue.add("DRZRW");
-
+            x++;
             }
             String[] CommonTrenes = {"DVMOV", "DVOOM", "DVFNA", "DVGCU", "DVSMV", "DVSMO", "DRZRW"};
             String [] MPMVE = {"DVFGC","DVFFN","DVFOM","DVFMV"};
