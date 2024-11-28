@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.LinkedHashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,7 +44,7 @@ public class CMPlantilla_Descuentos {
                             Pattern pattern1 = Pattern.compile("(?<!-\\s)\\b(MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB|CIPNT)\\b");
                             Pattern pattern2 = Pattern.compile("POS+[A-Z]{2}");
                             Pattern pattern3 = Pattern.compile("POC+[A-Z]{2}");
-                            LinkedHashSet<String> Minutos = new LinkedHashSet<>();
+                            Pattern NumPattern = Pattern.compile("^\\d+(,\\d+)?(?=\\s*\\w+|\\W+}$)");
                             int rowNum = 0;
                             Row row1;
                             Row row2;
@@ -56,7 +55,7 @@ public class CMPlantilla_Descuentos {
                                     Matcher matcher2 = pattern2.matcher(cell.toString());
                                     Matcher matcher3 = pattern3.matcher(cell.toString());
 
-                                    for(Row DTOSRow : DTOSSheet) {
+                                    for (Row DTOSRow : DTOSSheet) {
                                         Cell DTOSCell = DTOSRow.getCell(0);
                                         if (DTOSCell != null) {
                                             if (cell.toString().contains(DTOSCell.toString())) {
@@ -80,17 +79,26 @@ public class CMPlantilla_Descuentos {
                                     }
                                     if (matcher1.find()) {
                                         String FinalValue = matcher1.group();
-                                        Minutos.add(matcher1.group());
                                         for (Cell NextCell : row) {
-                                            if (Minutos.contains(FinalValue)) {
-                                                if (NextCell.getCellType() == CellType.NUMERIC) {
-                                                    row2 = sheet1.createRow(rowNum++);
-                                                    row2.createCell(0).setCellValue(FinalValue);
-                                                    row2.createCell(1).setCellValue(NextCell.getNumericCellValue());
+                                            Matcher MatchOnlyNums = NumPattern.matcher(NextCell.toString());
+                                            if (NextCell.getCellType() == CellType.NUMERIC) {
+                                                row2 = sheet1.createRow(rowNum++);
+                                                row2.createCell(0).setCellValue(FinalValue);
+                                                row2.createCell(1).setCellValue(NextCell.getNumericCellValue());
+                                            }
+
+                                            else if (MatchOnlyNums.find()) {
+                                                for (Cell ConfirmCell : row) {
+                                                    if (ConfirmCell.toString().contains("SI")) {
+                                                        row2 = sheet1.createRow(rowNum++);
+                                                        row2.createCell(0).setCellValue(FinalValue);
+                                                        row2.createCell(1).setCellValue(MatchOnlyNums.group());
+                                                    }
                                                 }
                                             }
                                         }
                                     }
+
                                     if (matcher2.find()) {
                                         for (Cell ProvisionCell : row) {
                                             if (ProvisionCell.toString().contains("SI")) {
