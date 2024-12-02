@@ -1,6 +1,7 @@
 package OfertaProject;
 
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -36,17 +37,35 @@ public class Trenes extends Discounts {
             int x = 0;
             Row row;
             Set<String> FinalValue = new HashSet<>();
+            double FirstValue =0;
             while (matcher.find()) {
                 String Code = matcher.group();
                 if (!FinalValue.contains(Code)) {
                     FinalValue.add(Code);
                     if (matcher1.find(matcher.end())) {
+                        FirstValue = Double.parseDouble(matcher1.group());
                         if (matcher1.start() - matcher.end() <= 30) {
                             String Num = matcher1.group();
                             if (!Num.equals("0")) {
                                 row = sheet.createRow(x++);
                                 row.createCell(0).setCellValue(Code);
                                 row.createCell(1).setCellValue(matcher1.group());
+                            }
+                        }
+                    }
+                }
+                if (FinalValue.contains(Code)) {
+                    if (matcher1.find(matcher.end())) {
+                        String NumMatcher = matcher1.group();
+                        double SecondValue = Double.parseDouble(NumMatcher);
+                        if (SecondValue > FirstValue) {
+                            for (Row rowTren : sheet) {
+                                for (Cell CellTren : rowTren) {
+                                    if (CellTren.toString().equals(Code)) {
+                                        Cell ChangePercentage = rowTren.getCell(CellTren.getColumnIndex() + 1);
+                                        ChangePercentage.setCellValue(SecondValue);
+                                    }
+                                }
                             }
                         }
                     }

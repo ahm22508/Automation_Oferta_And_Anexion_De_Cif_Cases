@@ -111,19 +111,47 @@ public class PDFHandling {
         textField1.setPreferredSize(new Dimension(300, 30));
         centerPanel.add(textField1, gbc1);
 
+
+
         JButton btnExtract1 = new JButton("Extract Offer from PCM");
         btnExtract1.setPreferredSize(new Dimension(200, 30));
         centerPanel.add(btnExtract1, gbc1);
+
+
+        GridBagConstraints gbc2 = new GridBagConstraints();
+        gbc2.gridx = 0;
+        gbc2.gridy = GridBagConstraints.RELATIVE;
+        gbc2.insets = new Insets(20, 220, 20, 0);
+
+        JButton ExtractCombinedOffer = new JButton("Extract Offer From PDF and CMP(Coming Soon :) )");
+        ExtractCombinedOffer.setPreferredSize(new Dimension(320, 30));
+        centerPanel.add(ExtractCombinedOffer, gbc2);
+
+        ExtractCombinedOffer.addActionListener( a -> {
+            String FilePDFPath = textField.getText();
+            String FileExcelPath = textField1.getText();
+            File CheckingPointZero = new File(FilePDFPath);
+            File CheckingPointOne = new File(FileExcelPath);
+
+            if (!CheckingPointZero.exists() || !CheckingPointOne.exists()) {
+                JOptionPane.showMessageDialog(frame, "Entry No Correct. Please Enter a Valid PDF and Excel Path in the corresponding Fields.");
+                return;
+            }
+            try {
+                String Text = new  ExtractingData().ReadPdf(FilePDFPath);
+                new TrenesPDF().GetTrenesFromPDF(Text);
+                JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
+            }
+            catch (Exception e){
+               JOptionPane.showMessageDialog(frame,"An error occurred: " + e.getMessage());
+            }
+                });
 
         btnExtract.addActionListener(e -> {
             String filePath = textField.getText();
             File Checking = new File(filePath);
             if (!Checking.exists()) {
-                JOptionPane.showMessageDialog(frame, "Entry No Correct");
-                return;
-            }
-            if (filePath.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "Please enter a valid PDF File.");
+                JOptionPane.showMessageDialog(frame, "Entry No Correct. Please enter a valid PDF File.");
                 return;
             }
             try {
@@ -139,25 +167,19 @@ public class PDFHandling {
         });
 
         btnExtract1.addActionListener(e -> {
-            String excelName = textField1.getText();
-            File directory = new File("C:\\Oferta Extractor\\data");
-            File CheckFile = SearchFile.searchFile(directory, excelName);
+            String FilePath = textField1.getText();
+            File Checking = new File(FilePath);
 
-            if (excelName.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "No Excel file specified.");
-                return;
-            }
-           if(CheckFile == null) {
+           if(!Checking.exists()) {
                    JOptionPane.showMessageDialog(frame, "Entry No Correct. Please enter a valid File.xlsm or xlsx");
                    return;
                }
                 try {
-                    String file = CheckFile.getAbsoluteFile().toString();
-                    new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(file);
-                    new CMPlantilla_Indice().ExtractInfoFromCMP(file);
-                    new CMPlantilla_Minutos().ExtractMinutosFromCMP(file);
-                    new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(file);
-                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(file);
+                    new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(FilePath);
+                    new CMPlantilla_Indice().ExtractInfoFromCMP(FilePath);
+                    new CMPlantilla_Minutos().ExtractMinutosFromCMP(FilePath);
+                    new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FilePath);
+                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(FilePath);
                     JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());

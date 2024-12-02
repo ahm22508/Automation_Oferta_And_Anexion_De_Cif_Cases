@@ -76,6 +76,12 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                                 }
                                             }
                                         }
+                                        if(NextCell.toString().contains("/") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-")){
+                                            double Equation = NextCell.getNumericCellValue()*100;
+                                            row1 = sheet1.createRow(RowNum++);
+                                            row1.createCell(0).setCellValue(matcher.group());
+                                            row1.createCell(1).setCellValue(Math.floor(Equation *100) /100);
+                                        }
                                         if (NextCell.toString().contains("Infinity Business")) {
                                             if (DuplicationTrenes.size() == 1) {
                                                 for (Row InfinityRow : InfinitySheet) {
@@ -113,8 +119,11 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                                 }
                                             }
                                         }
+
+
+                                        }
                                     }
-                            }
+
                                 if(cell.toString().contains("Porcentaje de DTO")) {
                                     int Column = cell.getColumnIndex();
                                     for (Row PercentageRow : sheet) {

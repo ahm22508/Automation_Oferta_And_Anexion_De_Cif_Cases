@@ -25,7 +25,6 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
 
 
 
-
                 int SheetNums = workbook.getNumberOfSheets();
                 for (int i = 0; i < SheetNums; i++) {
                     String SheetName = workbook.getSheetName(i);
@@ -83,9 +82,14 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
                         Row HeaderRow = sheet1.createRow(0);
                         Cell HeaderCell = HeaderRow.createCell(2);
                         HeaderCell.setCellValue("el Fichero de Infinity Business en la plantilla del CM no Existe.");
+                        return;
+                    }
+                    else {
+                        Row HeaderRow = sheet1.createRow(0);
+                        Cell HeaderCell = HeaderRow.createCell(2);
+                        HeaderCell.setCellValue("el Fichero de Infinity Business en la plantilla del CM no Existe.");
                     }
                 }
-
                 //save the new file with the extracted data
                 try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
                     workbook1.write(fileOutputStream);

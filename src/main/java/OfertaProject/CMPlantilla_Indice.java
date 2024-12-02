@@ -39,7 +39,7 @@ public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
                         Row row1;
                         for (Row row : sheet) {
                             for (Cell cell : row) {
-                                if (cell.toString().contains("Comentarios CM")) {
+                                if (cell.toString().contains("Comentarios CM") || cell.toString().contains("Comentarios")) {
                                     Cell NextCell = row.getCell(cell.getColumnIndex() + 1);
                                     if (NextCell != null) {
                                         String Comment = NextCell.getStringCellValue();

@@ -20,7 +20,9 @@ public class CMPlantilla_Descuentos {
         try (FileInputStream fileInputStream = new FileInputStream(file);
              Workbook workbook = new XSSFWorkbook(fileInputStream)) {
             Sheet sheet = workbook.getSheet("Dtos y Tarifas Complementarios");
-
+            if(sheet == null) {
+            sheet = workbook.getSheet("Dtos Complementarios");
+            }
             try (FileInputStream DTOSFile = new FileInputStream("C:\\Oferta Extractor\\data\\DTOS.xlsx");
                  Workbook DTOSWorkbook = new XSSFWorkbook(DTOSFile)) {
                 Sheet DTOSSheet = DTOSWorkbook.getSheetAt(0);
@@ -35,7 +37,7 @@ public class CMPlantilla_Descuentos {
                     int SheetNums = workbook.getNumberOfSheets();
                     for (int i = 0; i < SheetNums; i++) {
                         String SheetName = workbook.getSheetName(i);
-                        if (!workbook.isSheetHidden(i) && SheetName.equals("Dtos y Tarifas Complementarios")) {
+                        if (!workbook.isSheetHidden(i) && (SheetName.equals("Dtos y Tarifas Complementarios") || SheetName.equals("Dtos Complementarios"))) {
 
                             //create new Sheet in the new file
                             Sheet sheet1 = workbook1.createSheet("PlantillaCM-Descuentos y Otros");
@@ -44,7 +46,7 @@ public class CMPlantilla_Descuentos {
                             Pattern pattern1 = Pattern.compile("(?<!-\\s)\\b(MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB|CIPNT)\\b");
                             Pattern pattern2 = Pattern.compile("POS+[A-Z]{2}");
                             Pattern pattern3 = Pattern.compile("POC+[A-Z]{2}");
-                            Pattern NumPattern = Pattern.compile("^\\d+(,\\d+)?(?=\\s*\\w+|\\W+}$)");
+                            Pattern NumPattern = Pattern.compile("^\\d+(,\\d+)?(?=\\s*\\w+|\\W+)");
                             int rowNum = 0;
                             Row row1;
                             Row row2;
