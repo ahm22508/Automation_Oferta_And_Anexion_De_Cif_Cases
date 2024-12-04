@@ -24,7 +24,6 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
                 Sheet sheet1 = workbook1.createSheet("PlantillaCM-Trenes");
 
 
-
                 int SheetNums = workbook.getNumberOfSheets();
                 for (int i = 0; i < SheetNums; i++) {
                     String SheetName = workbook.getSheetName(i);
@@ -82,9 +81,8 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
                         Row HeaderRow = sheet1.createRow(0);
                         Cell HeaderCell = HeaderRow.createCell(2);
                         HeaderCell.setCellValue("el Fichero de Infinity Business en la plantilla del CM no Existe.");
-                        return;
                     }
-                    else {
+                    if (workbook.getSheet("Infinity Business") == null) {
                         Row HeaderRow = sheet1.createRow(0);
                         Cell HeaderCell = HeaderRow.createCell(2);
                         HeaderCell.setCellValue("el Fichero de Infinity Business en la plantilla del CM no Existe.");

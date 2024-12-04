@@ -73,6 +73,11 @@
             <artifactId>log4j-slf4j-impl</artifactId>
             <version>2.20.0</version> <!-- Use the latest version -->
         </dependency>
+        <dependency>
+            <groupId>net.objecthunter</groupId>
+            <artifactId>exp4j</artifactId>
+            <version>0.4.8</version>
+        </dependency>
 
     </dependencies>
 </project>

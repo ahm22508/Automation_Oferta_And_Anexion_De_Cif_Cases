@@ -81,6 +81,7 @@ public class Trenes extends Discounts {
             }
             String[] CommonTrenes = {"DVMOV", "DVOOM", "DVFNA", "DVGCU", "DVSMV", "DVSMO", "DRZRW"};
             String [] MPMVE = {"DVFGC","DVFFN","DVFOM","DVFMV"};
+            HashSet<String> TrenesMultiCifEnElPDF  = new HashSet<>();
 
             if (text.contains("MPMVE") || text.contains("MultiCIF")) {
 
@@ -90,12 +91,20 @@ public class Trenes extends Discounts {
                         row.createCell(0).setCellValue(Tren);
                         row.createCell(1).setCellValue("100");
                     }
+                    if(FinalValue.contains(Tren)){
+                        TrenesMultiCifEnElPDF.add(Tren);
+                    }
                 }
                 for (String TrenMPMVE : MPMVE) {
                     if (text.contains("MPMVE")) {
-                        row = sheet.createRow(x++);
-                        row.createCell(0).setCellValue(TrenMPMVE);
-                        row.createCell(1).setCellValue("100");
+                        if (!FinalValue.contains(TrenMPMVE)) {
+                            row = sheet.createRow(x++);
+                            row.createCell(0).setCellValue(TrenMPMVE);
+                            row.createCell(1).setCellValue("100");
+                        }
+                        if(FinalValue.contains(TrenMPMVE)){
+                            TrenesMultiCifEnElPDF.add(TrenMPMVE);
+                        }
                     }
                 }
                 if (text.contains("SMS internacionales") && !FinalValue.contains("DVSMR")) {
@@ -104,11 +113,17 @@ public class Trenes extends Discounts {
                     row.createCell(1).setCellValue("100");
                     x++;
                 }
+                if(text.contains("SMS internacionales") && FinalValue.contains("DVSMR")){
+                    TrenesMultiCifEnElPDF.add("DVSMR");
+                }
                 if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVINT")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVINT");
                     row.createCell(1).setCellValue("100");
                     x++;
+                }
+                if((text.contains("CIINT") || text.contains("CPINT")) && FinalValue.contains("DVINT")){
+                    TrenesMultiCifEnElPDF.add("DVINT");
                 }
                 if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DV90X")) {
                     row = sheet.createRow(x);
@@ -116,11 +131,17 @@ public class Trenes extends Discounts {
                     row.createCell(1).setCellValue("100");
                     x++;
                 }
+                if((text.contains("CI90X") || text.contains("CP90X"))  && FinalValue.contains("DV90X")){
+                    TrenesMultiCifEnElPDF.add("DV90X");
+                }
                 if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVFIN") && text.contains("MPMVE")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVFIN");
                     row.createCell(1).setCellValue("100");
                     x++;
+                }
+                if((text.contains("CIINT") || text.contains("CPINT")) &&  FinalValue.contains("DVFIN") && text.contains("MPMVE")){
+                    TrenesMultiCifEnElPDF.add("DVFIN");
                 }
                 if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DVFES") && text.contains("MPMVE")) {
                     row = sheet.createRow(x);
@@ -128,11 +149,17 @@ public class Trenes extends Discounts {
                     row.createCell(1).setCellValue("100");
                     x++;
                 }
+                if((text.contains("CI90X") || text.contains("CP90X"))  && FinalValue.contains("DVFES") && text.contains("MPMVE")){
+                    TrenesMultiCifEnElPDF.add("DVFES");
+                }
                 if (text.contains("CIROZ") && !FinalValue.contains("DVRRE")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVRRE");
                     row.createCell(1).setCellValue("100");
                     x++;
+                }
+                if(text.contains("CIROZ") && FinalValue.contains("DVRRE")){
+                    TrenesMultiCifEnElPDF.add("DVRRE");
                 }
                 if (text.contains("CIRRZ") && !FinalValue.contains("DVRSA")) {
                     row = sheet.createRow(x);
@@ -140,8 +167,21 @@ public class Trenes extends Discounts {
                     row.createCell(1).setCellValue("100");
 
                 }
+                if(text.contains("CIRRZ") && FinalValue.contains("DVRSA")){
+                    TrenesMultiCifEnElPDF.add("DVRSA");
+                }
             }
+for(String tren : TrenesMultiCifEnElPDF){
+    for(Row TrenesRow : sheet){
+        for(Cell CellTren : TrenesRow){
+            if(CellTren.toString().equals(tren)){
+                Cell NextCell = TrenesRow.getCell(CellTren.getColumnIndex()+1);
+                NextCell.setCellValue("100");
 
+            }
+        }
+    }
+}
             //save the data in the new file.
             try (FileOutputStream outputStream = new FileOutputStream(FinalFile)) {
                 workbook.write(outputStream);
