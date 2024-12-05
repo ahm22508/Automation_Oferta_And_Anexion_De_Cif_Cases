@@ -82,47 +82,47 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                             row1.createCell(0).setCellValue(matcher.group());
                                             row1.createCell(1).setCellValue(Math.floor(Equation *100) /100);
                                         }
-                                        if (NextCell.toString().contains("Infinity Business")) {
+                                        if (NextCell.toString().contains("Infinity Business") || NextCell.toString().contains("Infinity Business Media")) {
                                             if (DuplicationTrenes.size() == 1) {
-                                                for (Row InfinityRow : InfinitySheet) {
-                                                    for (Cell InfinityCell : InfinityRow) {
-                                                        if (InfinityCell.toString().contains(cell.toString()))
-                                                            for (Cell TrenCell : InfinityRow) {
-                                                                if (TrenCell.toString().contains("TDV04")) {
-                                                                    for (Cell FinalTrenCell : InfinityRow) {
-                                                                        if (FinalTrenCell.toString().contains("Descuento")) {
-                                                                            TrenInfinityBusiness = cell.getStringCellValue();
+                                                if (InfinitySheet != null) {
+                                                    for (Row InfinityRow : InfinitySheet) {
+                                                        for (Cell InfinityCell : InfinityRow) {
+                                                            if (InfinityCell.toString().contains(cell.toString()))
+                                                                for (Cell TrenCell : InfinityRow) {
+                                                                    if (TrenCell.toString().contains("TDV04")) {
+                                                                        for (Cell FinalTrenCell : InfinityRow) {
+                                                                            if (FinalTrenCell.toString().contains("Descuento")) {
+                                                                                TrenInfinityBusiness = cell.getStringCellValue();
+                                                                            }
                                                                         }
                                                                     }
-                                                                }
-                                                                if (TrenCell.toString().contains("%")) {
-                                                                    for (Cell percentageCell : InfinityRow) {
-                                                                        if (percentageCell.toString().contains("TDV04")) {
-                                                                            String PercentageCell = TrenCell.getStringCellValue();
-                                                                            String RemoveTren = PercentageCell.replace(TrenInfinityBusiness, "");
-                                                                            String RemoveSC = RemoveTren.replace("-", "");
-                                                                            String CleanPerc = RemoveSC.replace("%", "");
-                                                                            String CleanSpace = CleanPerc.replace(" ", "");
-                                                                            String CleanComa = CleanSpace.replace(",", ".");
-                                                                            String AddZero = "0" + CleanComa;
-                                                                            double FinalNum = Double.parseDouble(AddZero);
-                                                                            if (FinalNum > 0) {
-                                                                                row1 = sheet1.createRow(RowNum++);
-                                                                                row1.createCell(0).setCellValue(TrenInfinityBusiness);
-                                                                                row1.createCell(1).setCellValue(FinalNum);
+                                                                    if (TrenCell.toString().contains("%")) {
+                                                                        for (Cell percentageCell : InfinityRow) {
+                                                                            if (percentageCell.toString().contains("TDV04")) {
+                                                                                String PercentageCell = TrenCell.getStringCellValue();
+                                                                                String RemoveTren = PercentageCell.replace(TrenInfinityBusiness, "");
+                                                                                String RemoveSC = RemoveTren.replace("-", "");
+                                                                                String CleanPerc = RemoveSC.replace("%", "");
+                                                                                String CleanSpace = CleanPerc.replace(" ", "");
+                                                                                String CleanComa = CleanSpace.replace(",", ".");
+                                                                                String AddZero = "0" + CleanComa;
+                                                                                double FinalNum = Double.parseDouble(AddZero);
+                                                                                if (FinalNum > 0) {
+                                                                                    row1 = sheet1.createRow(RowNum++);
+                                                                                    row1.createCell(0).setCellValue(TrenInfinityBusiness);
+                                                                                    row1.createCell(1).setCellValue(FinalNum);
+                                                                                }
                                                                             }
                                                                         }
                                                                     }
                                                                 }
-                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
-
-
-                                        }
                                     }
+                                }
 
                                 if(cell.toString().contains("Porcentaje de DTO")) {
                                     int Column = cell.getColumnIndex();

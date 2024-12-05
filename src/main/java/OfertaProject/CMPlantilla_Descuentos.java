@@ -34,15 +34,15 @@ public class CMPlantilla_Descuentos {
                      Workbook workbook1 = new XSSFWorkbook()) {
 
                     //check if the sheet is found or not
-                    int N = 0;
+
                     int SheetNums = workbook.getNumberOfSheets();
                             for (int i = 0; i < SheetNums; i++) {
                                 String SheetName = workbook.getSheetName(i);
                                 if (!workbook.isSheetHidden(i) && (SheetName.contains("DTOS") || SheetName.contains("Tarifas") || SheetName.contains("Complementarios") || SheetName.contains("Complem"))) {
 
                                     //create new Sheet in the new file
-                                    N++;
-                                    Sheet sheet1 = workbook1.createSheet("PlantillaCM-Descuentos y Otros"+N);
+
+                                    Sheet sheet1 = workbook1.createSheet(workbook.getSheetName(i));
                                     Sheet sheet = workbook.getSheet(workbook.getSheetName(i));
 
                                     //Extract the specific data
@@ -90,7 +90,7 @@ public class CMPlantilla_Descuentos {
                                                         row2.createCell(0).setCellValue(FinalValue);
                                                         row2.createCell(1).setCellValue(NextCell.getNumericCellValue());
                                                     }
-                                                    else if (NextCell.toString().matches("\\d*\\.?\\d+/\\d*\\.?\\d+") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-")){
+                                                    else if (NextCell.toString().matches("\\d*\\.?\\d+\\s*[-+*/%^]\\s*\\d*\\.?\\d+")){
                                                         for (Cell ConfirmCell : row) {
                                                             if (ConfirmCell.toString().contains("SI")){
                                                                 String CleaningNumber = NextCell.toString().replace("=" , "");
