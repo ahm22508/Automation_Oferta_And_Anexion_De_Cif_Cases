@@ -63,6 +63,13 @@ public class Discounts {
                         row2.createCell(2).setCellValue("All Types");
 
                     }
+                if (text.contains("DSV05")) {
+                    row2 = sheet.createRow(rowNum);
+                    row2.createCell(0).setCellValue("DSVO5");
+                    row2.createCell(1).setCellValue("Descuentos Especial Empresas");
+                    row2.createCell(2).setCellValue("All Types");
+
+                }
                     //save the data in the new file.
                     workbook.write(fileOut);
                 }
