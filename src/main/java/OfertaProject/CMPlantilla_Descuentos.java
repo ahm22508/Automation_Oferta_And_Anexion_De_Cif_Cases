@@ -92,7 +92,7 @@ public class CMPlantilla_Descuentos {
                                                     }
                                                     else if (NextCell.toString().matches("\\d*\\.?\\d+\\s*[-+*/%^]\\s*\\d*\\.?\\d+")){
                                                         for (Cell ConfirmCell : row) {
-                                                            if (ConfirmCell.toString().contains("SI")){
+                                                            if (ConfirmCell.toString().equalsIgnoreCase("SI")){
                                                                 String CleaningNumber = NextCell.toString().replace("=" , "");
                                                                 Expression Express = new ExpressionBuilder(CleaningNumber).build();
                                                                 double Num = Express.evaluate();
@@ -110,6 +110,7 @@ public class CMPlantilla_Descuentos {
                                                     if (ProvisionCell.toString().contains("SI")) {
                                                         row3 = sheet1.createRow(rowNum++);
                                                         row3.createCell(0).setCellValue(matcher2.group());
+                                                        row3.createCell(1).setCellValue("Posventa a nivel de Servicio y a nivel de cuenta es: "+ matcher2.group().replace("POS" , "POC"));
                                                     }
                                                 }
                                             }

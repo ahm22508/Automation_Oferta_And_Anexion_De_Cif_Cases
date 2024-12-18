@@ -60,6 +60,7 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                         Pattern patternNum = Pattern.compile("(\\d+(,\\d+)?)(?=%)");
                         Row row1;
                         String TrenInfinityBusiness = "";
+
                         for (Row row : sheet) {
                             for (Cell cell : row) {
                                 Matcher matcher = pattern.matcher(cell.toString());
@@ -76,12 +77,37 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                                 }
                                             }
                                         }
-                                        if(NextCell.toString().contains("/") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-")){
-                                            double Equation = NextCell.getNumericCellValue()*100;
-                                            row1 = sheet1.createRow(RowNum++);
-                                            row1.createCell(0).setCellValue(matcher.group());
-                                            row1.createCell(1).setCellValue(Math.floor(Equation *100) /100);
+                                        if (NextCell.toString().contains("/") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-")) {
+                                            double Equation = NextCell.getNumericCellValue() * 100;
+                                            double ModifyNum = Math.floor(Equation * 100) / 100;
+                                                row1 = sheet1.createRow(RowNum++);
+                                                row1.createCell(0).setCellValue(matcher.group());
+                                                row1.createCell(1).setCellValue(Math.floor(Equation * 100) / 100);
+                                            if (String.valueOf(ModifyNum).contains(".99")) {
+                                                row1.createCell(1).setCellValue((Math.floor(Equation * 100) / 100) +0.01);
+                                            }
+                                            }
+                                        if(NextCell.toString().matches("[A-Z]\\d+")) {
+                                            Pattern LetterPattern = Pattern.compile("[A-Z](?=\\d+)");
+                                            Matcher LetterMatch = LetterPattern.matcher(NextCell.toString());
+                                            Pattern NumPattern = Pattern.compile("(?<=[A-Z])\\d+");
+                                            Matcher NumMatch = NumPattern.matcher(NextCell.toString());
+                                            int RowNumber;
+                                            if (LetterMatch.find()) {
+                                                ExtractingData extractingData = new ExtractingData();
+                                                int CellNum = extractingData.Converter(LetterMatch.group());
+                                                if (NumMatch.find()) {
+                                                    RowNumber = Integer.parseInt(NumMatch.group())-1;
+                                                    if (sheet.getRow(RowNumber).getCell(CellNum) != null) {
+                                                        double Percentage = sheet.getRow(RowNumber).getCell(CellNum).getNumericCellValue()*100;
+                                                        row1 = sheet1.createRow(RowNum++);
+                                                        row1.createCell(0).setCellValue(matcher.group());
+                                                        row1.createCell(1).setCellValue(Percentage);
+                                                    }
+                                                }
+                                            }
                                         }
+
                                         if (NextCell.toString().contains("Infinity Business") || NextCell.toString().contains("Infinity Business Media")) {
                                             if (DuplicationTrenes.size() == 1) {
                                                 if (InfinitySheet != null) {
@@ -124,7 +150,7 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                     }
                                 }
 
-                                if(cell.toString().contains("Porcentaje de DTO")) {
+                                if (cell.toString().contains("Porcentaje de DTO")) {
                                     int Column = cell.getColumnIndex();
                                     for (Row PercentageRow : sheet) {
                                         Cell PercentageCell = PercentageRow.getCell(Column);
@@ -132,7 +158,7 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                             if (PercentageCell.getCellType() == CellType.STRING) {
                                                 Matcher matcherNum = patternNum.matcher(PercentageCell.toString());
                                                 if (matcherNum.find()) {
-                                                    Cell TrenCell = PercentageRow.getCell(PercentageCell.getColumnIndex()-1);
+                                                    Cell TrenCell = PercentageRow.getCell(PercentageCell.getColumnIndex() - 1);
                                                     row1 = sheet1.createRow(RowNum++);
                                                     row1.createCell(0).setCellValue(TrenCell.getStringCellValue());
                                                     row1.createCell(1).setCellValue(matcherNum.group());
@@ -141,8 +167,19 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                         }
                                     }
                                 }
+                                //First Exception... Here is added all Exception we will have.
+                                if (cell.toString().contains("DSIM")) {
+                                    Cell PercentageCell = row.getCell(cell.getColumnIndex() + 1);
+                                    if (PercentageCell.getCellType() == CellType.NUMERIC) {
+                                        double Percentage = PercentageCell.getNumericCellValue() * 100;
+                                        if (Percentage > 0) {
+                                            row1 = sheet1.createRow(RowNum++);
+                                            row1.createCell(0).setCellValue("DESIM");
+                                            row1.createCell(1).setCellValue(Percentage);
+                                        }
+                                    }
+                                }
                             }
-
                         }
                     }
                 }
