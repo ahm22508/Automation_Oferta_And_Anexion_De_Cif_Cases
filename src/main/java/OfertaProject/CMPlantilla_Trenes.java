@@ -77,7 +77,7 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                                 }
                                             }
                                         }
-                                        if (NextCell.toString().contains("/") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-")) {
+                                        if ((NextCell.toString().contains("/") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-")) && NextCell.getCellType() == CellType.NUMERIC) {
                                             double Equation = NextCell.getNumericCellValue() * 100;
                                             double ModifyNum = Math.floor(Equation * 100) / 100;
                                                 row1 = sheet1.createRow(RowNum++);
@@ -99,9 +99,11 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                                   int RowNumber = Integer.parseInt(NumMatch.group())-1;
                                                     if (sheet.getRow(RowNumber).getCell(CellNum) != null) {
                                                         double Percentage = sheet.getRow(RowNumber).getCell(CellNum).getNumericCellValue()*100;
-                                                        row1 = sheet1.createRow(RowNum++);
-                                                        row1.createCell(0).setCellValue(matcher.group());
-                                                        row1.createCell(1).setCellValue(Percentage);
+                                                        if(Percentage > 0) {
+                                                            row1 = sheet1.createRow(RowNum++);
+                                                            row1.createCell(0).setCellValue(matcher.group());
+                                                            row1.createCell(1).setCellValue(Percentage);
+                                                        }
                                                     }
                                                 }
                                             }
