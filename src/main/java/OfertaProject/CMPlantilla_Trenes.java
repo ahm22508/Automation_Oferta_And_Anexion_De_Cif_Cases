@@ -92,12 +92,11 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                             Matcher LetterMatch = LetterPattern.matcher(NextCell.toString());
                                             Pattern NumPattern = Pattern.compile("(?<=[A-Z])\\d+");
                                             Matcher NumMatch = NumPattern.matcher(NextCell.toString());
-                                            int RowNumber;
                                             if (LetterMatch.find()) {
                                                 ExtractingData extractingData = new ExtractingData();
                                                 int CellNum = extractingData.Converter(LetterMatch.group());
                                                 if (NumMatch.find()) {
-                                                    RowNumber = Integer.parseInt(NumMatch.group())-1;
+                                                  int RowNumber = Integer.parseInt(NumMatch.group())-1;
                                                     if (sheet.getRow(RowNumber).getCell(CellNum) != null) {
                                                         double Percentage = sheet.getRow(RowNumber).getCell(CellNum).getNumericCellValue()*100;
                                                         row1 = sheet1.createRow(RowNum++);
