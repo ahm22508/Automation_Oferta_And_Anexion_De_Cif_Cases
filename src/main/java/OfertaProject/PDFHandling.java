@@ -137,15 +137,19 @@ public class PDFHandling {
                 JOptionPane.showMessageDialog(frame, "Entry No Correct. Please Enter a Valid PDF and Excel Path in the corresponding Fields.");
                 return;
             }
-            try {
-                String Text = new  ExtractingData().ReadPdf(FilePDFPath);
-                new TrenesPDF().GetTrenesFromPDF(Text);
-                JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
-            }
-            catch (Exception e){
-               JOptionPane.showMessageDialog(frame,"An error occurred: " + e.getMessage());
-            }
-                });
+        try {
+            String Text = new  ExtractingData().ReadPdf(FilePDFPath);
+            new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FileExcelPath , 1 , Text);
+            new CMPlantilla_Trenes().ExtractTrenesFromCMP(FileExcelPath, 1 , Text);
+            JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(frame,"An error occurred: " + e.getMessage());
+        }
+    });
+
+
+
 
         btnExtract.addActionListener(e -> {
             String filePath = textField.getText();
@@ -178,8 +182,8 @@ public class PDFHandling {
                     new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(FilePath);
                     new CMPlantilla_Indice().ExtractInfoFromCMP(FilePath);
                     new CMPlantilla_Minutos().ExtractMinutosFromCMP(FilePath);
-                    new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FilePath);
-                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(FilePath);
+                    new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FilePath, 0, "");
+                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(FilePath , 0, "");
                     JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
