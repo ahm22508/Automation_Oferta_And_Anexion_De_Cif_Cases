@@ -29,12 +29,14 @@ public class PostSelling extends Discounts {
                //Extract specific data
                 Pattern pattern1 = Pattern.compile("(?<!/)(?!\\d+\\.\\d+)\\b([1-9]\\d{0,4}|0)\\b");
                 Matcher matcher1 = pattern1.matcher(text);
-                Pattern pattern = Pattern.compile("POS+[A-Z]{2}");
+                Pattern pattern = Pattern.compile("^POS+[A-Z]{2}$");
                 Matcher matcher = pattern.matcher(text);
                 Pattern pattern2 = Pattern.compile("BRW+\\d+");
                 Matcher matcher2 = pattern2.matcher(text);
                 Pattern pattern3 = Pattern.compile("POC+[A-Z]{2}");
                 Matcher matcher3 = pattern3.matcher(text);
+                Pattern pattern4 = Pattern.compile("POS[A-Z]\\d");
+                Matcher matcher4 = pattern4.matcher(text);
                 Row HeaderCell = sheet.createRow(0);
                 HeaderCell.createCell(0).setCellValue("Posventa Y BONO");
                 HeaderCell.createCell(1).setCellValue("Value");
@@ -79,10 +81,28 @@ public class PostSelling extends Discounts {
                         row.createCell(1).setCellValue(Math.max(Num, FirstValue));
                         }
                     }
-
-
                     }
                 }
+                //This for the posventa POSP1 and the similar Post selling.
+            HashSet <String> ExceptionalPosventas = new HashSet<>();
+            while (matcher4.find()) {
+                if (matcher1.find(matcher4.end())) {
+                    String Posventa = matcher4.group();
+                    if (!ExceptionalPosventas.contains(Posventa)) {
+                        ExceptionalPosventas.add(Posventa);
+                        row = sheet.createRow(i++);
+                        row.createCell(0).setCellValue(Posventa);
+                        FirstValue = Integer.parseInt(matcher1.group());
+                    }
+                    if (ExceptionalPosventas.contains(Posventa)) {
+                        if (matcher1.find(matcher4.end())) {
+                            int Num = Integer.parseInt(matcher1.group());
+                            row = sheet.getRow(i - 1);
+                            row.createCell(1).setCellValue(Math.max(Num, FirstValue));
+                        }
+                    }
+                }
+            }
             if(Posventas.isEmpty()) {
                 while (matcher3.find()) {
                     row = sheet.createRow(i++);
