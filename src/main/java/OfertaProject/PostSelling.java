@@ -29,7 +29,7 @@ public class PostSelling extends Discounts {
                //Extract specific data
                 Pattern pattern1 = Pattern.compile("(?<!/)(?!\\d+\\.\\d+)\\b([1-9]\\d{0,4}|0)\\b");
                 Matcher matcher1 = pattern1.matcher(text);
-                Pattern pattern = Pattern.compile("^POS+[A-Z]{2}$");
+                Pattern pattern = Pattern.compile("\\bPOS+[A-Z]{2}\\b");
                 Matcher matcher = pattern.matcher(text);
                 Pattern pattern2 = Pattern.compile("BRW+\\d+");
                 Matcher matcher2 = pattern2.matcher(text);
