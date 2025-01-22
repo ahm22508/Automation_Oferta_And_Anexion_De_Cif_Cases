@@ -144,10 +144,6 @@ public class PostSelling extends Discounts {
                                   row.createCell(1).setCellValue(Tarifa);
                               }
                             }
-
-
-
-
             //save the data in the new file.
             try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
                     workbook.write(fileOutputStream);

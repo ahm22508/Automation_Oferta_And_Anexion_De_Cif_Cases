@@ -140,7 +140,7 @@ public class PDFHandling {
         try {
             String Text = new  ExtractingData().ReadPdf(FilePDFPath);
             new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FileExcelPath , 1 , Text);
-            new CMPlantilla_Trenes().ExtractTrenesFromCMP(FileExcelPath, 1 , Text);
+            new CMPlantilla_Trenes().ExtractTrenesFromCMP(FileExcelPath);
             JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
         }
         catch (Exception e){
@@ -183,7 +183,7 @@ public class PDFHandling {
                     new CMPlantilla_Indice().ExtractInfoFromCMP(FilePath);
                     new CMPlantilla_Minutos().ExtractMinutosFromCMP(FilePath);
                     new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FilePath, 0, "");
-                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(FilePath , 0, "");
+                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(FilePath);
                     JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
