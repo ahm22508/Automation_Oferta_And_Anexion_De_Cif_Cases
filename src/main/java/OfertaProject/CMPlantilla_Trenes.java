@@ -213,6 +213,15 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                         }
                                     }
                                 }
+                                if(cell.toString().equals("DVCAR")){
+                                    for(Cell PorDefectoCell : row){
+                                        if (PorDefectoCell.toString().contains("por defecto") && PorDefectoCell.getColumnIndex() > cell.getColumnIndex()) {
+                                            row1 = sheet1.createRow(RowNum++);
+                                            row1.createCell(0).setCellValue("DVCAR");
+                                            row1.createCell(1).setCellValue(100);
+                                        }
+                                    }
+                                }
                             }
                         }
                         //Map To Resolve The Current Modification Exception...

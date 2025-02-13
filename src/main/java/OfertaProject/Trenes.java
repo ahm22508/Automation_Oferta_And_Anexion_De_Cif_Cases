@@ -50,6 +50,9 @@ public class Trenes extends Discounts {
                                 row = sheet.createRow(x++);
                                 row.createCell(0).setCellValue(Code);
                                 row.createCell(1).setCellValue(matcher1.group());
+                                if(Code.equals("DVXSO") || Code.equals("DVXSV")){
+                                    row.createCell(2).setCellValue("Tren de Red Box");
+                                }
                             }
                         }
                     }
@@ -116,13 +119,13 @@ public class Trenes extends Discounts {
                 if(text.contains("SMS internacionales") && FinalValue.contains("DVSMR")){
                     TrenesMultiCifEnElPDF.add("DVSMR");
                 }
-                if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVINT")) {
+                if ((text.contains("CPINT") || text.contains("CIPNT")|| text.contains("CIINT")) && !FinalValue.contains("DVINT")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVINT");
                     row.createCell(1).setCellValue("100");
                     x++;
                 }
-                if((text.contains("CIINT") || text.contains("CPINT")) && FinalValue.contains("DVINT")){
+                if((text.contains("CIINT") || text.contains("CIPNT")|| text.contains("CPINT")) && FinalValue.contains("DVINT")){
                     TrenesMultiCifEnElPDF.add("DVINT");
                 }
                 if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DV90X")) {
@@ -134,13 +137,13 @@ public class Trenes extends Discounts {
                 if((text.contains("CI90X") || text.contains("CP90X"))  && FinalValue.contains("DV90X")){
                     TrenesMultiCifEnElPDF.add("DV90X");
                 }
-                if ((text.contains("CIINT") || text.contains("CPINT")) && !FinalValue.contains("DVFIN") && text.contains("MPMVE")) {
+                if ((text.contains("CIINT") || text.contains("CPINT") || text.contains("CIPNT")) && !FinalValue.contains("DVFIN") && text.contains("MPMVE")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVFIN");
                     row.createCell(1).setCellValue("100");
                     x++;
                 }
-                if((text.contains("CIINT") || text.contains("CPINT")) &&  FinalValue.contains("DVFIN") && text.contains("MPMVE")){
+                if((text.contains("CPINT")|| text.contains("CIINT") ||  text.contains("CIPNT")) &&  FinalValue.contains("DVFIN") && text.contains("MPMVE")){
                     TrenesMultiCifEnElPDF.add("DVFIN");
                 }
                 if ((text.contains("CI90X") || text.contains("CP90X"))  && !FinalValue.contains("DVFES") && text.contains("MPMVE")) {
