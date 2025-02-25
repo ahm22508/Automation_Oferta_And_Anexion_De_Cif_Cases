@@ -23,8 +23,8 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
 
                 //create new Sheet in the new file
 
-                int Pointer=0;
-                int rowNum=0;
+                int Pointer = 0;
+                int rowNum = 0;
                 int pointer1 = 0;
                 Sheet sheet1 = workbook1.createSheet("PlantillaCM-Trenes");
                 Row row1;
@@ -60,16 +60,16 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
                                                 }
                                             }
                                         }
-                                        if (TrenCell.toString().contains("%")) {
+                                        if (TrenCell.toString().contains("%") && TrenCell.toString().contains("-") && TrenCell.toString().contains("Infinity Business") && TrenCell.toString().contains("ROUND")) {
                                             for (Cell percentageCell : row) {
                                                 if (percentageCell.toString().contains("TDV04")) {
-                                                    String PercentageCell = TrenCell.getStringCellValue();
-                                                    String RemoveTren = PercentageCell.replace(ModTren, "");
-                                                    String RemoveSC = RemoveTren.replace("-", "");
-                                                    String CleanPerc = RemoveSC.replace("%", "");
-                                                    String CleanSpace = CleanPerc.replace(" ", "");
-                                                    String CleanComa = CleanSpace.replace(",", ".");
-                                                    String AddZero = "0" + CleanComa;
+                                                    String PercentageCell = TrenCell.getStringCellValue().
+                                                            replace(ModTren, "").
+                                                            replace("-", "").
+                                                            replace("%", "").
+                                                            replace(" ", "").
+                                                            replace(",", ".");
+                                                    String AddZero = "0" + PercentageCell;
                                                     double FinalNum = Double.parseDouble(AddZero);
                                                     if (FinalNum > 0) {
                                                         row1 = sheet1.createRow(rowNum++);
@@ -87,7 +87,8 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
                         }
                     }
                 }
-                        if (Indicator == 1) {
+
+                                                        if (Indicator == 1) {
                             for (int i1 = 0; i1 < SheetNums; i1++) {
                                 String SheetName = workbook.getSheetName(i1);
                                 if (workbook.isSheetHidden(i1) && (SheetName.equals("Tren") || SheetName.equals("Trenes"))) {

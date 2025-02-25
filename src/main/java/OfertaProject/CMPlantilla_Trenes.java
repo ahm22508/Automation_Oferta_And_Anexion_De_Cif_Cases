@@ -110,7 +110,8 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
 
 
 
-                                        if ((NextCell.toString().contains("/") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-")) && NextCell.getCellType() == CellType.NUMERIC) {
+                                        if ((NextCell.toString().contains("/") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-"))) {
+                                            System.out.println(NextCell.getCellType());
                                             double Equation = NextCell.getNumericCellValue() * 100;
                                             double ModifyNum = Math.floor(Equation * 100) / 100;
                                             row1 = sheet1.createRow(RowNum++);
