@@ -84,6 +84,8 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                     Cell NextCell = row.getCell(cell.getColumnIndex() + 1);
                                     if (NextCell != null) {
                                         if (NextCell.getCellType() == CellType.NUMERIC) {
+                                            System.out.println(NextCell.getNumericCellValue());
+                                            System.out.println(cell);
                                             double Percentage = NextCell.getNumericCellValue() * 100;
                                             if (Percentage > 0) {
                                                 if (!DuplicationTrenes.contains(matcher.group())) {
@@ -91,6 +93,7 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                                     row1.createCell(0).setCellValue(matcher.group());
                                                     row1.createCell(1).setCellValue(Percentage);
                                                 }
+                                            }
 
                                                 if (DuplicationTrenes.contains(matcher.group())) {
 
@@ -106,19 +109,18 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                                         }
                                                     }
                                                 }
-                                            }
 
 
 
-                                        if ((NextCell.toString().contains("/") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-"))) {
-                                            System.out.println(NextCell.getCellType());
+
+                                        if ((NextCell.toString().contains("/") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-") )&& !NextCell.toString().matches(".*[A-Za-z].*")) {
                                             double Equation = NextCell.getNumericCellValue() * 100;
                                             double ModifyNum = Math.floor(Equation * 100) / 100;
                                             row1 = sheet1.createRow(RowNum++);
                                             row1.createCell(0).setCellValue(matcher.group());
                                             row1.createCell(1).setCellValue(Math.floor(Equation * 100) / 100);
                                             if (String.valueOf(ModifyNum).contains(".99")) {
-                                                row1.createCell(1).setCellValue((Math.floor(Equation * 100) / 100) + 0.01);
+                                             row1.createCell(1).setCellValue((Math.floor(Equation * 100) / 100) + 0.01);
                                             }
                                         }
                                         if (NextCell.toString().matches("[A-Z]\\d+")) {
@@ -194,6 +196,7 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                                 matcherNum = patternNum.matcher(PercentageCell.toString());
                                                 if (matcherNum.find()) {
                                                     Cell TrenCell = PercentageRow.getCell(PercentageCell.getColumnIndex() - 1);
+                                                    System.out.println(TrenCell);
                                                     row1 = sheet1.createRow(RowNum++);
                                                     row1.createCell(0).setCellValue(TrenCell.getStringCellValue());
                                                     row1.createCell(1).setCellValue(matcherNum.group());
@@ -202,6 +205,7 @@ public class CMPlantilla_Trenes extends CMPlantilla_Descuentos {
                                         }
                                     }
                                 }
+
                                 //First Exception... Here is added all Exception we will have.
                                 if (cell.toString().contains("DSIM")) {
                                     Cell PercentageCell = row.getCell(cell.getColumnIndex() + 1);

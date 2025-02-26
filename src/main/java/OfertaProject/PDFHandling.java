@@ -138,8 +138,8 @@ public class PDFHandling {
                 return;
             }
         try {
-            String Text = new  ExtractingData().ReadPdf(FilePDFPath);
-            new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FileExcelPath , 1 , Text);
+
+            new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FileExcelPath);
             new CMPlantilla_Trenes().ExtractTrenesFromCMP(FileExcelPath);
             JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
         }
@@ -182,7 +182,7 @@ public class PDFHandling {
                     new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(FilePath);
                     new CMPlantilla_Indice().ExtractInfoFromCMP(FilePath);
                     new CMPlantilla_Minutos().ExtractMinutosFromCMP(FilePath);
-                    new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FilePath, 0, "");
+                    new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FilePath);
                     new CMPlantilla_Trenes().ExtractTrenesFromCMP(FilePath);
                     JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
                 } catch (Exception ex) {
