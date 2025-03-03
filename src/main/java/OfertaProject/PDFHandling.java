@@ -11,8 +11,8 @@ import java.io.File;
 
 public class PDFHandling {
 
-    public static void main(String[] args) throws Exception {
-        FileCreation.createFile();
+    public static void main(String[] args) throws Exception{
+        preLoadWorkbook.preloading();
         JFrame frame = new JFrame();
         frame.setTitle("PDF Offer Extractor");
         frame.setSize(950, 600);
@@ -23,6 +23,9 @@ public class PDFHandling {
             public void windowClosing(WindowEvent e) {
                 try {
                     FileCreation.CloseFile();
+                    FileCreation.closeStreamingOfNewFile();
+                    FileAccess.CloseWorkBook();
+                    FileAccess.CloseStreaming();
                 }
                 catch(Exception EX){
                     throw new RuntimeException(EX);
@@ -127,37 +130,6 @@ public class PDFHandling {
         centerPanel.add(btnExtract1, gbc1);
 
 
-        GridBagConstraints gbc2 = new GridBagConstraints();
-        gbc2.gridx = 0;
-        gbc2.gridy = GridBagConstraints.RELATIVE;
-        gbc2.insets = new Insets(20, 220, 20, 0);
-
-        JButton ExtractCombinedOffer = new JButton("Extract Offer From PDF and CMP(Coming Soon :) )");
-        ExtractCombinedOffer.setPreferredSize(new Dimension(320, 30));
-        centerPanel.add(ExtractCombinedOffer, gbc2);
-
-        ExtractCombinedOffer.addActionListener( a -> {
-            String FilePDFPath = textField.getText();
-            String FileExcelPath = textField1.getText();
-            File CheckingPointZero = new File(FilePDFPath);
-            File CheckingPointOne = new File(FileExcelPath);
-
-            if (!CheckingPointZero.exists() || !CheckingPointOne.exists()) {
-                JOptionPane.showMessageDialog(frame, "Entry No Correct. Please Enter a Valid PDF and Excel Path in the corresponding Fields.");
-                return;
-            }
-        try {
-
-            JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
-        }
-        catch (Exception e){
-            JOptionPane.showMessageDialog(frame,"An error occurred: " + e.getMessage());
-        }
-    });
-
-
-
-
         btnExtract.addActionListener(e -> {
             String filePath = textField.getText();
             File Checking = new File(filePath);
@@ -166,11 +138,14 @@ public class PDFHandling {
                 return;
             }
             try {
+                long Start = System.nanoTime();
                 String text = new ExtractingData().ReadPdf(filePath);
                 new Discounts().ExtractDiscounts(text);
                 new Minutes().ExtractMinutes(text);
                 new PostSelling().ExtractPostSelling(text);
                 new Trenes().ExtractTrenes(text);
+                long end = System.nanoTime();
+                System.out.println(end - Start);
                 JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
@@ -187,9 +162,10 @@ public class PDFHandling {
                }
                 try {
                     //File Starting
-                    new FileAccess().setFile(FilePath);
                     long Start = System.nanoTime();
-                    Workbook PlantillaWorkBook = FileAccess.getWorkBook();
+                    FileCreation.createFile();
+                    new FileAccess().setFile(FilePath);
+                   Workbook PlantillaWorkBook = FileAccess.getWorkBook();
                     //Oferta Extraction
                     new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook);
                     new CMPlantilla_Indice().ExtractInfoFromCMP(PlantillaWorkBook);
@@ -201,6 +177,7 @@ public class PDFHandling {
                     FileCreation.BringFile();
                     long end = System.nanoTime();
                     System.out.println(end - Start);
+
                     JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
 
                 } catch (Exception ex) {

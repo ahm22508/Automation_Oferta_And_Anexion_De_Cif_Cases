@@ -18,7 +18,6 @@ public class FileAccess {
     private static Workbook OpenSheet;
 
 
-
             public void setFile(String FilePath) throws Exception {
                 PlantillaFile = new File(FilePath);
                  OpenFile = new FileInputStream(PlantillaFile);
@@ -28,8 +27,19 @@ public class FileAccess {
             }
 
         public static Workbook getWorkBook() throws Exception{
-               return OpenSheet = new XSSFWorkbook(OpenFile);
+                  return OpenSheet = new XSSFWorkbook(OpenFile);
         }
+        public static void CloseWorkBook() throws Exception{
+                if (OpenSheet != null){
+                    OpenSheet.close();
+                }
+        }
+        public static void CloseStreaming() throws Exception{
+                if(OpenFile != null){
+                    OpenFile.close();
+                }
+        }
+
         public static Sheet getSheet(String SheetName){
                 return OpenSheet.getSheet(SheetName);
             }

@@ -1,7 +1,6 @@
 package OfertaProject;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
-
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.poi.ss.usermodel.*;
@@ -11,7 +10,6 @@ import java.util.regex.Pattern;
 public class CMPlantilla_Descuentos {
 
     public void ExtractDescuentosFromCMP(Workbook PlantillaWorkBook) {
-        CSVParser DTOReader = FileAccess.ReadCSV();
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
         for (int i = 0; i < SheetNums; i++) {
@@ -25,6 +23,7 @@ public class CMPlantilla_Descuentos {
                     OfertaSheet = FileCreation.getSheet("Descuentos y Tarifas");
                 }
                 Sheet DescuentoSheet = FileAccess.getSheet(PlantillaWorkBook.getSheetName(i));
+                CSVParser DTOReader = FileAccess.ReadCSV();
                 //Extract the specific data
                 Pattern pattern1 = Pattern.compile("(?<!-\\s)\\b(MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB|CIPNT)\\b");
                 Pattern pattern2 = Pattern.compile("POS+[A-Z]{2}");
@@ -51,7 +50,6 @@ public class CMPlantilla_Descuentos {
                         }
                     }
                 }
-
                         for (Row row : DescuentoSheet) {
                             for (Cell cell : row) {
                                 Matcher matcher1 = pattern1.matcher(cell.toString());

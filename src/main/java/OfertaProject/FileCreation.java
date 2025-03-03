@@ -9,12 +9,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 public class FileCreation {
-    private static final File OfertaFile = new File("C:\\Oferta Extractor\\data\\PlantillaCM.xlsx");
+    private static final File OfertaFile = new File("PlantillaCM.xlsx");
     private static FileOutputStream OpenFile;
     private static final Workbook OpenSheet = new XSSFWorkbook();
 
     public static void createFile() throws Exception{
         OpenFile = new FileOutputStream(OfertaFile);
+    }
+    public static void closeStreamingOfNewFile() throws Exception{
+        if(OpenFile != null){
+            OpenFile.close();
+        }
     }
 
     public static Sheet createSheet(String newSheetName){
@@ -33,11 +38,7 @@ public class FileCreation {
     }
 
     public static void BringFile() throws Exception{
-        if(Desktop.isDesktopSupported()){
             Desktop desk = Desktop.getDesktop();
-           if(desk.isSupported(Desktop.Action.OPEN)){
                desk.open(OfertaFile);
            }
         }
-    }
-}
