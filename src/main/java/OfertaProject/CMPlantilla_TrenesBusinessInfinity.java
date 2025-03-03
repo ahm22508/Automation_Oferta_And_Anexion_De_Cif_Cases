@@ -1,38 +1,31 @@
 package OfertaProject;
 
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
+public class CMPlantilla_TrenesBusinessInfinity {
 
-    public void ExtractTrenesBIFromCMP(String file) throws IOException {
-        //open the plantilla and search about specific sheet
-        try (FileInputStream fileInputStream = new FileInputStream(file);
-             Workbook workbook = new XSSFWorkbook(fileInputStream)) {
-
-            //Create New Excel File
-            File FinalFile = new File(FileName);
-            try (FileInputStream fileInputStream1 = new FileInputStream(FinalFile);
-                 Workbook workbook1 = new XSSFWorkbook(fileInputStream1)) {
-
-                //create new Sheet in the new file
-
+    public void ExtractTrenesBIFromCMP(Workbook PlantillaWorkBook){
                 int Pointer = 0;
                 int rowNum;
                 int pointer1 = 0;
-                Sheet sheet1 = workbook1.createSheet("PlantillaCM-Trenes");
+
+        Sheet OfertaSheet;
+        if(FileCreation.getSheet("PlantillaCM-Trenes") == null) {
+            OfertaSheet = FileCreation.createSheet("PlantillaCM-Trenes");
+        }
+        else {
+            OfertaSheet = FileCreation.getSheet("PlantillaCM-Trenes");
+        }
                 Row row1;
-                int SheetNums = workbook.getNumberOfSheets();
+                int SheetNums = PlantillaWorkBook.getNumberOfSheets();
                 for (int i = 0; i < SheetNums; i++) {
-                    String SheetName = workbook.getSheetName(i);
-                    if (!workbook.isSheetHidden(i) && (SheetName.contains("Infinity") || SheetName.contains("infinity") || SheetName.contains("Business") || SheetName.contains("business"))) {
+                    String SheetName = PlantillaWorkBook.getSheetName(i);
+                    if (!PlantillaWorkBook.isSheetHidden(i) && (SheetName.contains("Infinity") || SheetName.contains("infinity") || SheetName.contains("Business") || SheetName.contains("business"))) {
                         pointer1++;
-                        Sheet sheet = workbook.getSheet(workbook.getSheetName(i));
-                        Row HeaderRow = sheet1.createRow(0);
+                        Sheet sheet = PlantillaWorkBook.getSheet(PlantillaWorkBook.getSheetName(i));
+                        Row HeaderRow = OfertaSheet.createRow(0);
                         Cell HeaderCell = HeaderRow.createCell(0);
                         HeaderCell.setCellValue("All Trenes From CM-Plantilla...");
 
@@ -70,10 +63,10 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
                                                     String AddZero = "0" + PercentageCell;
                                                     double FinalNum = Double.parseDouble(AddZero);
                                                     if (FinalNum > 0) {
-                                                        row1 = sheet1.createRow(rowNum++);
+                                                        row1 = OfertaSheet.createRow(rowNum++);
                                                         row1.createCell(0).setCellValue(matcher.group());
                                                         row1.createCell(1).setCellValue(FinalNum);
-                                                        row1.createCell(2).setCellValue("Trenes del Fichero " + workbook.getSheetName(i));
+                                                        row1.createCell(2).setCellValue("Trenes del Fichero " + PlantillaWorkBook.getSheetName(i));
                                                         Pointer = rowNum;
                                                     }
                                                 }
@@ -85,28 +78,18 @@ public class CMPlantilla_TrenesBusinessInfinity extends CMPlantilla_Descuentos {
                         }
                     }
                 }
-
-
                 for (int i = 0; i < SheetNums; i++) {
-                    String SheetName = workbook.getSheetName(i);
-                    if (workbook.isSheetHidden(i) && SheetName.equals("Infinity Business")) {
-                        Row HeaderRow = sheet1.createRow(0);
+                    String SheetName = PlantillaWorkBook.getSheetName(i);
+                    if (PlantillaWorkBook.isSheetHidden(i) && SheetName.equals("Infinity Business")) {
+                        Row HeaderRow = OfertaSheet.createRow(0);
                         Cell HeaderCell = HeaderRow.createCell(2);
                         HeaderCell.setCellValue("el Fichero de Infinity Business en la plantilla del CM no Existe.");
                     }
-                    if (workbook.getSheet("Infinity Business") == null) {
-                        Row HeaderRow = sheet1.createRow(0);
+                    if (PlantillaWorkBook.getSheet("Infinity Business") == null) {
+                        Row HeaderRow = OfertaSheet.createRow(0);
                         Cell HeaderCell = HeaderRow.createCell(2);
                         HeaderCell.setCellValue("el Fichero de Infinity Business en la plantilla del CM no Existe.");
                     }
-                }
-
-
-                //save the new file with the extracted data
-                try (FileOutputStream fileOutputStream = new FileOutputStream(FinalFile)) {
-                    workbook1.write(fileOutputStream);
                 }
             }
         }
-    }
-}

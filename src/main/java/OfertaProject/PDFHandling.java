@@ -1,29 +1,38 @@
 package OfertaProject;
 
+import org.apache.poi.ss.usermodel.Workbook;
+
 import javax.swing.*;
 import java.awt.*;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 
 
 public class PDFHandling {
 
-    public static void main(String[] args) {
-
-
+    public static void main(String[] args) throws Exception {
+        FileCreation.createFile();
         JFrame frame = new JFrame();
         frame.setTitle("PDF Offer Extractor");
         frame.setSize(950, 600);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    FileCreation.CloseFile();
+                }
+                catch(Exception EX){
+                    throw new RuntimeException(EX);
+                }
+            }
+        });
         frame.setLayout(new BorderLayout());
 
         ImageIcon imageIcon = new ImageIcon("C:\\Oferta Extractor\\data\\Icon.jpg");
         frame.setIconImage(imageIcon.getImage());
-
-
 
         JPanel centerPanel = new JPanel() {
 
@@ -139,8 +148,6 @@ public class PDFHandling {
             }
         try {
 
-            new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FileExcelPath);
-            new CMPlantilla_Trenes().ExtractTrenesFromCMP(FileExcelPath);
             JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
         }
         catch (Exception e){
@@ -179,12 +186,23 @@ public class PDFHandling {
                    return;
                }
                 try {
-                    new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(FilePath);
-                    new CMPlantilla_Indice().ExtractInfoFromCMP(FilePath);
-                    new CMPlantilla_Minutos().ExtractMinutosFromCMP(FilePath);
-                    new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(FilePath);
-                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(FilePath);
+                    //File Starting
+                    new FileAccess().setFile(FilePath);
+                    long Start = System.nanoTime();
+                    Workbook PlantillaWorkBook = FileAccess.getWorkBook();
+                    //Oferta Extraction
+                    new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook);
+                    new CMPlantilla_Indice().ExtractInfoFromCMP(PlantillaWorkBook);
+                    new CMPlantilla_Minutos().ExtractMinutosFromCMP(PlantillaWorkBook);
+                    new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(PlantillaWorkBook);
+                    new CMPlantilla_Trenes().ExtractTrenesFromCMP(PlantillaWorkBook);
+                    // File Saving and Closing
+                    FileCreation.SaveFile();
+                    FileCreation.BringFile();
+                    long end = System.nanoTime();
+                    System.out.println(end - Start);
                     JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
+
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
                 }
@@ -192,5 +210,6 @@ public class PDFHandling {
         frame.add(centerPanel, BorderLayout.CENTER);
 
         frame.setVisible(true);
+
     }
 }
