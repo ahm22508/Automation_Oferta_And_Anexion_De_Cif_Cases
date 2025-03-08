@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 
 public class PostSelling extends Discounts {
 
+
     public void ExtractPostSelling(String text) throws IOException {
 
         //Create new Excel File and new Sheet
@@ -150,4 +151,4 @@ public class PostSelling extends Discounts {
                 }
             }
          }
-      }
+}

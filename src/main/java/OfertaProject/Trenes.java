@@ -37,6 +37,7 @@ public class Trenes extends Discounts {
             int x = 0;
             Row row;
             Set<String> FinalValue = new HashSet<>();
+            String [] ArrayOfPrimarios = {"DPRID" ,"DVFME", "DVFES" ,"DVFGC","DVFIN","DVFFN","DVFOM","DVFMV"};
             double FirstValue =0;
             while (matcher.find()) {
                 String Code = matcher.group();
@@ -50,8 +51,16 @@ public class Trenes extends Discounts {
                                 row = sheet.createRow(x++);
                                 row.createCell(0).setCellValue(Code);
                                 row.createCell(1).setCellValue(matcher1.group());
-                                if(Code.equals("DVXSO") || Code.equals("DVXSV")){
+                                row.createCell(2).setCellValue(" ");
+                                if (Code.equals("DVXSO") || Code.equals("DVXSV")) {
                                     row.createCell(2).setCellValue("Tren de Red Box");
+                                }
+                                if (text.contains("LVAPC")|| text.contains("LVSH")) {
+                                    for (String trPr : ArrayOfPrimarios) {
+                                        if (trPr.equals(Code)) {
+                                            row.createCell(2).setCellValue("Tren de Primaria");
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -79,6 +88,7 @@ public class Trenes extends Discounts {
                 row = sheet.createRow(x);
                 row.createCell(0).setCellValue("DRZRW");
                 row.createCell(1).setCellValue("100");
+                row.createCell(2).setCellValue("");
                 FinalValue.add("DRZRW");
             x++;
             }
@@ -87,12 +97,17 @@ public class Trenes extends Discounts {
             HashSet<String> TrenesMultiCifEnElPDF  = new HashSet<>();
 
             if (text.contains("MPMVE") || text.contains("MultiCIF")) {
-
                 for (String Tren : CommonTrenes) {
                     if (!FinalValue.contains(Tren)) {
                         row = sheet.createRow(x++);
                         row.createCell(0).setCellValue(Tren);
                         row.createCell(1).setCellValue("100");
+                        if(text.contains("MPMVE")){
+                            row.createCell(2).setCellValue("Tren de MPMVE");
+                        }
+                         if(text.contains("MultiCIF")){
+                            row.createCell(2).setCellValue("Tren de MultiCif");
+                        }
                     }
                     if(FinalValue.contains(Tren)){
                         TrenesMultiCifEnElPDF.add(Tren);
@@ -104,6 +119,7 @@ public class Trenes extends Discounts {
                             row = sheet.createRow(x++);
                             row.createCell(0).setCellValue(TrenMPMVE);
                             row.createCell(1).setCellValue("100");
+                            row.createCell(2).setCellValue("Tren de MPMVE");
                         }
                         if(FinalValue.contains(TrenMPMVE)){
                             TrenesMultiCifEnElPDF.add(TrenMPMVE);
@@ -114,6 +130,15 @@ public class Trenes extends Discounts {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVSMR");
                     row.createCell(1).setCellValue("100");
+                    if(text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren de MPMVE");
+                    }
+                    else if(text.contains("MultiCIF")){
+                        row.createCell(2).setCellValue("Tren de MultiCif");
+                    }
+                    else if(text.contains("MultiCIF") && text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren del MultiCIF y MPMVE");
+                    }
                     x++;
                 }
                 if(text.contains("SMS internacionales") && FinalValue.contains("DVSMR")){
@@ -123,6 +148,15 @@ public class Trenes extends Discounts {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVINT");
                     row.createCell(1).setCellValue("100");
+                    if(text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren de MPMVE");
+                    }
+                    else if(text.contains("MultiCIF")){
+                        row.createCell(2).setCellValue("Tren de MultiCif");
+                    }
+                    else if(text.contains("MultiCIF") && text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren del MultiCIF y MPMVE");
+                    }
                     x++;
                 }
                 if((text.contains("CIINT") || text.contains("CIPNT")|| text.contains("CPINT")) && FinalValue.contains("DVINT")){
@@ -132,6 +166,15 @@ public class Trenes extends Discounts {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DV90X");
                     row.createCell(1).setCellValue("100");
+                    if(text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren de MPMVE");
+                    }
+                    else if(text.contains("MultiCIF")){
+                        row.createCell(2).setCellValue("Tren de MultiCif");
+                    }
+                   else if(text.contains("MultiCIF") && text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren del MultiCIF y MPMVE");
+                    }
                     x++;
                 }
                 if((text.contains("CI90X") || text.contains("CP90X"))  && FinalValue.contains("DV90X")){
@@ -141,6 +184,15 @@ public class Trenes extends Discounts {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVFIN");
                     row.createCell(1).setCellValue("100");
+                    if(text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren de MPMVE");
+                    }
+                   else if(text.contains("MultiCIF")){
+                        row.createCell(2).setCellValue("Tren de MultiCif");
+                    }
+                    else if(text.contains("MultiCIF") && text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren del MultiCIF y MPMVE");
+                    }
                     x++;
                 }
                 if((text.contains("CPINT")|| text.contains("CIINT") ||  text.contains("CIPNT")) &&  FinalValue.contains("DVFIN") && text.contains("MPMVE")){
@@ -150,6 +202,15 @@ public class Trenes extends Discounts {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVFES");
                     row.createCell(1).setCellValue("100");
+                    if(text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren de MPMVE");
+                    }
+                   else if(text.contains("MultiCIF")){
+                        row.createCell(2).setCellValue("Tren de MultiCif");
+                    }
+                   else if(text.contains("MultiCIF") && text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren del MultiCIF y MPMVE");
+                    }
                     x++;
                 }
                 if((text.contains("CI90X") || text.contains("CP90X"))  && FinalValue.contains("DVFES") && text.contains("MPMVE")){
@@ -159,28 +220,54 @@ public class Trenes extends Discounts {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVRRE");
                     row.createCell(1).setCellValue("100");
+                    if(text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren de MPMVE");
+                    }
+                    else if(text.contains("MultiCIF")){
+                        row.createCell(2).setCellValue("Tren de MultiCif");
+                    }
+                   else if(text.contains("MultiCIF") && text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren del MultiCIF y MPMVE");
+                    }
                     x++;
                 }
                 if(text.contains("CIROZ") && FinalValue.contains("DVRRE")){
                     TrenesMultiCifEnElPDF.add("DVRRE");
                 }
+
                 if (text.contains("CIRRZ") && !FinalValue.contains("DVRSA")) {
                     row = sheet.createRow(x);
                     row.createCell(0).setCellValue("DVRSA");
                     row.createCell(1).setCellValue("100");
-
+                    if(text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren de MPMVE");
+                    }
+                   else if(text.contains("MultiCIF")){
+                        row.createCell(2).setCellValue("Tren de MultiCif");
+                    }
+                   else if(text.contains("MultiCIF") && text.contains("MPMVE")){
+                        row.createCell(2).setCellValue("Tren del MultiCIF y MPMVE");
+                    }
                 }
+
                 if(text.contains("CIRRZ") && FinalValue.contains("DVRSA")){
                     TrenesMultiCifEnElPDF.add("DVRSA");
                 }
             }
+
 for(String tren : TrenesMultiCifEnElPDF){
     for(Row TrenesRow : sheet){
         for(Cell CellTren : TrenesRow){
             if(CellTren.toString().equals(tren)){
                 Cell NextCell = TrenesRow.getCell(CellTren.getColumnIndex()+1);
                 NextCell.setCellValue("100");
+                if(text.contains("MultiCIF")) {
+                    TrenesRow.getCell(2).setCellValue("Tren del MultiCIF-Nuevo JO");
+                }
+                if(text.contains("MPMVE")) {
+                    TrenesRow.getCell(2).setCellValue("Tren del MPMVE-Nuevo JO");
 
+                }
             }
         }
     }
