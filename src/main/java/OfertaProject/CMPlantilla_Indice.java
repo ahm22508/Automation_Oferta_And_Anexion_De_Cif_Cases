@@ -8,7 +8,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
 
-    public void ExtractInfoFromCMP(Workbook PlantillaWorkBook) throws Exception {
+    public void ExtractInfoFromCMP(Workbook PlantillaWorkBook) {
 
         //check if the sheet is found or not
                 int SheetNums = PlantillaWorkBook.getNumberOfSheets();

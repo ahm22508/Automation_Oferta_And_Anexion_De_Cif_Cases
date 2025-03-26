@@ -41,12 +41,4 @@ public class ExtractingData {
         return ConvertLetter.get(Letter);
     }
 
-    public static String Descuentos() throws Exception{
-        String Decuentos = "";
-         PdfDocument DTOS = new PdfDocument(new PdfReader("C:\\Oferta Extractor\\data\\DTOS.pdf"));
-         for(int i = 1; i < DTOS.getNumberOfPages(); i++){
-             Decuentos = PdfTextExtractor.getTextFromPage(DTOS.getPage(i));
-        }
-        return Decuentos;
-    }
 }

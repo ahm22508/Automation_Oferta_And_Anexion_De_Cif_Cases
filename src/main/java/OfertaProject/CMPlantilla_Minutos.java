@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class CMPlantilla_Minutos {
 
-    public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook) throws Exception {
+    public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook) {
 
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
