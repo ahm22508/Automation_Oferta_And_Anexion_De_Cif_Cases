@@ -7,7 +7,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashSet;
 
 
@@ -16,7 +15,7 @@ public class Discounts {
 
     String FileName = "OfertaPDFDeActivacion.xlsx";
 
-    public void ExtractDiscounts(String text) throws IOException {
+    public void ExtractDiscounts(String text) throws Exception {
 
         //Create new Excel File and new Sheet
         File FinalFile = new File(FileName);
@@ -25,7 +24,7 @@ public class Discounts {
             Sheet sheet = workbook.createSheet("Descuentos");
 
             //open the DTOS File and search into it.
-            try (FileInputStream file = new FileInputStream("C:\\Oferta Extractor\\data\\DTOS.xlsx");
+            try (FileInputStream file = new FileInputStream(FileAccess.accessToDTOFile());
                  Workbook workbook1 = new XSSFWorkbook(file)) {
                 Sheet sheet1 = workbook1.getSheetAt(0);
 

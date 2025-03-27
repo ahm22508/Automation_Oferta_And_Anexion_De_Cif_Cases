@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Properties;
 
 public class FileAccess {
 
@@ -54,6 +55,13 @@ public class FileAccess {
                     EX.getCause();
                 }
                 return CSVReader;
+            }
+
+            public static String accessToDTOFile() throws Exception{
+                Properties proper = new Properties();
+                FileInputStream file = new FileInputStream("C:\\Oferta Extractor\\data\\file.properties");
+                proper.load(file);
+                return proper.getProperty("url");
             }
 
 

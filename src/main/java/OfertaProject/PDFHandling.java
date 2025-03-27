@@ -138,14 +138,12 @@ public class PDFHandling {
                 return;
             }
             try {
-                long Start = System.nanoTime();
                 String text = new ExtractingData().ReadPdf(filePath);
                 new Discounts().ExtractDiscounts(text);
                 new Minutes().ExtractMinutes(text);
                 new PostSelling().ExtractPostSelling(text);
                 new Trenes().ExtractTrenes(text);
-                long end = System.nanoTime();
-                System.out.println(end - Start);
+
                 JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(frame, "An error occurred: " + ex.getMessage());
@@ -162,7 +160,6 @@ public class PDFHandling {
                }
                 try {
                     //File Starting
-                    long Start = System.nanoTime();
                     FileCreation.createFile();
                     new FileAccess().setFile(FilePath);
                    Workbook PlantillaWorkBook = FileAccess.getWorkBook();
@@ -175,8 +172,6 @@ public class PDFHandling {
                     // File Saving and Closing
                     FileCreation.SaveFile();
                     FileCreation.BringFile();
-                    long end = System.nanoTime();
-                    System.out.println(end - Start);
 
                     JOptionPane.showMessageDialog(frame, "Offer is extracted successfully.");
 
