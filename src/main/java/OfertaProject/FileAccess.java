@@ -63,8 +63,4 @@ public class FileAccess {
                 proper.load(file);
                 return proper.getProperty("url");
             }
-
-
     }
-
-
