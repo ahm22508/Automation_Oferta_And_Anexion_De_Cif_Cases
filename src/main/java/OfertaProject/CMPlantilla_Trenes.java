@@ -14,7 +14,7 @@ public class CMPlantilla_Trenes {
         Sheet InfinitySheet = PlantillaWorkBook.getSheet("Infinity Business");
 
         //create new Sheet in the new file
-        Sheet OfertaSheet = FileCreation.getSheet("PlantillaCM-Trenes");
+        Sheet OfertaSheet = FileCreationForExcel.getSheet("PlantillaCM-Trenes");
 
         int RowNum = 0;
         int iterator = 0;

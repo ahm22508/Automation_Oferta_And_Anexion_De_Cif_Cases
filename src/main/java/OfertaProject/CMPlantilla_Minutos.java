@@ -17,11 +17,11 @@ public class CMPlantilla_Minutos {
 
                 //create new Sheet in the new file
                 Sheet OfertaSheet;
-                if(FileCreation.getSheet("PlantillaCM-Minutos") == null) {
-                    OfertaSheet = FileCreation.createSheet("PlantillaCM-Minutos");
+                if(FileCreationForExcel.getSheet("PlantillaCM-Minutos") == null) {
+                    OfertaSheet = FileCreationForExcel.createSheet("PlantillaCM-Minutos");
                 }
                 else {
-                    OfertaSheet = FileCreation.getSheet("PlantillaCM-Minutos");
+                    OfertaSheet = FileCreationForExcel.getSheet("PlantillaCM-Minutos");
                 }
                 Sheet MinutosSheet = FileAccess.getSheet("Infinity Business");
                 //Extract the specific data

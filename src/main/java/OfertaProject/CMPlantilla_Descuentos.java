@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class CMPlantilla_Descuentos {
 
-    public void ExtractDescuentosFromCMP(Workbook PlantillaWorkBook) {
+    public void ExtractDescuentosFromCMP(Workbook PlantillaWorkBook) throws Exception{
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
         for (int i = 0; i < SheetNums; i++) {
@@ -17,10 +17,10 @@ public class CMPlantilla_Descuentos {
             if (!PlantillaWorkBook.isSheetHidden(i) && (SheetName.contains("DTOS") || SheetName.contains("Tarifas") || SheetName.contains("Complementarios") || SheetName.contains("Complem"))) {
                 //create new Sheet in the new file
                 Sheet OfertaSheet;
-                if (FileCreation.getSheet("Descuentos y Tarifas") == null) {
-                    OfertaSheet = FileCreation.createSheet("Descuentos y Tarifas");
+                if (FileCreationForExcel.getSheet("Descuentos y Tarifas") == null) {
+                    OfertaSheet = FileCreationForExcel.createSheet("Descuentos y Tarifas");
                 } else {
-                    OfertaSheet = FileCreation.getSheet("Descuentos y Tarifas");
+                    OfertaSheet = FileCreationForExcel.getSheet("Descuentos y Tarifas");
                 }
                 Sheet DescuentoSheet = FileAccess.getSheet(PlantillaWorkBook.getSheetName(i));
                 CSVParser DTOReader = FileAccess.ReadCSV();
@@ -32,12 +32,11 @@ public class CMPlantilla_Descuentos {
                 Row row1;
                 Row row2;
                 Row row3;
-                String DTO;
+
                 for (CSVRecord Record : DTOReader) {
-                    DTO = Record.get(0);
                     for (Row row : DescuentoSheet) {
                     for (Cell cell : row) {
-                            if (DTO.equals(cell.toString()) && !DTO.isEmpty()){
+                            if (Record.get(0).equals(cell.toString()) && !Record.get(0).isEmpty()){
                                 for (Cell CodeCell : row) {
                                     if (CodeCell.toString().contains("SI") || CodeCell.toString().contains("SÍ")) {
                                         row1 = OfertaSheet.createRow(rowNum++);

@@ -1,77 +1,58 @@
 package OfertaProject;
 
 
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.HashSet;
 
 
 
 public class Discounts {
 
-    String FileName = "OfertaPDFDeActivacion.xlsx";
 
     public void ExtractDiscounts(String text) throws Exception {
 
-        //Create new Excel File and new Sheet
-        File FinalFile = new File(FileName);
-        try (Workbook workbook = new XSSFWorkbook();
-             FileOutputStream fileOut = new FileOutputStream(FinalFile)) {
-            Sheet sheet = workbook.createSheet("Descuentos");
+        //open the DTOS File and search into it.
+        Sheet OfertaSheet;
+        if (FileCreationForExcel.getSheet("Descuentos") == null) {
+            OfertaSheet = FileCreationForPDF.createSheet("Descuentos");
+        } else {
+            OfertaSheet = FileCreationForPDF.getSheet("Descuentos");
+        }
 
-            //open the DTOS File and search into it.
-            try (FileInputStream file = new FileInputStream(FileAccess.accessToDTOFile());
-                 Workbook workbook1 = new XSSFWorkbook(file)) {
-                Sheet sheet1 = workbook1.getSheetAt(0);
+        //Extract specific data
+        int rowNum = 0;
+        Row row2;
+        HashSet<String> DTOS = new HashSet<>();
+        CSVParser DTOReader = FileAccess.ReadCSV();
 
-                //Extract specific data
-                int rowNum = 0;
-                Row row2;
-                HashSet<String> DTOS = new HashSet<>();
+        for (CSVRecord record : DTOReader) {
 
-                for (Row row : sheet1) {
-                    Cell DiscountCell = row.getCell(0);
-                    if (DiscountCell != null) {
-                        if (text.contains(DiscountCell.getStringCellValue())) {
-                            DTOS.add(DiscountCell.toString());
-                            Cell CatalogCell = row.getCell(1);
-                            if (CatalogCell != null) {
-                                    Cell OfertaCell = row.getCell(2);
-                                    if (OfertaCell != null) {
-                                            if (!DiscountCell.toString().contains(DTOS.toString())) {
-                                                Row row1 = sheet.createRow(rowNum++);
-                                                row1.createCell(0).setCellValue(DiscountCell.toString());
-                                                row1.createCell(1).setCellValue(CatalogCell.toString());
-                                                row1.createCell(2).setCellValue(OfertaCell.toString());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+            if (text.contains(record.get(0)) && !record.get(0).isEmpty()) {
+                DTOS.add(record.get(0));
+                        if (!record.get(0).contains(DTOS.toString())) {
+                            Row row1 = OfertaSheet.createRow(rowNum++);
+                            row1.createCell(0).setCellValue(record.get(0));
+                            row1.createCell(1).setCellValue(record.get(1));
+                            row1.createCell(2).setCellValue(record.get(2));
                         }
-
-
-                    if (text.contains("DVOPD")) {
-                        row2 = sheet.createRow(rowNum);
-                        row2.createCell(0).setCellValue("DOVPD");
-                        row2.createCell(1).setCellValue("Descuentos Empresas");
-                        row2.createCell(2).setCellValue("All Types");
-
                     }
-                if (text.contains("DSV05")) {
-                    row2 = sheet.createRow(rowNum);
-                    row2.createCell(0).setCellValue("DSVO5");
-                    row2.createCell(1).setCellValue("Descuentos Especial Empresas");
-                    row2.createCell(2).setCellValue("All Types");
+                }
+        if (text.contains("DVOPD")) {
+            row2 = OfertaSheet.createRow(rowNum);
+            row2.createCell(0).setCellValue("DOVPD");
+            row2.createCell(1).setCellValue("Descuentos Empresas");
+            row2.createCell(2).setCellValue("All Types");
 
-                }
-                    //save the data in the new file.
-                    workbook.write(fileOut);
-                }
-            }
+        }
+        if (text.contains("DSV05")) {
+            row2 = OfertaSheet.createRow(rowNum);
+            row2.createCell(0).setCellValue("DSVO5");
+            row2.createCell(1).setCellValue("Descuentos Especial Empresas");
+            row2.createCell(2).setCellValue("All Types");
+
         }
     }
+}

@@ -17,11 +17,11 @@ public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
                     if (!PlantillaWorkBook.isSheetHidden(i) && SheetName.equals("Indice")) {
                         //create new Sheet in the new file
                         Sheet OfertaSheet;
-                        if(FileCreation.getSheet("PlantillaCM-Indice") == null) {
-                            OfertaSheet = FileCreation.createSheet("PlantillaCM-Indice");
+                        if(FileCreationForExcel.getSheet("PlantillaCM-Indice") == null) {
+                            OfertaSheet = FileCreationForExcel.createSheet("PlantillaCM-Indice");
                         }
                         else {
-                            OfertaSheet = FileCreation.getSheet("PlantillaCM-Indice");
+                            OfertaSheet = FileCreationForExcel.getSheet("PlantillaCM-Indice");
                         }
                         //Extract the specific data
                         Row row1;

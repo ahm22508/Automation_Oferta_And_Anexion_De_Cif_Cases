@@ -8,7 +8,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class FileCreation {
+public class FileCreationForExcel {
     private static final File OfertaFile = new File("PlantillaCM.xlsx");
     private static FileOutputStream OpenFile;
     private static final Workbook OpenSheet = new XSSFWorkbook();

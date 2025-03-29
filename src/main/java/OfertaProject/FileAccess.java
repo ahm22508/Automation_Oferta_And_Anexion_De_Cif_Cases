@@ -45,10 +45,10 @@ public class FileAccess {
                 return OpenSheet.getSheet(SheetName);
             }
 
-            public static CSVParser ReadCSV(){
+            public static CSVParser ReadCSV() throws Exception{
               CSVParser CSVReader = null;
                 try {
-                    FileReader DTOFile = new FileReader("C:\\Oferta Extractor\\data\\DTOS.csv");
+                    FileReader DTOFile = new FileReader(accessToDTOFile());
                     CSVReader = CSVFormat.DEFAULT.parse(DTOFile);
                 }
                 catch (IOException EX){

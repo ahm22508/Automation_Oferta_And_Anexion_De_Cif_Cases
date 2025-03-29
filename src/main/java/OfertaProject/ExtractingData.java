@@ -32,11 +32,11 @@ public class ExtractingData {
         ConvertLetter.put("C" , 2);
         ConvertLetter.put("D" , 3);
         ConvertLetter.put("E" , 4);
-        ConvertLetter.put("F", 5);
+        ConvertLetter.put("F",  5);
         ConvertLetter.put("G" , 6);
-        ConvertLetter.put("H", 7);
-        ConvertLetter.put("I", 8);
-        ConvertLetter.put("J", 9);
+        ConvertLetter.put("H",  7);
+        ConvertLetter.put("I",  8);
+        ConvertLetter.put("J",  9);
         ConvertLetter.put("K", 10);
         return ConvertLetter.get(Letter);
     }

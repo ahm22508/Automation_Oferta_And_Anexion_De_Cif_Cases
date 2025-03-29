@@ -12,11 +12,11 @@ public class CMPlantilla_TrenesBusinessInfinity {
                 int pointer1 = 0;
 
         Sheet OfertaSheet;
-        if(FileCreation.getSheet("PlantillaCM-Trenes") == null) {
-            OfertaSheet = FileCreation.createSheet("PlantillaCM-Trenes");
+        if(FileCreationForExcel.getSheet("PlantillaCM-Trenes") == null) {
+            OfertaSheet = FileCreationForExcel.createSheet("PlantillaCM-Trenes");
         }
         else {
-            OfertaSheet = FileCreation.getSheet("PlantillaCM-Trenes");
+            OfertaSheet = FileCreationForExcel.getSheet("PlantillaCM-Trenes");
         }
                 Row row1;
                 int SheetNums = PlantillaWorkBook.getNumberOfSheets();

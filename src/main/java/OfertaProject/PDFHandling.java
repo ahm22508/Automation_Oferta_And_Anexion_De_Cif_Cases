@@ -19,15 +19,21 @@ public class PDFHandling {
             Scanner pdfScan = new Scanner(System.in);
             String filePath = pdfScan.nextLine().replace("\"" , "");
             if(FileAnalysis.isFile(filePath)){
+                long start = System.currentTimeMillis();
                 String text = new ExtractingData().ReadPdf(filePath);
+                FileCreationForPDF.createFile();
                 new Discounts().ExtractDiscounts(text);
                 new Minutes().ExtractMinutes(text);
                 new PostSelling().ExtractPostSelling(text);
                 new Trenes().ExtractTrenes(text);
-                FileCreation.CloseFile();
-                FileCreation.closeStreamingOfNewFile();
-                FileAccess.CloseWorkBook();
-                FileAccess.CloseStreaming();
+                long end = System.currentTimeMillis();
+                System.out.println(end - start);
+                System.out.println("Offer is extracted correctly");
+
+                FileCreationForPDF.SaveFile();
+                FileCreationForPDF.BringFile();
+                FileCreationForPDF.CloseFile();
+                FileCreationForPDF.closeStreamingOfNewFile();
             }
             else {
                   System.out.println("incorrect Entry. Try again");
@@ -41,22 +47,23 @@ public class PDFHandling {
             String filePath = excelScan.nextLine().replace("\"" , "");
             if(FileAnalysis.isFile(filePath)){
                 //File Starting
-                FileCreation.createFile();
                 new FileAccess().setFile(filePath);
                 Workbook PlantillaWorkBook = FileAccess.getWorkBook();
-                //Oferta Extraction
+
+                //File Creation and Oferta Extraction
+                FileCreationForExcel.createFile();
                 new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook);
                 new CMPlantilla_Indice().ExtractInfoFromCMP(PlantillaWorkBook);
                 new CMPlantilla_Minutos().ExtractMinutosFromCMP(PlantillaWorkBook);
                 new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(PlantillaWorkBook);
                 new CMPlantilla_Trenes().ExtractTrenesFromCMP(PlantillaWorkBook);
-                // File Saving and Closing
-                FileCreation.SaveFile();
-                FileCreation.BringFile();
                 System.out.println("Offer is extracted correctly");
 
-                FileCreation.CloseFile();
-                FileCreation.closeStreamingOfNewFile();
+                // File Saving and Closing
+                FileCreationForExcel.SaveFile();
+                FileCreationForExcel.BringFile();
+                FileCreationForExcel.CloseFile();
+                FileCreationForExcel.closeStreamingOfNewFile();
                 FileAccess.CloseWorkBook();
                 FileAccess.CloseStreaming();
             }
