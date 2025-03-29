@@ -8,9 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ExtractingData {
-    public String ReadPdf(String filePath) {
+    private static PdfDocument pdfDoc;
+    public String ReadPdf(String filePath) throws IOException{
         StringBuilder text = new StringBuilder();
-        try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(filePath))) {
+       pdfDoc = new PdfDocument(new PdfReader(filePath));
             int numberOfPages = pdfDoc.getNumberOfPages();
             for (int i = 1; i <= numberOfPages; i++) {
                 String pageText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
@@ -19,10 +20,11 @@ public class ExtractingData {
                 }
                 text.append(pageText);
             }
-        } catch (IOException e) {
-            e.getCause();
-        }
         return text.toString();
+    }
+
+    public static void closePDFReader(){
+        pdfDoc.close();
     }
 
     public int Converter(String Letter){

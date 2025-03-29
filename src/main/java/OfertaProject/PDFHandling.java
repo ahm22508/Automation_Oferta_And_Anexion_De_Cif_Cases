@@ -19,21 +19,24 @@ public class PDFHandling {
             Scanner pdfScan = new Scanner(System.in);
             String filePath = pdfScan.nextLine().replace("\"" , "");
             if(FileAnalysis.isFile(filePath)){
-                long start = System.currentTimeMillis();
+                //File Reading
                 String text = new ExtractingData().ReadPdf(filePath);
+
+                //File Creation and Offer extraction.
                 FileCreationForPDF.createFile();
                 new Discounts().ExtractDiscounts(text);
                 new Minutes().ExtractMinutes(text);
                 new PostSelling().ExtractPostSelling(text);
                 new Trenes().ExtractTrenes(text);
-                long end = System.currentTimeMillis();
-                System.out.println(end - start);
+
                 System.out.println("Offer is extracted correctly");
 
+                // File saving and showing in the screen.
                 FileCreationForPDF.SaveFile();
                 FileCreationForPDF.BringFile();
                 FileCreationForPDF.CloseFile();
                 FileCreationForPDF.closeStreamingOfNewFile();
+                ExtractingData.closePDFReader();
             }
             else {
                   System.out.println("incorrect Entry. Try again");
@@ -73,7 +76,33 @@ public class PDFHandling {
         }
 
         else if (select == 3){
-            System.out.println("PDF And Excel");
+           Scanner pdfScan = new Scanner(System.in);
+           Scanner excelScan = new Scanner(System.in);
+            System.out.println("Enter your pdf file path and Excel sheet file path");
+
+            System.out.println("Your Excel File Path: ");
+            String excelFilePath  = excelScan.nextLine().replace("\"" , "");
+            System.out.println("Your PDF File Path: ");
+            String pdfFilePath = pdfScan.nextLine().replace("\"" , "");
+           if(FileAnalysis.isFile(excelFilePath) && FileAnalysis.isFile(pdfFilePath)){
+               new FileAccess().setFile(excelFilePath);
+               Workbook PlantillaWorkBook = FileAccess.getWorkBook();
+
+               //File Creation and Oferta Extraction
+               FileCreationForExcel.createFile();
+               new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook);
+               new CMPlantilla_Indice().ExtractInfoFromCMP(PlantillaWorkBook);
+               new CMPlantilla_Minutos().ExtractMinutosFromCMP(PlantillaWorkBook);
+               new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(PlantillaWorkBook);
+               new CMPlantilla_Trenes().ExtractTrenesFromCMP(PlantillaWorkBook);
+               FileAccess.CloseWorkBook();
+               FileAccess.CloseStreaming();
+           }
+
+           else {
+               System.out.println("incorrect Entry. Try Again");
+           }
+
         }
         else {
             System.out.println("Incorrect selection.. program will exit. try again");
