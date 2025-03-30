@@ -26,7 +26,7 @@ public class Trenes extends Discounts {
         Matcher matcher1 = pattern1.matcher(text);
 
 
-        int x = 0;
+        int x = RowNumCounting.getRowNumForTrenes();
         Row row;
         Set<String> FinalValue = new HashSet<>();
         String[] ArrayOfPrimarios = {"DPRID", "DVFME", "DVFES", "DVFGC", "DVFIN", "DVFFN", "DVFOM", "DVFMV"};
@@ -239,12 +239,14 @@ public class Trenes extends Discounts {
                     if (CellTren.toString().equals(tren)) {
                         Cell NextCell = TrenesRow.getCell(CellTren.getColumnIndex() + 1);
                         NextCell.setCellValue("100");
-                        if (text.contains("MultiCIF")) {
-                            TrenesRow.getCell(2).setCellValue("Tren del MultiCIF-Nuevo JO");
-                        }
-                        if (text.contains("MPMVE")) {
-                            TrenesRow.getCell(2).setCellValue("Tren del MPMVE-Nuevo JO");
+                        if(!CellTren.toString().equals("DRZRW")) {
+                            if (text.contains("MultiCIF")) {
+                                TrenesRow.getCell(2).setCellValue("Tren del MultiCIF-Nuevo JO");
+                            }
+                            if (text.contains("MPMVE")) {
+                                TrenesRow.getCell(2).setCellValue("Tren del MPMVE-Nuevo JO");
 
+                            }
                         }
                     }
                 }

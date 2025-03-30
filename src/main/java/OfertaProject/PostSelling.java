@@ -52,7 +52,7 @@ public class PostSelling {
         Description.put("MPIA2", "Integrada 2.0");
 
         Row row;
-        int i = 1;
+        int i = RowNumCounting.getRowNumForPosVenta()+1;
         int FirstValue = 0;
         HashSet<String> Posventas = new HashSet<>();
         while (matcher.find()) {

@@ -23,7 +23,7 @@ public class Discounts {
         }
 
         //Extract specific data
-        int rowNum = 0;
+      int rowNum = RowNumCounting.getRowNumForDescuentos();
         Row row2;
         HashSet<String> DTOS = new HashSet<>();
         CSVParser DTOReader = FileAccess.ReadCSV();
@@ -45,6 +45,7 @@ public class Discounts {
             row2.createCell(0).setCellValue("DOVPD");
             row2.createCell(1).setCellValue("Descuentos Empresas");
             row2.createCell(2).setCellValue("All Types");
+            rowNum++;
 
         }
         if (text.contains("DSV05")) {
@@ -52,7 +53,6 @@ public class Discounts {
             row2.createCell(0).setCellValue("DSVO5");
             row2.createCell(1).setCellValue("Descuentos Especial Empresas");
             row2.createCell(2).setCellValue("All Types");
-
         }
     }
 }
