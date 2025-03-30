@@ -5,7 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CMPlantilla_Minutos {
+public class CMPlantilla_MinutosInfinityBusiness {
 
     public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook) {
 
@@ -25,7 +25,7 @@ public class CMPlantilla_Minutos {
                 //Extract the specific data
                 Pattern pattern = Pattern.compile("(?<!\\W|-\\S)\\b(MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB)\\b");
                 LinkedHashSet<String> Minutos = new LinkedHashSet<>();
-                int x = 0;
+                int RowNum = 0;
                 Row row1;
                 for (Row row : MinutosSheet) {
                     for (Cell cell : row) {
@@ -36,7 +36,7 @@ public class CMPlantilla_Minutos {
                             for (Cell NextCell : row) {
                                 if (NextCell.toString().contains("Cuota Final: ")) {
                                     if (Minutos.contains(FinalValue)) {
-                                        row1 = OfertaSheet.createRow(x++);
+                                        row1 = OfertaSheet.createRow(RowNum++);
                                         row1.createCell(0).setCellValue(FinalValue);
                                         String Cleaning = NextCell.getStringCellValue();
                                         String FinalNumber = Cleaning.replace("Cuota Final: ", "").replace(",", ".");

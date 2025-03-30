@@ -55,11 +55,16 @@ public class PDFHandling {
 
                 //File Creation and Oferta Extraction
                 FileCreationForExcel.createFile();
-                new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("Descuentos y Tarifas"), "Descuentos y Tarifas" ,FileCreationForExcel.getWorkbook());
+                new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM_Descuentos"), "PlantillaCM_Descuentos" ,FileCreationForExcel.getWorkbook());
+                new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM_Posventa"), "PlantillaCM_Posventa" ,FileCreationForExcel.getWorkbook());
                 new CMPlantilla_Indice().ExtractInfoFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Indice") , "PlantillaCM-Indice" , FileCreationForExcel.getWorkbook());
-                new CMPlantilla_Minutos().ExtractMinutosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Minutos") , "PlantillaCM-Minutos" , FileCreationForExcel.getWorkbook());
-                new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Trenes") , "PlantillaCM-Trenes" , FileCreationForExcel.getWorkbook());
+
+                new CMPlantilla_MinutosInfinityBusiness().ExtractMinutosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Minutos") , "PlantillaCM-Minutos" , FileCreationForExcel.getWorkbook());
+                new CMPlantilla_MinutosDescuentosYTarifas().ExtractMinutosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Minutos") , "PlantillaCM-Minutos",FileCreationForExcel.getWorkbook());
+
+                new CMPlantilla_TrenesInfinityBusiness().ExtractTrenesBIFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Trenes") , "PlantillaCM-Trenes" , FileCreationForExcel.getWorkbook());
                 new CMPlantilla_Trenes().ExtractTrenesFromCMP(PlantillaWorkBook, FileCreationForExcel.getWorkbook());
+
                 System.out.println("Offer is extracted correctly");
 
                 // File Saving and Closing
@@ -90,10 +95,14 @@ public class PDFHandling {
 
                //File Creation and Oferta Extraction
                FileCreationForExcel.createFile();
-               new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook,FileCreationForPdfAndExcel.getSheet("Descuentos"), "Descuentos" ,FileCreationForPdfAndExcel.getWorkbook());
+               new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("PlantillaCM_Descuentos"), "PlantillaCM_Descuentos" ,FileCreationForPdfAndExcel.getWorkbook());
+               new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("PlantillaCM_Posventa"), "PlantillaCM_Posventa" ,FileCreationForPdfAndExcel.getWorkbook());
                new CMPlantilla_Indice().ExtractInfoFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("PlantillaCM-Indice") , "PlantillaCM-Indice" , FileCreationForPdfAndExcel.getWorkbook());
-               new CMPlantilla_Minutos().ExtractMinutosFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Minutos") , "Minutos" , FileCreationForPdfAndExcel.getWorkbook());
-               new CMPlantilla_TrenesBusinessInfinity().ExtractTrenesBIFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Trenes") , "Trenes" , FileCreationForPdfAndExcel.getWorkbook());
+
+               new CMPlantilla_MinutosInfinityBusiness().ExtractMinutosFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("PlantillaCM-Minutos") , "PlantillaCM-Minutos" , FileCreationForPdfAndExcel.getWorkbook());
+               new CMPlantilla_MinutosDescuentosYTarifas().ExtractMinutosFromCMP(PlantillaWorkBook , FileCreationForExcel.getSheet("PlantillaCM-Minutos") , "PlantillaCM-Minutos",FileCreationForPdfAndExcel.getWorkbook());
+
+               new CMPlantilla_TrenesInfinityBusiness().ExtractTrenesBIFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("PlantillaCM-Trenes") , "PlantillaCM-Trenes" , FileCreationForPdfAndExcel.getWorkbook());
                new CMPlantilla_Trenes().ExtractTrenesFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getWorkbook());
                FileAccess.CloseWorkBook();
                FileAccess.CloseStreaming();

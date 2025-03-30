@@ -4,7 +4,7 @@ import org.apache.poi.ss.usermodel.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CMPlantilla_TrenesBusinessInfinity {
+public class CMPlantilla_TrenesInfinityBusiness {
 
     public void ExtractTrenesBIFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook){
                 int Pointer = 0;
