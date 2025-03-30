@@ -8,7 +8,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
 
-    public void ExtractInfoFromCMP(Workbook PlantillaWorkBook) {
+    public void ExtractInfoFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook) {
 
         //check if the sheet is found or not
                 int SheetNums = PlantillaWorkBook.getNumberOfSheets();
@@ -16,12 +16,10 @@ public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
                     String SheetName = PlantillaWorkBook.getSheetName(i);
                     if (!PlantillaWorkBook.isSheetHidden(i) && SheetName.equals("Indice")) {
                         //create new Sheet in the new file
-                        Sheet OfertaSheet;
-                        if(FileCreationForExcel.getSheet("PlantillaCM-Indice") == null) {
-                            OfertaSheet = FileCreationForExcel.createSheet("PlantillaCM-Indice");
-                        }
-                        else {
-                            OfertaSheet = FileCreationForExcel.getSheet("PlantillaCM-Indice");
+                        if(OfertaSheet == null) {
+                            OfertaSheet = ofertaWorkbook.createSheet(sheetName);
+                        } else {
+                            OfertaSheet = ofertaWorkbook.getSheet(sheetName);
                         }
                         //Extract the specific data
                         Row row1;

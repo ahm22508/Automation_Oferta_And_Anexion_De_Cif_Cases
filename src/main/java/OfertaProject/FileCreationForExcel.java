@@ -22,12 +22,12 @@ public class FileCreationForExcel {
         }
     }
 
-    public static Sheet createSheet(String newSheetName){
-            return OpenSheet.createSheet(newSheetName);
+    public static Workbook getWorkbook(){
+            return OpenSheet;
     }
 
-    public static Sheet getSheet(String SheetName){
-        return OpenSheet.getSheet(SheetName);
+    public static Sheet getSheet(String sheetName){
+        return OpenSheet.getSheet(sheetName);
     }
 
     public static void SaveFile()throws Exception{

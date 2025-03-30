@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class CMPlantilla_Minutos {
 
-    public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook) {
+    public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook) {
 
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
@@ -16,12 +16,10 @@ public class CMPlantilla_Minutos {
             if (!PlantillaWorkBook.isSheetHidden(i) && SheetName.equals("Infinity Business")) {
 
                 //create new Sheet in the new file
-                Sheet OfertaSheet;
-                if(FileCreationForExcel.getSheet("PlantillaCM-Minutos") == null) {
-                    OfertaSheet = FileCreationForExcel.createSheet("PlantillaCM-Minutos");
-                }
-                else {
-                    OfertaSheet = FileCreationForExcel.getSheet("PlantillaCM-Minutos");
+                if (OfertaSheet == null) {
+                    OfertaSheet = ofertaWorkbook.createSheet(sheetName);
+                } else {
+                    OfertaSheet = ofertaWorkbook.getSheet(sheetName);
                 }
                 Sheet MinutosSheet = FileAccess.getSheet("Infinity Business");
                 //Extract the specific data

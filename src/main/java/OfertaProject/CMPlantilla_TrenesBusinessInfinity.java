@@ -6,17 +6,15 @@ import java.util.regex.Pattern;
 
 public class CMPlantilla_TrenesBusinessInfinity {
 
-    public void ExtractTrenesBIFromCMP(Workbook PlantillaWorkBook){
+    public void ExtractTrenesBIFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook){
                 int Pointer = 0;
                 int rowNum;
                 int pointer1 = 0;
 
-        Sheet OfertaSheet;
-        if(FileCreationForExcel.getSheet("PlantillaCM-Trenes") == null) {
-            OfertaSheet = FileCreationForExcel.createSheet("PlantillaCM-Trenes");
-        }
-        else {
-            OfertaSheet = FileCreationForExcel.getSheet("PlantillaCM-Trenes");
+        if (OfertaSheet == null) {
+            OfertaSheet = ofertaWorkbook.createSheet(sheetName);
+        } else {
+            OfertaSheet = ofertaWorkbook.getSheet(sheetName);
         }
                 Row row1;
                 int SheetNums = PlantillaWorkBook.getNumberOfSheets();

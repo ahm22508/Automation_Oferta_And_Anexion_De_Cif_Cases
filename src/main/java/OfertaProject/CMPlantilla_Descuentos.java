@@ -9,18 +9,17 @@ import java.util.regex.Pattern;
 
 public class CMPlantilla_Descuentos {
 
-    public void ExtractDescuentosFromCMP(Workbook PlantillaWorkBook) throws Exception{
+    public void ExtractDescuentosFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook) throws Exception{
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
         for (int i = 0; i < SheetNums; i++) {
             String SheetName = PlantillaWorkBook.getSheetName(i);
             if (!PlantillaWorkBook.isSheetHidden(i) && (SheetName.contains("DTOS") || SheetName.contains("Tarifas") || SheetName.contains("Complementarios") || SheetName.contains("Complem"))) {
                 //create new Sheet in the new file
-                Sheet OfertaSheet;
-                if (FileCreationForExcel.getSheet("Descuentos y Tarifas") == null) {
-                    OfertaSheet = FileCreationForExcel.createSheet("Descuentos y Tarifas");
+                if (OfertaSheet == null) {
+                    OfertaSheet = ofertaWorkbook.createSheet(sheetName);
                 } else {
-                    OfertaSheet = FileCreationForExcel.getSheet("Descuentos y Tarifas");
+                    OfertaSheet = ofertaWorkbook.getSheet(sheetName);
                 }
                 Sheet DescuentoSheet = FileAccess.getSheet(PlantillaWorkBook.getSheetName(i));
                 CSVParser DTOReader = FileAccess.ReadCSV();
