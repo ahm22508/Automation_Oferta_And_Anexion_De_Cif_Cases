@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 public class CMPlantilla_Posventa {
 
     public void ExtractPosventaFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet , String sheetName, Workbook ofertaWorkbook){
+         Comparison compare = new Comparison();
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
         for (int i = 0; i < SheetNums; i++) {
@@ -37,6 +38,7 @@ public class CMPlantilla_Posventa {
                                     row1 = OfertaSheet.createRow(rowNum++);
                                     row1.createCell(0).setCellValue(matcherPosventaLine.group());
                                     row1.createCell(1).setCellValue("Posventa a nivel de Servicio y a nivel de cuenta es: " + matcherPosventaLine.group().replace("POS", "POC"));
+                                    compare.addToPosventaComparator(matcherPosventaLine.group());
                                 }
                             }
                         }
@@ -45,6 +47,8 @@ public class CMPlantilla_Posventa {
                                 if (ProvisionCell.toString().contains("SI")) {
                                     row1 = OfertaSheet.createRow(rowNum++);
                                     row1.createCell(0).setCellValue(matcherPosventaLine.group());
+                                    row1.createCell(1).setCellValue("Posventa a nivel de Servicio y a nivel de linea es: " + matcherPosventaAccount.group().replace("POC", "POS"));
+                                    compare.addToPosventaComparator(matcherPosventaAccount.group());
                                 }
                             }
                         }

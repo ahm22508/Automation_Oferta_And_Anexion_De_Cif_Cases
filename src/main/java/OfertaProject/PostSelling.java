@@ -2,6 +2,8 @@ package OfertaProject;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,14 +12,14 @@ import java.util.regex.Pattern;
 public class PostSelling {
 
 
-    public void ExtractPostSelling(String text){
+    public void ExtractPostSelling(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook){
+        Comparison compare = new Comparison();
 
         //Create new Excel File and new Sheet
-        Sheet OfertaSheet;
-        if (FileCreationForExcel.getSheet("PosventaYBROXXX") == null) {
-            OfertaSheet = FileCreationForPDF.createSheet("PosventaYBROXXX");
+        if (OfertaSheet == null) {
+            OfertaSheet = ofertaWorkbook.createSheet(sheetName);
         } else {
-            OfertaSheet = FileCreationForPDF.getSheet("PosventaYBROXXX");
+            OfertaSheet = ofertaWorkbook.getSheet(sheetName);
         }
 
         //Extract specific data
@@ -58,21 +60,24 @@ public class PostSelling {
         while (matcher.find()) {
             if (matcher1.find(matcher.end())) {
                 String Posventa = matcher.group();
-                if (!Posventas.contains(Posventa)) {
-                    Posventas.add(Posventa);
-                    row = OfertaSheet.createRow(i++);
-                    row.createCell(0).setCellValue(Posventa);
-                    FirstValue = Integer.parseInt(matcher1.group());
-                    String ServicePostSelling = matcher.group().replace("POS", "POC");
-                    row = OfertaSheet.createRow(i++);
-                    row.createCell(0).setCellValue(ServicePostSelling);
-                    row.createCell(1).setCellValue("Servicio Suplementario a nivel de Cuenta");
-                }
-                if (Posventas.contains(Posventa)) {
-                    if (matcher1.find(matcher.end())) {
-                        int Num = Integer.parseInt(matcher1.group());
-                        row = OfertaSheet.getRow(i - 2);
-                        row.createCell(1).setCellValue(Math.max(Num, FirstValue));
+                if(!Posventa.contains(compare.getPosventaComparator().toString())) {
+                    if (!Posventas.contains(Posventa)) {
+                        Posventas.add(Posventa);
+                        row = OfertaSheet.createRow(i++);
+                        row.createCell(0).setCellValue(Posventa);
+                        FirstValue = Integer.parseInt(matcher1.group());
+                        String ServicePostSelling = matcher.group().replace("POS", "POC");
+                        row = OfertaSheet.createRow(i++);
+                        row.createCell(0).setCellValue(ServicePostSelling);
+                        row.createCell(1).setCellValue("Servicio Suplementario a nivel de Cuenta");
+                    }
+
+                    if (Posventas.contains(Posventa)) {
+                        if (matcher1.find(matcher.end())) {
+                            int Num = Integer.parseInt(matcher1.group());
+                            row = OfertaSheet.getRow(i - 2);
+                            row.createCell(1).setCellValue(Math.max(Num, FirstValue));
+                        }
                     }
                 }
             }
@@ -82,25 +87,29 @@ public class PostSelling {
         while (matcher4.find()) {
             if (matcher1.find(matcher4.end())) {
                 String Posventa = matcher4.group();
-                if (!ExceptionalPosventas.contains(Posventa)) {
-                    ExceptionalPosventas.add(Posventa);
-                    row = OfertaSheet.createRow(i++);
-                    row.createCell(0).setCellValue(Posventa);
-                    FirstValue = Integer.parseInt(matcher1.group());
-                }
-                if (ExceptionalPosventas.contains(Posventa)) {
-                    if (matcher1.find(matcher4.end())) {
-                        int Num = Integer.parseInt(matcher1.group());
-                        row = OfertaSheet.getRow(i - 1);
-                        row.createCell(1).setCellValue(Math.max(Num, FirstValue));
+                if (!Posventa.contains(compare.getPosventaComparator().toString())){
+                    if (!ExceptionalPosventas.contains(Posventa)) {
+                        ExceptionalPosventas.add(Posventa);
+                        row = OfertaSheet.createRow(i++);
+                        row.createCell(0).setCellValue(Posventa);
+                        FirstValue = Integer.parseInt(matcher1.group());
+                    }
+                    if (ExceptionalPosventas.contains(Posventa)) {
+                        if (matcher1.find(matcher4.end())) {
+                            int Num = Integer.parseInt(matcher1.group());
+                            row = OfertaSheet.getRow(i - 1);
+                            row.createCell(1).setCellValue(Math.max(Num, FirstValue));
+                        }
                     }
                 }
             }
         }
         if (Posventas.isEmpty()) {
             while (matcher3.find()) {
-                row = OfertaSheet.createRow(i++);
-                row.createCell(0).setCellValue(matcher3.group());
+                if (!matcher3.group().contains(compare.getPosventaComparator().toString())) {
+                    row = OfertaSheet.createRow(i++);
+                    row.createCell(0).setCellValue(matcher3.group());
+                }
             }
         }
         while (matcher2.find()) {

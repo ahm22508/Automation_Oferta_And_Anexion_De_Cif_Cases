@@ -7,14 +7,13 @@ import java.util.regex.Pattern;
 
 public class Minutes {
 
-    public void ExtractMinutes(String text)  {
+    public void ExtractMinutes(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook)  {
 
         //Create new Excel File and new Sheet
-        Sheet OfertaSheet;
-        if (FileCreationForExcel.getSheet("Minutos") == null) {
-            OfertaSheet = FileCreationForPDF.createSheet("Minutos");
+        if (OfertaSheet == null) {
+            OfertaSheet = ofertaWorkbook.createSheet(sheetName);
         } else {
-            OfertaSheet = FileCreationForPDF.getSheet("Minutos");
+            OfertaSheet = ofertaWorkbook.getSheet(sheetName);
         }
 
         //Extract specific data

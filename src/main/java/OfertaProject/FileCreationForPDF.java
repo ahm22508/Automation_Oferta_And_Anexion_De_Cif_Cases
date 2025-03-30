@@ -22,7 +22,9 @@ public class FileCreationForPDF {
             OpenFile.close();
         }
     }
-
+    public static Workbook getWorkbook(){
+        return OpenSheet;
+    }
     public static Sheet createSheet(String newSheetName){
         return OpenSheet.createSheet(newSheetName);
     }

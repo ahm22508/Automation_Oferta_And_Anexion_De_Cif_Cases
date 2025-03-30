@@ -8,6 +8,8 @@ import org.apache.poi.ss.usermodel.*;
 public class CMPlantilla_Descuentos {
 
     public void ExtractDescuentosFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook) throws Exception{
+        Comparison compare = new Comparison();
+
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
         for (int i = 0; i < SheetNums; i++) {
@@ -41,6 +43,7 @@ public class CMPlantilla_Descuentos {
                                         row1.createCell(0).setCellValue(Record.get(0));
                                         row1.createCell(1).setCellValue(Record.get(1));
                                         row1.createCell(2).setCellValue(Record.get(2));
+                                        compare.addToDescuentosComparator(Record.get(0));
                                     }
                                 }
                             }
