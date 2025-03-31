@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class CMPlantilla_Trenes {
 
     public void ExtractTrenesFromCMP(Workbook PlantillaWorkBook , Workbook ofertaWorkbook) {
-
+        Comparison compare = new Comparison();
         Sheet InfinitySheet = PlantillaWorkBook.getSheet("Infinity Business");
 
         //create new Sheet in the new file
@@ -74,6 +74,7 @@ public class CMPlantilla_Trenes {
                                             row1 = OfertaSheet.createRow(RowNum++);
                                             row1.createCell(0).setCellValue(matcher.group());
                                             row1.createCell(1).setCellValue(Percentage);
+                                            compare.addToTrenesComparator(matcher.group());
                                         }
                                     }
 
@@ -97,6 +98,7 @@ public class CMPlantilla_Trenes {
                                     row1 = OfertaSheet.createRow(RowNum++);
                                     row1.createCell(0).setCellValue(matcher.group());
                                     row1.createCell(1).setCellValue(Math.floor(Equation * 100) / 100);
+                                    compare.addToTrenesComparator(matcher.group());
                                     if (String.valueOf(ModifyNum).contains(".99")) {
                                         row1.createCell(1).setCellValue((Math.floor(Equation * 100) / 100) + 0.01);
                                     }
@@ -117,6 +119,7 @@ public class CMPlantilla_Trenes {
                                                     row1 = OfertaSheet.createRow(RowNum++);
                                                     row1.createCell(0).setCellValue(matcher.group());
                                                     row1.createCell(1).setCellValue(Percentage);
+                                                    compare.addToTrenesComparator(matcher.group());
                                                 }
                                             }
                                         }
@@ -153,6 +156,7 @@ public class CMPlantilla_Trenes {
                                                                             row1 = OfertaSheet.createRow(RowNum++);
                                                                             row1.createCell(0).setCellValue(TrenInfinityBusiness);
                                                                             row1.createCell(1).setCellValue(FinalNum);
+                                                                            compare.addToTrenesComparator(TrenInfinityBusiness);
                                                                         }
                                                                     }
                                                                 }
@@ -178,6 +182,8 @@ public class CMPlantilla_Trenes {
                                             row1 = OfertaSheet.createRow(RowNum++);
                                             row1.createCell(0).setCellValue(TrenCell.getStringCellValue());
                                             row1.createCell(1).setCellValue(matcherNum.group());
+                                            compare.addToTrenesComparator(TrenCell.toString());
+
                                         }
                                     }
                                 }
@@ -193,6 +199,8 @@ public class CMPlantilla_Trenes {
                                     row1 = OfertaSheet.createRow(RowNum++);
                                     row1.createCell(0).setCellValue("DESIM");
                                     row1.createCell(1).setCellValue(Percentage);
+                                    compare.addToTrenesComparator("DESIM");
+
                                 }
                             }
                         }
@@ -202,6 +210,7 @@ public class CMPlantilla_Trenes {
                                     row1 = OfertaSheet.createRow(RowNum++);
                                     row1.createCell(0).setCellValue("DVCAR");
                                     row1.createCell(1).setCellValue(100);
+                                    compare.addToTrenesComparator("DVCAR");
                                 }
                             }
                         }

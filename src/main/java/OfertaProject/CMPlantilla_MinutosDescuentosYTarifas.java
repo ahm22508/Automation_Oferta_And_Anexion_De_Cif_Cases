@@ -11,6 +11,9 @@ import java.util.regex.Pattern;
 public class CMPlantilla_MinutosDescuentosYTarifas {
 
     public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook, Sheet OfertaSheet ,String sheetName ,Workbook ofertaWorkbook) {
+
+        Comparison compare = new Comparison();
+
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
         HashSet<String> DuplicationMinutos = new HashSet<>();
@@ -56,6 +59,7 @@ public class CMPlantilla_MinutosDescuentosYTarifas {
                                         row1.createCell(0).setCellValue(FinalValue);
                                         row1.createCell(1).setCellValue(NextCell.getNumericCellValue());
                                         row1.createCell(2).setCellValue("Minuto del fichero Dtos y Tarifas Complementarios");
+                                        compare.addToMinutosComparator(FinalValue);
                                     } else if (NextCell.toString().matches("\\d*\\.?\\d+\\s*[-+*/%^]\\s*\\d*\\.?\\d+")) {
                                         for (Cell ConfirmCell : row) {
                                             if (ConfirmCell.toString().equalsIgnoreCase("SI")) {
@@ -66,6 +70,7 @@ public class CMPlantilla_MinutosDescuentosYTarifas {
                                                 row1.createCell(0).setCellValue(FinalValue);
                                                 row1.createCell(1).setCellValue(Num);
                                                 row1.createCell(2).setCellValue("Minuto del fichero Dtos y Tarifas Complementarios");
+                                                compare.addToMinutosComparator(FinalValue);
                                             }
                                         }
                                     }

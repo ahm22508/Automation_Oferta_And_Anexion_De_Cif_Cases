@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class CMPlantilla_MinutosInfinityBusiness {
 
     public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook) {
-
+        Comparison compare = new Comparison();
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
         for (int i = 0; i < SheetNums; i++) {
@@ -41,6 +41,7 @@ public class CMPlantilla_MinutosInfinityBusiness {
                                         String Cleaning = NextCell.getStringCellValue();
                                         String FinalNumber = Cleaning.replace("Cuota Final: ", "").replace(",", ".");
                                         row1.createCell(1).setCellValue(FinalNumber);
+                                        compare.addToMinutosComparator(FinalValue);
                                     }
                                 }
                             }
@@ -48,6 +49,7 @@ public class CMPlantilla_MinutosInfinityBusiness {
                                 row1 = OfertaSheet.getRow(0);
                                 row1.createCell(2).setCellValue("PKPID");
                                 row1.createCell(3).setCellValue("SÍ");
+                                compare.addToMinutosComparator("PKPID");
                             }
                         }
                     }

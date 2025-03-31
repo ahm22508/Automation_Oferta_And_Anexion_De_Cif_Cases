@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
 
 public class Minutes {
 
-    public void ExtractMinutes(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook)  {
-
+    public void ExtractMinutes(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook) {
+        Comparison compare = new Comparison();
         //Create new Excel File and new Sheet
         if (OfertaSheet == null) {
             OfertaSheet = ofertaWorkbook.createSheet(sheetName);
@@ -25,6 +25,7 @@ public class Minutes {
         int x = RowNumCounting.getRowNumForMinutos();
         int i = 0;
         while (matcher1.find()) {
+            if (!matcher1.group().contains(compare.getMinutosComparator().toString())){
             row = OfertaSheet.createRow(x++);
             row.createCell(0).setCellValue(matcher1.group());
             if (matcher1.group().contains("CIPNT")) {
@@ -41,15 +42,20 @@ public class Minutes {
                 row.createCell(1).setCellValue(matcher.group());
             }
         }
+    }
         if (text.contains("PKPID")) {
-            row = OfertaSheet.getRow(0);
-            row.createCell(2).setCellValue("PKPID");
-            row.createCell(3).setCellValue("SÍ");
+            if (!"PKPID".contains(compare.getMinutosComparator().toString())) {
+                row = OfertaSheet.getRow(0);
+                row.createCell(2).setCellValue("PKPID");
+                row.createCell(3).setCellValue("SÍ");
+            }
         }
         if (text.contains("MPMVE")) {
-            row = OfertaSheet.createRow(x);
-            row.createCell(0).setCellValue("MPMVE");
-            row.createCell(1).setCellValue("0");
+            if (!"MPMVE".contains(compare.getMinutosComparator().toString())) {
+                row = OfertaSheet.createRow(x);
+                row.createCell(0).setCellValue("MPMVE");
+                row.createCell(1).setCellValue("0");
+            }
         }
     }
 }
