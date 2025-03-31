@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 
 
 public class Trenes {
-    public void ExtractTrenes(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook)  {
-
+    public void ExtractTrenes(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook) {
+        Comparison compare = new Comparison();
         if (OfertaSheet == null) {
             OfertaSheet = ofertaWorkbook.createSheet(sheetName);
         } else {
@@ -33,24 +33,26 @@ public class Trenes {
         double FirstValue = 0;
         while (matcher.find()) {
             String Code = matcher.group();
-            if (!FinalValue.contains(Code)) {
-                FinalValue.add(Code);
-                if (matcher1.find(matcher.end())) {
-                    FirstValue = Double.parseDouble(matcher1.group());
-                    if (matcher1.start() - matcher.end() <= 30) {
-                        String Num = matcher1.group();
-                        if (!Num.equals("0")) {
-                            row = OfertaSheet.createRow(x++);
-                            row.createCell(0).setCellValue(Code);
-                            row.createCell(1).setCellValue(matcher1.group());
-                            row.createCell(2).setCellValue(" ");
-                            if (Code.equals("DVXSO") || Code.equals("DVXSV")) {
-                                row.createCell(2).setCellValue("Tren de Red Box");
-                            }
-                            if (text.contains("LVAPC") || text.contains("LVSH")) {
-                                for (String trPr : ArrayOfPrimarios) {
-                                    if (trPr.equals(Code)) {
-                                        row.createCell(2).setCellValue("Tren de Primaria");
+            if (!compare.getTrenesComparator().contains(Code)) {
+                if (!FinalValue.contains(Code)) {
+                    FinalValue.add(Code);
+                    if (matcher1.find(matcher.end())) {
+                        FirstValue = Double.parseDouble(matcher1.group());
+                        if (matcher1.start() - matcher.end() <= 30) {
+                            String Num = matcher1.group();
+                            if (!Num.equals("0")) {
+                                row = OfertaSheet.createRow(x++);
+                                row.createCell(0).setCellValue(Code);
+                                row.createCell(1).setCellValue(matcher1.group());
+                                row.createCell(2).setCellValue(" ");
+                                if (Code.equals("DVXSO") || Code.equals("DVXSV")) {
+                                    row.createCell(2).setCellValue("Tren de Red Box");
+                                }
+                                if (text.contains("LVAPC") || text.contains("LVSH")) {
+                                    for (String trPr : ArrayOfPrimarios) {
+                                        if (trPr.equals(Code)) {
+                                            row.createCell(2).setCellValue("Tren de Primaria");
+                                        }
                                     }
                                 }
                             }
@@ -58,6 +60,7 @@ public class Trenes {
                     }
                 }
             }
+
             if (FinalValue.contains(Code)) {
                 if (matcher1.find(matcher.end())) {
                     String NumMatcher = matcher1.group();
@@ -77,13 +80,15 @@ public class Trenes {
         }
 
         if (text.contains("DRZRW")) {
-            row = OfertaSheet.createRow(x);
+            if (!compare.getTrenesComparator().contains("DRZRW")){
+                row = OfertaSheet.createRow(x);
             row.createCell(0).setCellValue("DRZRW");
             row.createCell(1).setCellValue("100");
             row.createCell(2).setCellValue("");
             FinalValue.add("DRZRW");
             x++;
         }
+    }
         String[] CommonTrenes = {"DVMOV", "DVOOM", "DVFNA", "DVGCU", "DVSMV", "DVSMO", "DRZRW"};
         String[] MPMVE = {"DVFGC", "DVFFN", "DVFOM", "DVFMV"};
         HashSet<String> TrenesMultiCifEnElPDF = new HashSet<>();
@@ -91,14 +96,16 @@ public class Trenes {
         if (text.contains("MPMVE") || text.contains("MultiCIF")) {
             for (String Tren : CommonTrenes) {
                 if (!FinalValue.contains(Tren)) {
-                    row = OfertaSheet.createRow(x++);
-                    row.createCell(0).setCellValue(Tren);
-                    row.createCell(1).setCellValue("100");
-                    if (text.contains("MPMVE")) {
-                        row.createCell(2).setCellValue("Tren de MPMVE");
-                    }
-                    if (text.contains("MultiCIF")) {
-                        row.createCell(2).setCellValue("Tren de MultiCif");
+                    if (!compare.getTrenesComparator().contains(Tren)) {
+                        row = OfertaSheet.createRow(x++);
+                        row.createCell(0).setCellValue(Tren);
+                        row.createCell(1).setCellValue("100");
+                        if (text.contains("MPMVE")) {
+                            row.createCell(2).setCellValue("Tren de MPMVE");
+                        }
+                        if (text.contains("MultiCIF")) {
+                            row.createCell(2).setCellValue("Tren de MultiCif");
+                        }
                     }
                 }
                 if (FinalValue.contains(Tren)) {
@@ -107,18 +114,20 @@ public class Trenes {
             }
             for (String TrenMPMVE : MPMVE) {
                 if (text.contains("MPMVE")) {
-                    if (!FinalValue.contains(TrenMPMVE)) {
-                        row = OfertaSheet.createRow(x++);
-                        row.createCell(0).setCellValue(TrenMPMVE);
-                        row.createCell(1).setCellValue("100");
-                        row.createCell(2).setCellValue("Tren de MPMVE");
+                    if (!compare.getTrenesComparator().contains(TrenMPMVE)) {
+                        if (!FinalValue.contains(TrenMPMVE)) {
+                            row = OfertaSheet.createRow(x++);
+                            row.createCell(0).setCellValue(TrenMPMVE);
+                            row.createCell(1).setCellValue("100");
+                            row.createCell(2).setCellValue("Tren de MPMVE");
+                        }
                     }
                     if (FinalValue.contains(TrenMPMVE)) {
                         TrenesMultiCifEnElPDF.add(TrenMPMVE);
                     }
                 }
             }
-            if (text.contains("SMS internacionales") && !FinalValue.contains("DVSMR")) {
+            if (text.contains("SMS internacionales") && !FinalValue.contains("DVSMR")&& !compare.getTrenesComparator().contains("DVSMR")) {
                 row = OfertaSheet.createRow(x);
                 row.createCell(0).setCellValue("DVSMR");
                 row.createCell(1).setCellValue("100");
@@ -134,7 +143,7 @@ public class Trenes {
             if (text.contains("SMS internacionales") && FinalValue.contains("DVSMR")) {
                 TrenesMultiCifEnElPDF.add("DVSMR");
             }
-            if ((text.contains("CPINT") || text.contains("CIPNT") || text.contains("CIINT")) && !FinalValue.contains("DVINT")) {
+            if ((text.contains("CPINT") || text.contains("CIPNT") || text.contains("CIINT")) && !FinalValue.contains("DVINT")&& !compare.getTrenesComparator().contains("DVINT")) {
                 row = OfertaSheet.createRow(x);
                 row.createCell(0).setCellValue("DVINT");
                 row.createCell(1).setCellValue("100");
@@ -150,7 +159,7 @@ public class Trenes {
             if ((text.contains("CIINT") || text.contains("CIPNT") || text.contains("CPINT")) && FinalValue.contains("DVINT")) {
                 TrenesMultiCifEnElPDF.add("DVINT");
             }
-            if ((text.contains("CI90X") || text.contains("CP90X")) && !FinalValue.contains("DV90X")) {
+            if ((text.contains("CI90X") || text.contains("CP90X")) && !FinalValue.contains("DV90X") && !compare.getTrenesComparator().contains("DV90X")) {
                 row = OfertaSheet.createRow(x);
                 row.createCell(0).setCellValue("DV90X");
                 row.createCell(1).setCellValue("100");
@@ -166,7 +175,7 @@ public class Trenes {
             if ((text.contains("CI90X") || text.contains("CP90X")) && FinalValue.contains("DV90X")) {
                 TrenesMultiCifEnElPDF.add("DV90X");
             }
-            if ((text.contains("CIINT") || text.contains("CPINT") || text.contains("CIPNT")) && !FinalValue.contains("DVFIN") && text.contains("MPMVE")) {
+            if ((text.contains("CIINT") || text.contains("CPINT") || text.contains("CIPNT")) && !FinalValue.contains("DVFIN") && !compare.getTrenesComparator().contains("DVFIN") && text.contains("MPMVE")) {
                 row = OfertaSheet.createRow(x);
                 row.createCell(0).setCellValue("DVFIN");
                 row.createCell(1).setCellValue("100");
@@ -182,7 +191,7 @@ public class Trenes {
             if ((text.contains("CPINT") || text.contains("CIINT") || text.contains("CIPNT")) && FinalValue.contains("DVFIN") && text.contains("MPMVE")) {
                 TrenesMultiCifEnElPDF.add("DVFIN");
             }
-            if ((text.contains("CI90X") || text.contains("CP90X")) && !FinalValue.contains("DVFES") && text.contains("MPMVE")) {
+            if ((text.contains("CI90X") || text.contains("CP90X")) && !FinalValue.contains("DVFES") && !compare.getTrenesComparator().contains("DVFES") && text.contains("MPMVE")) {
                 row = OfertaSheet.createRow(x);
                 row.createCell(0).setCellValue("DVFES");
                 row.createCell(1).setCellValue("100");
@@ -198,7 +207,7 @@ public class Trenes {
             if ((text.contains("CI90X") || text.contains("CP90X")) && FinalValue.contains("DVFES") && text.contains("MPMVE")) {
                 TrenesMultiCifEnElPDF.add("DVFES");
             }
-            if (text.contains("CIROZ") && !FinalValue.contains("DVRRE")) {
+            if (text.contains("CIROZ") && !FinalValue.contains("DVRRE") && !compare.getTrenesComparator().contains("DVRRE")) {
                 row = OfertaSheet.createRow(x);
                 row.createCell(0).setCellValue("DVRRE");
                 row.createCell(1).setCellValue("100");
@@ -215,7 +224,7 @@ public class Trenes {
                 TrenesMultiCifEnElPDF.add("DVRRE");
             }
 
-            if (text.contains("CIRRZ") && !FinalValue.contains("DVRSA")) {
+            if (text.contains("CIRRZ") && !FinalValue.contains("DVRSA") && !compare.getTrenesComparator().contains("DVRSA")) {
                 row = OfertaSheet.createRow(x);
                 row.createCell(0).setCellValue("DVRSA");
                 row.createCell(1).setCellValue("100");
