@@ -103,6 +103,7 @@ public class PDFHandling {
                new FileAccess().setFile(excelFilePath);
                Workbook PlantillaWorkBook = FileAccess.getWorkBook();
 
+               long start = System.currentTimeMillis();
                //Extract Offer From Excel
                new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Descuentos"), "Descuentos" ,FileCreationForPdfAndExcel.getWorkbook(), compare);
                new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Posventa"), "Posventa" ,FileCreationForPdfAndExcel.getWorkbook(), compare);
@@ -124,6 +125,8 @@ public class PDFHandling {
                new Trenes().ExtractTrenes(text, FileCreationForPdfAndExcel.getSheet("Trenes"), "Trenes" ,FileCreationForPdfAndExcel.getWorkbook(), compare);
 
                System.out.println("Offer is extracted correctly");
+               long End = System.currentTimeMillis();
+               System.out.println(End - start);
 
                FileCreationForPdfAndExcel.SaveFile();
                FileCreationForPdfAndExcel.BringFile();

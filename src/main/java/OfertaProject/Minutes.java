@@ -22,26 +22,28 @@ public class Minutes {
         Matcher matcher1 = pattern1.matcher(text);
         Row row;
         int x = RowNumCounting.getRowNumForMinutos();
-        int i = 0;
+        System.out.println(x);
+       // int i = 0;
         while (matcher1.find()) {
-            if (!matcher1.group().contains(compare.getMinutosComparator().toString())){
-            row = OfertaSheet.createRow(x++);
-            row.createCell(0).setCellValue(matcher1.group());
-            if (matcher1.group().contains("CIPNT")) {
-                row.createCell(0).setCellValue("CPINT");
-            }
-            if (matcher1.group().contains("MPCOB")) {
-                row.createCell(0).setCellValue("MPCOU");
-            }
-            if (matcher1.group().contains("MPCOL")) {
-                row.createCell(0).setCellValue("MPCSC");
-            }
-            if (matcher.find(matcher1.end())) {
-                row = OfertaSheet.getRow(i++);
-                row.createCell(1).setCellValue(matcher.group());
+            if (!compare.getMinutosComparator().contains(matcher1.group())) {
+                if (matcher.find(matcher1.end())) {
+                    row = OfertaSheet.createRow(x++);
+                    row.createCell(0).setCellValue(matcher1.group());
+                    row.createCell(1).setCellValue(matcher.group());
+
+                    if (matcher1.group().contains("CIPNT")) {
+                        row.createCell(0).setCellValue("CPINT");
+                    }
+                    if (matcher1.group().contains("MPCOB")) {
+                        row.createCell(0).setCellValue("MPCOU");
+                    }
+                    if (matcher1.group().contains("MPCOL")) {
+                        row.createCell(0).setCellValue("MPCSC");
+                    }
+                }
             }
         }
-    }
+
         if (text.contains("PKPID")) {
             if (!"PKPID".contains(compare.getMinutosComparator().toString())) {
                 row = OfertaSheet.getRow(0);
