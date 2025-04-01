@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 
-public class CMPlantilla_Indice extends CMPlantilla_Descuentos {
+public class CMPlantilla_Indice {
 
     public void ExtractInfoFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook) {
 

@@ -22,8 +22,7 @@ public class Minutes {
         Matcher matcher1 = pattern1.matcher(text);
         Row row;
         int x = RowNumCounting.getRowNumForMinutos();
-        System.out.println(x);
-       // int i = 0;
+
         while (matcher1.find()) {
             if (!compare.getMinutosComparator().contains(matcher1.group())) {
                 if (matcher.find(matcher1.end())) {
