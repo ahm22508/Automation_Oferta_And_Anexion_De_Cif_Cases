@@ -7,8 +7,7 @@ import org.apache.poi.ss.usermodel.*;
 
 public class CMPlantilla_Descuentos {
 
-    public void ExtractDescuentosFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook) throws Exception{
-        Comparison compare = new Comparison();
+    public void ExtractDescuentosFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook, Comparison compare) throws Exception{
 
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();

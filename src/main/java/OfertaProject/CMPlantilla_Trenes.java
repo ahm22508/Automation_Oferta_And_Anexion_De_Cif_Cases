@@ -9,12 +9,16 @@ import java.util.regex.Pattern;
 
 public class CMPlantilla_Trenes {
 
-    public void ExtractTrenesFromCMP(Workbook PlantillaWorkBook , Workbook ofertaWorkbook) {
-        Comparison compare = new Comparison();
+    public void ExtractTrenesFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet , String sheetName,Workbook ofertaWorkbook, Comparison compare) {
+
         Sheet InfinitySheet = PlantillaWorkBook.getSheet("Infinity Business");
 
         //create new Sheet in the new file
-         Sheet OfertaSheet = ofertaWorkbook.getSheet("PlantillaCM-Trenes");
+        if (OfertaSheet == null) {
+            OfertaSheet = ofertaWorkbook.createSheet(sheetName);
+        } else {
+            OfertaSheet = ofertaWorkbook.getSheet(sheetName);
+        }
 
         int RowNum = 0;
         int iterator = 0;

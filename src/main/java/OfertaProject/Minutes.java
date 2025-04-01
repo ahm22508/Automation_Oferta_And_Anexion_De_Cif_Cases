@@ -7,8 +7,7 @@ import java.util.regex.Pattern;
 
 public class Minutes {
 
-    public void ExtractMinutes(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook) {
-        Comparison compare = new Comparison();
+    public void ExtractMinutes(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook, Comparison compare) {
         //Create new Excel File and new Sheet
         if (OfertaSheet == null) {
             OfertaSheet = ofertaWorkbook.createSheet(sheetName);

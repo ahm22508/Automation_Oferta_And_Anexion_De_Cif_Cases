@@ -15,6 +15,8 @@ public class PDFHandling {
         int select = selector.nextInt();
 
         if(select == 1){
+            Comparison compare = new Comparison();
+
             System.out.println("Enter your Pdf file path:");
             Scanner pdfScan = new Scanner(System.in);
             String filePath = pdfScan.nextLine().replace("\"" , "");
@@ -24,10 +26,10 @@ public class PDFHandling {
 
                 //File Creation and Offer extraction.
                 FileCreationForPDF.createFile();
-                new Discounts().ExtractDiscounts(text, FileCreationForPDF.getSheet("Descuentos") , "Descuentos" , FileCreationForPDF.getWorkbook());
-                new Minutes().ExtractMinutes(text, FileCreationForPDF.getSheet("Minutos") , "Minutos" , FileCreationForPDF.getWorkbook());
-                new PostSelling().ExtractPostSelling(text , FileCreationForPDF.getSheet("PosventaYBROWXXXX") , "PosventaYBROWXXXX" , FileCreationForPDF.getWorkbook());
-                new Trenes().ExtractTrenes(text, FileCreationForPDF.getSheet("Trenes") , "Trenes" , FileCreationForPDF.getWorkbook());
+                new Discounts().ExtractDiscounts(text, FileCreationForPDF.getSheet("Descuentos") , "Descuentos" , FileCreationForPDF.getWorkbook(), compare);
+                new Minutes().ExtractMinutes(text, FileCreationForPDF.getSheet("Minutos") , "Minutos" , FileCreationForPDF.getWorkbook(), compare);
+                new PostSelling().ExtractPostSelling(text , FileCreationForPDF.getSheet("PosventaYBROWXXXX") , "PosventaYBROWXXXX" , FileCreationForPDF.getWorkbook(), compare);
+                new Trenes().ExtractTrenes(text, FileCreationForPDF.getSheet("Trenes") , "Trenes" , FileCreationForPDF.getWorkbook(), compare);
 
                 System.out.println("Offer is extracted correctly");
 
@@ -45,6 +47,8 @@ public class PDFHandling {
         }
 
         else if(select == 2){
+            Comparison compare = new Comparison();
+
             System.out.println("Enter your Excel file path:");
             Scanner excelScan = new Scanner(System.in);
             String filePath = excelScan.nextLine().replace("\"" , "");
@@ -55,15 +59,15 @@ public class PDFHandling {
 
                 //File Creation and Oferta Extraction
                 FileCreationForExcel.createFile();
-                new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM_Descuentos"), "PlantillaCM_Descuentos" ,FileCreationForExcel.getWorkbook());
-                new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM_Posventa"), "PlantillaCM_Posventa" ,FileCreationForExcel.getWorkbook());
+                new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM_Descuentos"), "PlantillaCM_Descuentos" ,FileCreationForExcel.getWorkbook(), compare);
+                new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM_Posventa"), "PlantillaCM_Posventa" ,FileCreationForExcel.getWorkbook(), compare);
                 new CMPlantilla_Indice().ExtractInfoFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Indice") , "PlantillaCM-Indice" , FileCreationForExcel.getWorkbook());
 
-                new CMPlantilla_MinutosInfinityBusiness().ExtractMinutosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Minutos") , "PlantillaCM-Minutos" , FileCreationForExcel.getWorkbook());
-                new CMPlantilla_MinutosDescuentosYTarifas().ExtractMinutosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Minutos") , "PlantillaCM-Minutos",FileCreationForExcel.getWorkbook());
+                new CMPlantilla_MinutosInfinityBusiness().ExtractMinutosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Minutos") , "PlantillaCM-Minutos" , FileCreationForExcel.getWorkbook(), compare);
+                new CMPlantilla_MinutosDescuentosYTarifas().ExtractMinutosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Minutos") , "PlantillaCM-Minutos",FileCreationForExcel.getWorkbook(), compare);
 
-                new CMPlantilla_TrenesInfinityBusiness().ExtractTrenesBIFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Trenes") , "PlantillaCM-Trenes" , FileCreationForExcel.getWorkbook());
-                new CMPlantilla_Trenes().ExtractTrenesFromCMP(PlantillaWorkBook, FileCreationForExcel.getWorkbook());
+                new CMPlantilla_TrenesInfinityBusiness().ExtractTrenesBIFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Trenes") , "PlantillaCM-Trenes" , FileCreationForExcel.getWorkbook(), compare);
+                new CMPlantilla_Trenes().ExtractTrenesFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Trenes") , "PlantillaCM-Trenes", FileCreationForExcel.getWorkbook(), compare);
 
                 System.out.println("Offer is extracted correctly");
 
@@ -81,6 +85,8 @@ public class PDFHandling {
         }
 
         else if (select == 3){
+            Comparison compare = new Comparison();
+
            Scanner pdfScan = new Scanner(System.in);
            Scanner excelScan = new Scanner(System.in);
             System.out.println("Enter your pdf file path and Excel sheet file path");
@@ -98,24 +104,26 @@ public class PDFHandling {
                Workbook PlantillaWorkBook = FileAccess.getWorkBook();
 
                //Extract Offer From Excel
-               new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Descuentos"), "Descuentos" ,FileCreationForPdfAndExcel.getWorkbook());
-               new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Posventa"), "Posventa" ,FileCreationForPdfAndExcel.getWorkbook());
+               new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Descuentos"), "Descuentos" ,FileCreationForPdfAndExcel.getWorkbook(), compare);
+               new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Posventa"), "Posventa" ,FileCreationForPdfAndExcel.getWorkbook(), compare);
                new CMPlantilla_Indice().ExtractInfoFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("PlantillaCM-Indice") , "PlantillaCM-Indice" , FileCreationForPdfAndExcel.getWorkbook());
 
-               new CMPlantilla_MinutosInfinityBusiness().ExtractMinutosFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Minutos") , "Minutos" , FileCreationForPdfAndExcel.getWorkbook());
-               new CMPlantilla_MinutosDescuentosYTarifas().ExtractMinutosFromCMP(PlantillaWorkBook , FileCreationForExcel.getSheet("Minutos") , "Minutos",FileCreationForPdfAndExcel.getWorkbook());
+               new CMPlantilla_MinutosInfinityBusiness().ExtractMinutosFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Minutos") , "Minutos" , FileCreationForPdfAndExcel.getWorkbook(), compare);
+               new CMPlantilla_MinutosDescuentosYTarifas().ExtractMinutosFromCMP(PlantillaWorkBook , FileCreationForPdfAndExcel.getSheet("Minutos") , "Minutos",FileCreationForPdfAndExcel.getWorkbook(), compare);
 
-               new CMPlantilla_TrenesInfinityBusiness().ExtractTrenesBIFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Trenes") , "Trenes" , FileCreationForPdfAndExcel.getWorkbook());
-               new CMPlantilla_Trenes().ExtractTrenesFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getWorkbook());
+               new CMPlantilla_TrenesInfinityBusiness().ExtractTrenesBIFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Trenes") , "Trenes" , FileCreationForPdfAndExcel.getWorkbook(), compare);
+               new CMPlantilla_Trenes().ExtractTrenesFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Trenes") , "Trenes", FileCreationForPdfAndExcel.getWorkbook(), compare);
 
                //File PDF Reading
                String text = new ExtractingData().ReadPdf(pdfFilePath);
 
                //Extract Offer From PDF.
-               new Discounts().ExtractDiscounts(text, FileCreationForPdfAndExcel.getSheet("Descuentos") , "Descuentos" , FileCreationForPdfAndExcel.getWorkbook());
-               new Minutes().ExtractMinutes(text, FileCreationForPdfAndExcel.getSheet("Minutos") , "Minutos" , FileCreationForPdfAndExcel.getWorkbook());
-               new PostSelling().ExtractPostSelling(text, FileCreationForPdfAndExcel.getSheet("Posventa"), "Posventa" ,FileCreationForPdfAndExcel.getWorkbook());
-               new Trenes().ExtractTrenes(text, FileCreationForPdfAndExcel.getSheet("Trenes"), "Trenes" ,FileCreationForPdfAndExcel.getWorkbook());
+               new Discounts().ExtractDiscounts(text, FileCreationForPdfAndExcel.getSheet("Descuentos") , "Descuentos" , FileCreationForPdfAndExcel.getWorkbook(), compare);
+               new Minutes().ExtractMinutes(text, FileCreationForPdfAndExcel.getSheet("Minutos") , "Minutos" , FileCreationForPdfAndExcel.getWorkbook(), compare);
+               new PostSelling().ExtractPostSelling(text, FileCreationForPdfAndExcel.getSheet("Posventa"), "Posventa" ,FileCreationForPdfAndExcel.getWorkbook(), compare);
+               new Trenes().ExtractTrenes(text, FileCreationForPdfAndExcel.getSheet("Trenes"), "Trenes" ,FileCreationForPdfAndExcel.getWorkbook(), compare);
+
+               System.out.println("Offer is extracted correctly");
 
                FileCreationForPdfAndExcel.SaveFile();
                FileCreationForPdfAndExcel.BringFile();

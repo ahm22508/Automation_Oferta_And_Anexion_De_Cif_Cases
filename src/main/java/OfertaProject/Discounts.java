@@ -12,10 +12,9 @@ import java.util.HashSet;
 public class Discounts {
 
 
-    public void ExtractDiscounts(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook) throws Exception {
+    public void ExtractDiscounts(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook, Comparison compare) throws Exception {
 
         //open the DTOS File and search into it.
-        Comparison compare = new Comparison();
 
         if (OfertaSheet == null) {
             OfertaSheet = ofertaWorkbook.createSheet(sheetName);

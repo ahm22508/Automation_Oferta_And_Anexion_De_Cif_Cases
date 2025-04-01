@@ -12,8 +12,7 @@ import java.util.regex.Pattern;
 public class PostSelling {
 
 
-    public void ExtractPostSelling(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook){
-        Comparison compare = new Comparison();
+    public void ExtractPostSelling(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook, Comparison compare){
 
         //Create new Excel File and new Sheet
         if (OfertaSheet == null) {

@@ -6,11 +6,10 @@ import java.util.regex.Pattern;
 
 public class CMPlantilla_TrenesInfinityBusiness {
 
-    public void ExtractTrenesBIFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook){
+    public void ExtractTrenesBIFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook, Comparison compare){
                 int Pointer = 0;
                 int rowNum;
                 int pointer1 = 0;
-                Comparison compare = new Comparison();
 
         if (OfertaSheet == null) {
             OfertaSheet = ofertaWorkbook.createSheet(sheetName);

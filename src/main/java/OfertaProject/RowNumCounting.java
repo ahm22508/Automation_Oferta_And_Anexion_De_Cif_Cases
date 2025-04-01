@@ -26,7 +26,7 @@ public class RowNumCounting {
         Sheet minutosSheet = FileCreationForPdfAndExcel.getSheet("Minutos");
         if(minutosSheet != null) {
             for (Row minutoRow : minutosSheet) {
-                RowNumForMinutos = minutoRow.getRowNum();
+                RowNumForMinutos = minutoRow.getRowNum()+1;
             }
             return RowNumForMinutos;
         }
@@ -51,7 +51,7 @@ public class RowNumCounting {
         Sheet trenesSheet = FileCreationForPdfAndExcel.getSheet("Trenes");
         if (trenesSheet != null) {
             for (Row trenRow : trenesSheet) {
-                RowNumForTrenes = trenRow.getRowNum();
+                RowNumForTrenes = trenRow.getRowNum()+1;
             }
             return RowNumForTrenes;
         } else {

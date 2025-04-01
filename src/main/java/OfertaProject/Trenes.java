@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 
 
 public class Trenes {
-    public void ExtractTrenes(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook) {
-        Comparison compare = new Comparison();
+    public void ExtractTrenes(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook, Comparison compare) {
+
         if (OfertaSheet == null) {
             OfertaSheet = ofertaWorkbook.createSheet(sheetName);
         } else {

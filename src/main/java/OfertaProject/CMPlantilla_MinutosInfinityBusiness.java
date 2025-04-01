@@ -7,8 +7,7 @@ import java.util.regex.Pattern;
 
 public class CMPlantilla_MinutosInfinityBusiness {
 
-    public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook) {
-        Comparison compare = new Comparison();
+    public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook, Comparison compare) {
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
         for (int i = 0; i < SheetNums; i++) {
