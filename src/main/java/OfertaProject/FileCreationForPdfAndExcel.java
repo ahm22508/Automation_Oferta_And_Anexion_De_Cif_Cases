@@ -30,6 +30,10 @@ public class FileCreationForPdfAndExcel {
     public static Sheet getSheet(String sheetName){
         return OpenSheet.getSheet(sheetName);
     }
+    public static Sheet createSheet(String sheetName){
+        return OpenSheet.getSheet(sheetName);
+    }
+
 
     public static void SaveFile()throws Exception{
         OpenSheet.write(OpenFile);

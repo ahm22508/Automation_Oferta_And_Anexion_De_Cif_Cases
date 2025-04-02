@@ -1,6 +1,7 @@
 package OfertaProject;
 
 
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.Scanner;
@@ -13,9 +14,9 @@ public class PDFHandling {
         Scanner selector = new Scanner(System.in);
         System.out.println("press 1 to extract offer from PDF\npress 2 to extract offer from Excel\npress 3 to extract offer from PDF and Excel at same time");
         int select = selector.nextInt();
+        Comparison compare = new Comparison();
 
         if(select == 1){
-            Comparison compare = new Comparison();
 
             System.out.println("Enter your Pdf file path:");
             Scanner pdfScan = new Scanner(System.in);
@@ -47,8 +48,6 @@ public class PDFHandling {
         }
 
         else if(select == 2){
-            Comparison compare = new Comparison();
-
             System.out.println("Enter your Excel file path:");
             Scanner excelScan = new Scanner(System.in);
             String filePath = excelScan.nextLine().replace("\"" , "");
@@ -59,7 +58,12 @@ public class PDFHandling {
 
                 //File Creation and Oferta Extraction
                 FileCreationForExcel.createFile();
-                new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM_Descuentos"), "PlantillaCM_Descuentos" ,FileCreationForExcel.getWorkbook(), compare);
+
+                CMPlantilla_Descuentos dtos = new CMPlantilla_Descuentos();
+                if(dtos.isDescuentoSheet(PlantillaWorkBook)) {
+                 Sheet OfertaSheet = FileCreationForExcel.createSheet("PlantillaCM_Descuentos");
+                    dtos.ExtractDescuentosFromCMP(PlantillaWorkBook, compare, OfertaSheet);
+                }
                 new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM_Posventa"), "PlantillaCM_Posventa" ,FileCreationForExcel.getWorkbook(), compare);
                 new CMPlantilla_Indice().ExtractInfoFromCMP(PlantillaWorkBook, FileCreationForExcel.getSheet("PlantillaCM-Indice") , "PlantillaCM-Indice" , FileCreationForExcel.getWorkbook());
 
@@ -84,9 +88,8 @@ public class PDFHandling {
             }
         }
 
-        else if (select == 3){
-            Comparison compare = new Comparison();
 
+        else if (select == 3){
            Scanner pdfScan = new Scanner(System.in);
            Scanner excelScan = new Scanner(System.in);
             System.out.println("Enter your pdf file path and Excel sheet file path");
@@ -96,16 +99,20 @@ public class PDFHandling {
             System.out.println("Your PDF File Path: ");
             String pdfFilePath = pdfScan.nextLine().replace("\"" , "");
            if(FileAnalysis.isFile(excelFilePath) && FileAnalysis.isFile(pdfFilePath)){
-               //File Creation.
-               FileCreationForPdfAndExcel.createFile();
-
                //File Excel Reading
                new FileAccess().setFile(excelFilePath);
                Workbook PlantillaWorkBook = FileAccess.getWorkBook();
 
-               long start = System.currentTimeMillis();
+               //File Creation.
+               FileCreationForPdfAndExcel.createFile();
+
                //Extract Offer From Excel
-               new CMPlantilla_Descuentos().ExtractDescuentosFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Descuentos"), "Descuentos" ,FileCreationForPdfAndExcel.getWorkbook(), compare);
+               CMPlantilla_Descuentos dtos = new CMPlantilla_Descuentos();
+               if(dtos.isDescuentoSheet(PlantillaWorkBook)) {
+                   Sheet OfertaSheet = FileCreationForPdfAndExcel.createSheet("PlantillaCM_Descuentos");
+                   dtos.ExtractDescuentosFromCMP(PlantillaWorkBook, compare, OfertaSheet);
+               }
+
                new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("Posventa"), "Posventa" ,FileCreationForPdfAndExcel.getWorkbook(), compare);
                new CMPlantilla_Indice().ExtractInfoFromCMP(PlantillaWorkBook, FileCreationForPdfAndExcel.getSheet("PlantillaCM-Indice") , "PlantillaCM-Indice" , FileCreationForPdfAndExcel.getWorkbook());
 
@@ -125,8 +132,6 @@ public class PDFHandling {
                new Trenes().ExtractTrenes(text, FileCreationForPdfAndExcel.getSheet("Trenes"), "Trenes" ,FileCreationForPdfAndExcel.getWorkbook(), compare);
 
                System.out.println("Offer is extracted correctly");
-               long End = System.currentTimeMillis();
-               System.out.println(End - start);
 
                FileCreationForPdfAndExcel.SaveFile();
                FileCreationForPdfAndExcel.BringFile();
