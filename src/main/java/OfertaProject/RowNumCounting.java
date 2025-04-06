@@ -9,7 +9,6 @@ public class RowNumCounting {
     private static int RowNumForMinutos = 0;
     private static int RowNumForTrenes = 0;
     private static int RowNumForPosVenta= 0;
-
     public static int getRowNumForDescuentos(){
         Sheet descuentoSheet = FileCreationForPdfAndExcel.getSheet("Descuentos");
         if(descuentoSheet != null) {

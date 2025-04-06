@@ -12,17 +12,7 @@ import java.util.HashSet;
 public class Discounts {
 
 
-    public void ExtractDiscounts(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook, Comparison compare) throws Exception {
-
-        //open the DTOS File and search into it.
-
-        if (OfertaSheet == null) {
-            OfertaSheet = ofertaWorkbook.createSheet(sheetName);
-        } else {
-            OfertaSheet = ofertaWorkbook.getSheet(sheetName);
-        }
-
-
+    public void ExtractDiscounts(String text, Sheet OfertaSheet, Comparison compare) throws Exception {
         //Extract specific data
       int rowNum = RowNumCounting.getRowNumForDescuentos();
         Row row2;
@@ -32,12 +22,13 @@ public class Discounts {
         for (CSVRecord record : DTOReader) {
 
             if (text.contains(record.get(0)) && !record.get(0).isEmpty()) {
-                DTOS.add(record.get(0));
-                        if (!record.get(0).contains(DTOS.toString()) && !record.get(0).contains(compare.getDescuentosComparator().toString())) {
+                        if (!DTOS.contains(record.get(0)) && !compare.getDescuentosComparator().contains(record.get(0))) {
                             Row row1 = OfertaSheet.createRow(rowNum++);
                             row1.createCell(0).setCellValue(record.get(0));
                             row1.createCell(1).setCellValue(record.get(1));
                             row1.createCell(2).setCellValue(record.get(2));
+                            DTOS.add(record.get(0));
+
                         }
                     }
                 }

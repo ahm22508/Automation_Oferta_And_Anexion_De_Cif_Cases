@@ -7,19 +7,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CMPlantilla_Posventa {
+    private int i = 0;
 
-    public void ExtractPosventaFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet , String sheetName, Workbook ofertaWorkbook, Comparison compare){
-        //check if the sheet is found or not
+    public boolean isSheetPosventa(Workbook PlantillaWorkBook) {
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
-        for (int i = 0; i < SheetNums; i++) {
+        for (i = 0; i < SheetNums; i++) {
             String SheetName = PlantillaWorkBook.getSheetName(i);
             if (!PlantillaWorkBook.isSheetHidden(i) && (SheetName.contains("DTOS") || SheetName.contains("Tarifas") || SheetName.contains("Complementarios") || SheetName.contains("Complem"))) {
-                //create new Sheet in the new file
-                if (OfertaSheet == null) {
-                    OfertaSheet = ofertaWorkbook.createSheet(sheetName);
-                } else {
-                    OfertaSheet = ofertaWorkbook.getSheet(sheetName);
-                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void ExtractPosventaFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet, Comparison compare){
+
                 Sheet PosventaSheet = FileAccess.getSheet(PlantillaWorkBook.getSheetName(i));
                 //Extract the specific data
                 Pattern PatternPosventaLine = Pattern.compile("POS+[A-Z]{2}");
@@ -55,5 +57,3 @@ public class CMPlantilla_Posventa {
                 }
             }
         }
-    }
-}

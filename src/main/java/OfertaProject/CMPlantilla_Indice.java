@@ -7,23 +7,24 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 
 public class CMPlantilla_Indice {
+    private int i = 0;
 
-    public void ExtractInfoFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook) {
+    public boolean isSheetIndice(Workbook PlantillaWorkBook) {
+        int SheetNums = PlantillaWorkBook.getNumberOfSheets();
+        for ( i = 0; i < SheetNums; i++) {
+            String SheetName = PlantillaWorkBook.getSheetName(i);
+            if (!PlantillaWorkBook.isSheetHidden(i) && SheetName.equals("Indice")) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        //check if the sheet is found or not
-                int SheetNums = PlantillaWorkBook.getNumberOfSheets();
-                for(int i = 0; i < SheetNums; i++){
-                    String SheetName = PlantillaWorkBook.getSheetName(i);
-                    if (!PlantillaWorkBook.isSheetHidden(i) && SheetName.equals("Indice")) {
-                        //create new Sheet in the new file
-                        if(OfertaSheet == null) {
-                            OfertaSheet = ofertaWorkbook.createSheet(sheetName);
-                        } else {
-                            OfertaSheet = ofertaWorkbook.getSheet(sheetName);
-                        }
-                        //Extract the specific data
+    public void ExtractInfoFromCMP(Sheet OfertaSheet, Workbook ofertaWorkbook) {
+        Sheet IndiceSheet = FileAccess.getSheet(ofertaWorkbook.getSheetName(i));
+        //Extract the specific data
                         Row row1;
-                        for (Row row : FileAccess.getSheet("Indice")) {
+                        for (Row row : IndiceSheet) {
                             for (Cell cell : row) {
                                 if (cell.toString().contains("Comentarios CM") || cell.toString().contains("Comentarios")) {
                                     Cell NextCell = row.getCell(cell.getColumnIndex() + 1);
@@ -37,5 +38,3 @@ public class CMPlantilla_Indice {
                         }
                     }
                 }
-            }
-        }

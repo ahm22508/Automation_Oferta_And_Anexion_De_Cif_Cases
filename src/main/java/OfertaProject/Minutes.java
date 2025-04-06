@@ -7,14 +7,7 @@ import java.util.regex.Pattern;
 
 public class Minutes {
 
-    public void ExtractMinutes(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook, Comparison compare) {
-        //Create new Excel File and new Sheet
-        if (OfertaSheet == null) {
-            OfertaSheet = ofertaWorkbook.createSheet(sheetName);
-        } else {
-            OfertaSheet = ofertaWorkbook.getSheet(sheetName);
-        }
-
+    public void ExtractMinutes(String text, Sheet OfertaSheet, Comparison compare) {
         //Extract specific data
         Pattern pattern = Pattern.compile("\\d+\\.\\d{1,2}");
         Matcher matcher = pattern.matcher(text);
@@ -22,7 +15,6 @@ public class Minutes {
         Matcher matcher1 = pattern1.matcher(text);
         Row row;
         int x = RowNumCounting.getRowNumForMinutos();
-
         while (matcher1.find()) {
             if (!compare.getMinutosComparator().contains(matcher1.group())) {
                 if (matcher.find(matcher1.end())) {

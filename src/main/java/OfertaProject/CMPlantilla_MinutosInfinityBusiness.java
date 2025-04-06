@@ -6,21 +6,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CMPlantilla_MinutosInfinityBusiness {
+    private int i = 0;
 
-    public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet ,String sheetName, Workbook ofertaWorkbook, Comparison compare) {
+    public boolean isMinutosBISheet(Workbook PlantillaWorkBook) {
         //check if the sheet is found or not
         int SheetNums = PlantillaWorkBook.getNumberOfSheets();
-        for (int i = 0; i < SheetNums; i++) {
+        for ( i = 0; i < SheetNums; i++) {
             String SheetName = PlantillaWorkBook.getSheetName(i);
             if (!PlantillaWorkBook.isSheetHidden(i) && SheetName.equals("Infinity Business")) {
+                return true;
+            }
+        }
+    return false;
+    }
 
-                //create new Sheet in the new file
-                if (OfertaSheet == null) {
-                    OfertaSheet = ofertaWorkbook.createSheet(sheetName);
-                } else {
-                    OfertaSheet = ofertaWorkbook.getSheet(sheetName);
-                }
-                Sheet MinutosSheet = FileAccess.getSheet("Infinity Business");
+    public void ExtractMinutosFromCMP(Sheet OfertaSheet, Comparison compare , Workbook PlantillaWorkbook) {
+
+                Sheet MinutosSheet = FileAccess.getSheet(PlantillaWorkbook.getSheetName(i));
                 //Extract the specific data
                 Pattern pattern = Pattern.compile("(?<!\\W|-\\S)\\b(MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB)\\b");
                 LinkedHashSet<String> Minutos = new LinkedHashSet<>();
@@ -55,5 +57,3 @@ public class CMPlantilla_MinutosInfinityBusiness {
                 }
             }
         }
-    }
-}

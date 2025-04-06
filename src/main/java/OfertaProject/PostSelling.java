@@ -59,7 +59,7 @@ public class PostSelling {
         while (matcher.find()) {
             if (matcher1.find(matcher.end())) {
                 String Posventa = matcher.group();
-                if(!Posventa.contains(compare.getPosventaComparator().toString())) {
+                if(!compare.getPosventaComparator().contains(Posventa)){
                     if (!Posventas.contains(Posventa)) {
                         Posventas.add(Posventa);
                         row = OfertaSheet.createRow(i++);
@@ -86,7 +86,7 @@ public class PostSelling {
         while (matcher4.find()) {
             if (matcher1.find(matcher4.end())) {
                 String Posventa = matcher4.group();
-                if (!Posventa.contains(compare.getPosventaComparator().toString())){
+                if (!compare.getPosventaComparator().contains(Posventa)){
                     if (!ExceptionalPosventas.contains(Posventa)) {
                         ExceptionalPosventas.add(Posventa);
                         row = OfertaSheet.createRow(i++);
@@ -105,7 +105,7 @@ public class PostSelling {
         }
         if (Posventas.isEmpty()) {
             while (matcher3.find()) {
-                if (!matcher3.group().contains(compare.getPosventaComparator().toString())) {
+                if (!compare.getPosventaComparator().contains(matcher3.group())){
                     row = OfertaSheet.createRow(i++);
                     row.createCell(0).setCellValue(matcher3.group());
                 }
