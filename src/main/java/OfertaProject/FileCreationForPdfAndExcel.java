@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
 
 public class FileCreationForPdfAndExcel {
 
-    private final File OfertaFile = new File("OfertaPDFDeActivacion&PlantillaCM.xlsx");
+    private final File OfertaFile = new File("C:\\Oferta Extractor\\OfertaPDFDeActivacion&PlantillaCM.xlsx");
     private FileOutputStream OpenFile;
     private static final Workbook OpenSheet = new XSSFWorkbook();
 
@@ -29,7 +29,7 @@ public class FileCreationForPdfAndExcel {
     public static Sheet getSheet(String sheetName){
         return OpenSheet.getSheet(sheetName);
     }
-    public Sheet createSheet(String sheetName){
+    public static Sheet createSheet(String sheetName){
         return OpenSheet.createSheet(sheetName);
     }
     public void SaveFile()throws Exception{

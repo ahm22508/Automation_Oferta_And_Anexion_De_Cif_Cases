@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
 
 public class FileCreationForPDF {
 
-    private final File OfertaFile = new File("OfertaPDFDeActivacion.xlsx");
+    private final File OfertaFile = new File("C:\\Oferta Extractor\\OfertaPDFDeActivacion.xlsx");
     private FileOutputStream OpenFile;
     private final Workbook OpenSheet = new XSSFWorkbook();
 

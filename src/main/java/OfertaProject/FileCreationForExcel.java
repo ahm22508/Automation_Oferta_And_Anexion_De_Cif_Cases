@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 public class FileCreationForExcel {
-    private final File OfertaFile = new File("PlantillaCM.xlsx");
+    private final File OfertaFile = new File("C:\\Oferta Extractor\\PlantillaCM.xlsx");
     private FileOutputStream OpenFile;
     private final Workbook OpenSheet = new XSSFWorkbook();
 

@@ -8,20 +8,30 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CMPlantilla_Trenes {
+    private int counter = 1;
+    private int iterator = 0;
+    private int SheetNums;
+    private int RowNum = 0;
 
-    public void ExtractTrenesFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet , String sheetName,Workbook ofertaWorkbook, Comparison compare) {
-
-        Sheet InfinitySheet = PlantillaWorkBook.getSheet("Infinity Business");
-
-        //create new Sheet in the new file
-        if (OfertaSheet == null) {
-            OfertaSheet = ofertaWorkbook.createSheet(sheetName);
-        } else {
-            OfertaSheet = ofertaWorkbook.getSheet(sheetName);
+    public boolean isTrenSheet(Workbook PlantillaWorkBook) {
+        SheetNums = PlantillaWorkBook.getNumberOfSheets();
+        while (counter < SheetNums) {
+            String SheetName = PlantillaWorkBook.getSheetName(counter);
+            if (!PlantillaWorkBook.isSheetHidden(counter) && (SheetName.equals("Tren") || SheetName.contains("tren") || SheetName.contains("Tren_") || SheetName.contains("Trenes"))) {
+                iterator++;
+                return true;
+            } else {
+                counter++;
+            }
         }
+        return false;
+    }
 
-        int RowNum = 0;
-        int iterator = 0;
+    public void ExtractTrenesFromCMP(Workbook PlantillaWorkBook, Sheet OfertaSheet, Comparison compare) {
+
+        Sheet sheet = PlantillaWorkBook.getSheet(PlantillaWorkBook.getSheetName(counter));
+        counter++;
+        Sheet InfinitySheet = PlantillaWorkBook.getSheet("Infinity Business");
 
         //Map To Resolve The Current Modification Exception...
         HashSet<String> DuplicationTrenes = new HashSet<>();
@@ -34,215 +44,212 @@ public class CMPlantilla_Trenes {
         String TrenInfinityBusiness = "";
         Matcher matcher;
         Matcher matcherNum;
-        //check if the sheet is found or not
-        int SheetNums = PlantillaWorkBook.getNumberOfSheets();
-        for (int i = 0; i < SheetNums; i++) {
-            String SheetName = PlantillaWorkBook.getSheetName(i);
-            if (!PlantillaWorkBook.isSheetHidden(i) && (SheetName.equals("Tren") || SheetName.contains("tren") || SheetName.contains("Tren_") || SheetName.contains("Trenes"))) {
-                Sheet sheet = PlantillaWorkBook.getSheet(PlantillaWorkBook.getSheetName(i));
+        if (iterator == 0) {
+            Row HeaderRow = OfertaSheet.getRow(0);
+            Cell HeaderCell = HeaderRow.createCell(0);
+            HeaderCell.setCellValue("All Trenes From CM-Plantilla...");
+        }
 
-                if (iterator == 0) {
-                    Row HeaderRow = OfertaSheet.getRow(0);
-                    Cell HeaderCell = HeaderRow.createCell(0);
-                    HeaderCell.setCellValue("All Trenes From CM-Plantilla...");
-                }
+        //Sheet analisis.
+        for (Row TrenRow : OfertaSheet) {
+            Cell DuplicationCell = TrenRow.getCell(0);
+            if (DuplicationCell != null) {
+                DuplicationTrenes.add(DuplicationCell.toString());
+            }
+            for (Cell TrenCell : TrenRow) {
+                RowNum = TrenCell.getRow().getRowNum() + 1;
+            }
+        }
 
-                //Sheet analisis.
-                for (Row TrenRow : OfertaSheet) {
-                    Cell DuplicationCell = TrenRow.getCell(0);
-                    if (DuplicationCell != null) {
-                        DuplicationTrenes.add(DuplicationCell.toString());
-                    }
-                    for (Cell TrenCell : TrenRow) {
-                        RowNum = TrenCell.getRow().getRowNum() + 1;
-                    }
-                }
+        if (iterator == 2) {
+            Row row = OfertaSheet.getRow(0);
+            Cell cell = row.createCell(2);
+            cell.setCellValue("Existe más que un fichero en la plantilla del CM, puedes encontrar muchos duplicados, pregunta al ejecutivo que Fichero aplicamos");
+        }
 
-                iterator++;
-                if (iterator == 2) {
-                    Row row = OfertaSheet.getRow(0);
-                    Cell cell = row.createCell(2);
-                    cell.setCellValue("Existe más que un fichero en la plantilla del CM, puedes encontrar muchos duplicados, pregunta al ejecutivo que Fichero aplicamos");
-                }
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                matcher = pattern.matcher(cell.toString());
+                if (matcher.find()) {
+                    Cell NextCell = row.getCell(cell.getColumnIndex() + 1);
+                    if (NextCell != null) {
+                        if (NextCell.getCellType() == CellType.NUMERIC) {
+                            double Percentage = NextCell.getNumericCellValue() * 100;
+                            if (Percentage > 0) {
+                                if (!DuplicationTrenes.contains(matcher.group())) {
+                                    row1 = OfertaSheet.createRow(RowNum++);
+                                    row1.createCell(0).setCellValue(matcher.group());
+                                    row1.createCell(1).setCellValue(Percentage);
+                                    compare.addToTrenesComparator(matcher.group());
+                                }
+                            }
 
-                for (Row row : sheet) {
-                    for (Cell cell : row) {
-                        matcher = pattern.matcher(cell.toString());
-                        if (matcher.find()) {
-                            Cell NextCell = row.getCell(cell.getColumnIndex() + 1);
-                            if (NextCell != null) {
-                                if (NextCell.getCellType() == CellType.NUMERIC) {
-                                    double Percentage = NextCell.getNumericCellValue() * 100;
-                                    if (Percentage > 0) {
-                                        if (!DuplicationTrenes.contains(matcher.group())) {
+                            if (DuplicationTrenes.contains(matcher.group())) {
+
+                                for (Row SearchTren : OfertaSheet) {
+                                    for (Cell CellTren : SearchTren) {
+                                        if (CellTren.toString().equals(matcher.group())) {
+                                            double ActualValue = SearchTren.getCell(CellTren.getColumnIndex() + 1).getNumericCellValue();
+                                            if (Percentage != ActualValue && Percentage > 0) {
+                                                TrenDeOtroFichero.put(matcher.group(), Percentage);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if ((NextCell.toString().contains("/") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-")) && !NextCell.toString().matches(".*[A-Za-z].*")) {
+                            double Equation = NextCell.getNumericCellValue() * 100;
+                            double ModifyNum = Math.floor(Equation * 100) / 100;
+                            row1 = OfertaSheet.createRow(RowNum++);
+                            row1.createCell(0).setCellValue(matcher.group());
+                            row1.createCell(1).setCellValue(Math.floor(Equation * 100) / 100);
+                            compare.addToTrenesComparator(matcher.group());
+                            if (String.valueOf(ModifyNum).contains(".99")) {
+                                row1.createCell(1).setCellValue((Math.floor(Equation * 100) / 100) + 0.01);
+                            }
+                        }
+                        if (NextCell.toString().matches("[A-Z]\\d+")) {
+                            Pattern LetterPattern = Pattern.compile("[A-Z](?=\\d+)");
+                            Matcher LetterMatch = LetterPattern.matcher(NextCell.toString());
+                            Pattern NumPattern = Pattern.compile("(?<=[A-Z])\\d+");
+                            Matcher NumMatch = NumPattern.matcher(NextCell.toString());
+                            if (LetterMatch.find()) {
+                                ExtractingData extractingData = new ExtractingData();
+                                int CellNum = extractingData.Converter(LetterMatch.group());
+                                if (NumMatch.find()) {
+                                    int RowNumber = Integer.parseInt(NumMatch.group()) - 1;
+                                    if (sheet.getRow(RowNumber).getCell(CellNum) != null) {
+                                        double Percentage = sheet.getRow(RowNumber).getCell(CellNum).getNumericCellValue() * 100;
+                                        if (Percentage > 0) {
                                             row1 = OfertaSheet.createRow(RowNum++);
                                             row1.createCell(0).setCellValue(matcher.group());
                                             row1.createCell(1).setCellValue(Percentage);
                                             compare.addToTrenesComparator(matcher.group());
                                         }
                                     }
-
-                                    if (DuplicationTrenes.contains(matcher.group())) {
-
-                                        for (Row SearchTren : OfertaSheet) {
-                                            for (Cell CellTren : SearchTren) {
-                                                if (CellTren.toString().equals(matcher.group())) {
-                                                    double ActualValue = SearchTren.getCell(CellTren.getColumnIndex() + 1).getNumericCellValue();
-                                                    if (Percentage != ActualValue) {
-                                                        TrenDeOtroFichero.put(matcher.group(), Percentage);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
                                 }
-                                if ((NextCell.toString().contains("/") || NextCell.toString().contains("*") || NextCell.toString().contains("+") || NextCell.toString().contains("-")) && !NextCell.toString().matches(".*[A-Za-z].*")) {
-                                    double Equation = NextCell.getNumericCellValue() * 100;
-                                    double ModifyNum = Math.floor(Equation * 100) / 100;
-                                    row1 = OfertaSheet.createRow(RowNum++);
-                                    row1.createCell(0).setCellValue(matcher.group());
-                                    row1.createCell(1).setCellValue(Math.floor(Equation * 100) / 100);
-                                    compare.addToTrenesComparator(matcher.group());
-                                    if (String.valueOf(ModifyNum).contains(".99")) {
-                                        row1.createCell(1).setCellValue((Math.floor(Equation * 100) / 100) + 0.01);
-                                    }
-                                }
-                                if (NextCell.toString().matches("[A-Z]\\d+")) {
-                                    Pattern LetterPattern = Pattern.compile("[A-Z](?=\\d+)");
-                                    Matcher LetterMatch = LetterPattern.matcher(NextCell.toString());
-                                    Pattern NumPattern = Pattern.compile("(?<=[A-Z])\\d+");
-                                    Matcher NumMatch = NumPattern.matcher(NextCell.toString());
-                                    if (LetterMatch.find()) {
-                                        ExtractingData extractingData = new ExtractingData();
-                                        int CellNum = extractingData.Converter(LetterMatch.group());
-                                        if (NumMatch.find()) {
-                                            int RowNumber = Integer.parseInt(NumMatch.group()) - 1;
-                                            if (sheet.getRow(RowNumber).getCell(CellNum) != null) {
-                                                double Percentage = sheet.getRow(RowNumber).getCell(CellNum).getNumericCellValue() * 100;
-                                                if (Percentage > 0) {
-                                                    row1 = OfertaSheet.createRow(RowNum++);
-                                                    row1.createCell(0).setCellValue(matcher.group());
-                                                    row1.createCell(1).setCellValue(Percentage);
-                                                    compare.addToTrenesComparator(matcher.group());
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                            }
+                        }
 
-                                if (NextCell.toString().contains("Infinity Business") || NextCell.toString().contains("Infinity Business Media")) {
-                                    if (DuplicationTrenes.size() == 1) {
-                                        if (InfinitySheet != null) {
-                                            for (Row InfinityRow : InfinitySheet) {
-                                                for (Cell InfinityCell : InfinityRow) {
-                                                    if (InfinityCell.toString().contains(cell.toString()))
-                                                        for (Cell TrenCell : InfinityRow) {
-                                                            if (TrenCell.toString().contains("TDV04")) {
-                                                                for (Cell FinalTrenCell : InfinityRow) {
-                                                                    if (FinalTrenCell.toString().contains("Descuento")) {
-                                                                        TrenInfinityBusiness = cell.getStringCellValue();
-                                                                    }
-                                                                }
+                        if (NextCell.toString().contains("Infinity Business") || NextCell.toString().contains("Infinity Business Media")) {
+                            if (DuplicationTrenes.size() == 1) {
+                                if (InfinitySheet != null) {
+                                    for (Row InfinityRow : InfinitySheet) {
+                                        for (Cell InfinityCell : InfinityRow) {
+                                            if (InfinityCell.toString().contains(cell.toString()))
+                                                for (Cell TrenCell : InfinityRow) {
+                                                    if (TrenCell.toString().contains("TDV04")) {
+                                                        for (Cell FinalTrenCell : InfinityRow) {
+                                                            if (FinalTrenCell.toString().contains("Descuento")) {
+                                                                TrenInfinityBusiness = cell.getStringCellValue();
                                                             }
-                                                            if (TrenCell.toString().contains("%")) {
-                                                                for (Cell percentageCell : InfinityRow) {
-                                                                    if (percentageCell.toString().contains("TDV04")) {
-                                                                        String PercentageCell = TrenCell.getStringCellValue().
-                                                                                replace(TrenInfinityBusiness, "").
-                                                                                replace("-", "").
-                                                                                replace("%", "").
-                                                                                replace(" ", "").
-                                                                                replace(",", ".");
-                                                                        String AddZero = "0" + PercentageCell;
-                                                                        double FinalNum = Double.parseDouble(AddZero);
+                                                        }
+                                                    }
+                                                    if (TrenCell.toString().contains("%")) {
+                                                        for (Cell percentageCell : InfinityRow) {
+                                                            if (percentageCell.toString().contains("TDV04")) {
+                                                                String PercentageCell = TrenCell.getStringCellValue().
+                                                                        replace(TrenInfinityBusiness, "").
+                                                                        replace("-", "").
+                                                                        replace("%", "").
+                                                                        replace(" ", "").
+                                                                        replace(",", ".");
+                                                                String AddZero = "0" + PercentageCell;
+                                                                double FinalNum = Double.parseDouble(AddZero);
 
-                                                                        if (FinalNum > 0) {
-                                                                            row1 = OfertaSheet.createRow(RowNum++);
-                                                                            row1.createCell(0).setCellValue(TrenInfinityBusiness);
-                                                                            row1.createCell(1).setCellValue(FinalNum);
-                                                                            compare.addToTrenesComparator(TrenInfinityBusiness);
-                                                                        }
-                                                                    }
+                                                                if (FinalNum > 0) {
+                                                                    row1 = OfertaSheet.createRow(RowNum++);
+                                                                    row1.createCell(0).setCellValue(TrenInfinityBusiness);
+                                                                    row1.createCell(1).setCellValue(FinalNum);
+                                                                    compare.addToTrenesComparator(TrenInfinityBusiness);
                                                                 }
                                                             }
                                                         }
+                                                    }
                                                 }
-                                            }
                                         }
                                     }
-                                }
-                            }
-                        }
-
-                        if (cell.toString().contains("Porcentaje de DTO")) {
-                            int Column = cell.getColumnIndex();
-                            for (Row PercentageRow : sheet) {
-                                Cell PercentageCell = PercentageRow.getCell(Column);
-                                if (PercentageCell != null) {
-                                    if (PercentageCell.getCellType() == CellType.STRING) {
-                                        matcherNum = patternNum.matcher(PercentageCell.toString());
-                                        if (matcherNum.find()) {
-                                            Cell TrenCell = PercentageRow.getCell(PercentageCell.getColumnIndex() - 1);
-                                            row1 = OfertaSheet.createRow(RowNum++);
-                                            row1.createCell(0).setCellValue(TrenCell.getStringCellValue());
-                                            row1.createCell(1).setCellValue(matcherNum.group());
-                                            compare.addToTrenesComparator(TrenCell.toString());
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        //First Exception... Here is added all Exception we will have.
-                        if (cell.toString().contains("DSIM")) {
-                            Cell PercentageCell = row.getCell(cell.getColumnIndex() + 1);
-                            if (PercentageCell.getCellType() == CellType.NUMERIC) {
-                                double Percentage = PercentageCell.getNumericCellValue() * 100;
-                                if (Percentage > 0) {
-                                    row1 = OfertaSheet.createRow(RowNum++);
-                                    row1.createCell(0).setCellValue("DESIM");
-                                    row1.createCell(1).setCellValue(Percentage);
-                                    compare.addToTrenesComparator("DESIM");
-
-                                }
-                            }
-                        }
-                        if (cell.toString().equals("DVCAR")) {
-                            for (Cell PorDefectoCell : row) {
-                                if (PorDefectoCell.toString().contains("por defecto") && PorDefectoCell.getColumnIndex() > cell.getColumnIndex()) {
-                                    row1 = OfertaSheet.createRow(RowNum++);
-                                    row1.createCell(0).setCellValue("DVCAR");
-                                    row1.createCell(1).setCellValue(100);
-                                    compare.addToTrenesComparator("DVCAR");
                                 }
                             }
                         }
                     }
                 }
-                //Map To Resolve The Current Modification Exception...
-                for (Map.Entry<String, Double> map : TrenDeOtroFichero.entrySet()) {
-                    row1 = OfertaSheet.createRow(RowNum++);
-                    row1.createCell(0).setCellValue(map.getKey());
-                    row1.createCell(1).setCellValue(map.getValue());
-                    row1.createCell(2).setCellValue("Tren De Otro Fichero");
+
+                if (cell.toString().contains("Porcentaje de DTO")) {
+                    int Column = cell.getColumnIndex();
+                    for (Row PercentageRow : sheet) {
+                        Cell PercentageCell = PercentageRow.getCell(Column);
+                        if (PercentageCell != null) {
+                            if (PercentageCell.getCellType() == CellType.STRING) {
+                                matcherNum = patternNum.matcher(PercentageCell.toString());
+                                if (matcherNum.find()) {
+                                    Cell TrenCell = PercentageRow.getCell(PercentageCell.getColumnIndex() - 1);
+                                    row1 = OfertaSheet.createRow(RowNum++);
+                                    row1.createCell(0).setCellValue(TrenCell.getStringCellValue());
+                                    row1.createCell(1).setCellValue(matcherNum.group());
+                                    compare.addToTrenesComparator(TrenCell.toString());
+
+                                }
+                            }
+                        }
+                    }
                 }
 
+                //First Exception... Here is added all Exception we will have.
+                if (cell.toString().contains("DSIM")) {
+                    Cell PercentageCell = row.getCell(cell.getColumnIndex() + 1);
+                    if (PercentageCell.getCellType() == CellType.NUMERIC) {
+                        double Percentage = PercentageCell.getNumericCellValue() * 100;
+                        if (Percentage > 0) {
+                            row1 = OfertaSheet.createRow(RowNum++);
+                            row1.createCell(0).setCellValue("DESIM");
+                            row1.createCell(1).setCellValue(Percentage);
+                            compare.addToTrenesComparator("DESIM");
+
+                        }
+                    }
+                }
+                if (cell.toString().equals("DVCAR")) {
+                    for (Cell PorDefectoCell : row) {
+                        if (PorDefectoCell.toString().contains("por defecto") && PorDefectoCell.getColumnIndex() > cell.getColumnIndex()) {
+                            row1 = OfertaSheet.createRow(RowNum++);
+                            row1.createCell(0).setCellValue("DVCAR");
+                            row1.createCell(1).setCellValue(100);
+                            compare.addToTrenesComparator("DVCAR");
+                        }
+                    }
+                }
             }
         }
-        for (int i = 0; i < SheetNums; i++) {
-            String SheetName = PlantillaWorkBook.getSheetName(i);
-            if (PlantillaWorkBook.isSheetHidden(i) && SheetName.equals("Tren")) {
-                int OtherRowNum = 0;
-                for (Row TrenRow : OfertaSheet) {
-                    for (Cell TrenCell : TrenRow) {
-                        OtherRowNum = TrenCell.getRow().getRowNum() + 1;
+        //Map To Resolve The Current Modification Exception...
+        for (Map.Entry<String, Double> map : TrenDeOtroFichero.entrySet()) {
+            row1 = OfertaSheet.createRow(RowNum++);
+                row1.createCell(0).setCellValue(map.getKey());
+                row1.createCell(1).setCellValue(map.getValue());
+                row1.createCell(2).setCellValue("Tren De Otro Fichero llamado " + sheet.getSheetName());
+            }
+        }
+
+
+        public void logInfo (Workbook PlantillaWorkBook, Sheet OfertaSheet){
+            for (int i = 0; i < SheetNums; i++) {
+                String SheetName = PlantillaWorkBook.getSheetName(i);
+                if (PlantillaWorkBook.isSheetHidden(i) && SheetName.equals("Tren")) {
+                    int OtherRowNum = 0;
+                    for (Row TrenRow : OfertaSheet) {
+                        for (Cell TrenCell : TrenRow) {
+                            OtherRowNum = TrenCell.getRow().getRowNum() + 1;
+                        }
                     }
+                    Row HeaderRow = OfertaSheet.createRow(OtherRowNum);
+                    Cell HeaderCell = HeaderRow.createCell(2);
+                    HeaderCell.setCellValue("el Fichero de Tren en la plantilla del CM no Existe.");
                 }
-                Row HeaderRow = OfertaSheet.createRow(OtherRowNum);
-                Cell HeaderCell = HeaderRow.createCell(2);
-                HeaderCell.setCellValue("el Fichero de Tren en la plantilla del CM no Existe.");
             }
         }
     }
-}
+
+
+
+

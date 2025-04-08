@@ -59,7 +59,7 @@ public class FileAccess {
 
             public static String accessToDTOFile() throws Exception{
                 Properties proper = new Properties();
-                FileInputStream file = new FileInputStream("C:\\Oferta Extractor\\data\\file.properties");
+                FileInputStream file = new FileInputStream("C:\\Oferta Extractor\\data\\DTOS.properties");
                 proper.load(file);
                 return proper.getProperty("url");
             }

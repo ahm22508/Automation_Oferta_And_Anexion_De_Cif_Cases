@@ -2,7 +2,6 @@ package OfertaProject;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -12,14 +11,7 @@ import java.util.regex.Pattern;
 public class PostSelling {
 
 
-    public void ExtractPostSelling(String text, Sheet OfertaSheet, String sheetName, Workbook ofertaWorkbook, Comparison compare){
-
-        //Create new Excel File and new Sheet
-        if (OfertaSheet == null) {
-            OfertaSheet = ofertaWorkbook.createSheet(sheetName);
-        } else {
-            OfertaSheet = ofertaWorkbook.getSheet(sheetName);
-        }
+    public void ExtractPostSelling(String text, Sheet OfertaSheet, Comparison compare){
 
         //Extract specific data
         Pattern pattern1 = Pattern.compile("(?<!/)(?!\\d+\\.\\d+)\\b([1-9]\\d{0,4}|0)\\b");
