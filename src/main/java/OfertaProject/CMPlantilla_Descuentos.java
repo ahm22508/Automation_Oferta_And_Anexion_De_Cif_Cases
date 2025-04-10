@@ -23,8 +23,8 @@ public class CMPlantilla_Descuentos {
         return false;
     }
 
-    public void ExtractDescuentosFromCMP(Workbook PlantillaWorkBook, Comparison compare, Sheet OfertaSheet) throws Exception {
-        Sheet DescuentoSheet = FileAccess.getSheet(PlantillaWorkBook.getSheetName(i));
+    public void ExtractDescuentosFromCMP(Workbook PlantillaWorkBook, Comparison compare, Sheet OfertaSheet, FileAccess access) throws Exception {
+        Sheet DescuentoSheet = access.getSheet(PlantillaWorkBook.getSheetName(i));
         CSVParser DTOReader = FileAccess.ReadCSV();
 
         int rowNum = 0;

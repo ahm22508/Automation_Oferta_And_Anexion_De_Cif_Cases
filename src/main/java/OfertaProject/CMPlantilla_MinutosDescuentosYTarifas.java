@@ -39,12 +39,12 @@ public class CMPlantilla_MinutosDescuentosYTarifas {
     }
 
 
-    public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook, Sheet OfertaSheet ,HashSet<String> DuplicationMinutos ,int rowNum, Comparison compare) {
+    public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook, Sheet OfertaSheet ,HashSet<String> DuplicationMinutos ,int rowNum, Comparison compare, FileAccess access) {
 
-       Sheet MinutosSheet = FileAccess.getSheet(PlantillaWorkBook.getSheetName(i));
+       Sheet MinutosSheet = access.getSheet(PlantillaWorkBook.getSheetName(i));
 
                 //Extract the specific data
-                Pattern pattern1 = Pattern.compile("(?<!-\\s)\\b(MPMVE|MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|TDICA|TDICB|TDICC|TDICD|TDICE|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB|CIPNT)\\b");
+                Pattern pattern1 = Pattern.compile("(?<!-\\s)\\b(MPMVA|MPMVB|MPIMC|MPIMD|MPYME|MPIMF|MPIA2|MPIB2|MPIC2|MPID2|MPIE2|MPIF2|PIDCA|PIDCB|PIDCC|PIDCD|PIDCE|PIDCF|PIDCG|PIDCH|TDICA|TDICB|TDICC|TDICD|TDICE|TDICH|TDICG|TDICF|PIDCU|TDICU|MPIDU|MPMVD|MPCOB|MPCOL|MPCOU|MPCSC|MTCOU|MTCSC|MPRCV|MPRSC|CIGCU|CIVVF|CIOMM|CIFIJ|CI90X|CIINT|CIRR1|CIRO1|CIRRZ|CIROZ|CISVF|CISOM|CISIN|CIRSO|CIVNA|CISNA|CP90X|CPGCU|CPINT|CPVNA|MPIMA|MPIMB|CIPNT)\\b");
                 Row row1;
 
                 for (Row row : MinutosSheet) {

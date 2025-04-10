@@ -34,16 +34,16 @@ public class PDFHandling {
                     createPDF.createFile();
 
                     Discounts dtos = new Discounts();
-                    ofertaSheet =  createPDF.createSheet("Descuentos");
+                    ofertaSheet = createPDF.createSheet("Descuentos");
                     dtos.ExtractDiscounts(text, ofertaSheet, compare);
 
                     Minutes minutos = new Minutes();
-                    ofertaSheet =  createPDF.createSheet("Minutos");
+                    ofertaSheet = createPDF.createSheet("Minutos");
                     minutos.ExtractMinutes(text, ofertaSheet, compare);
 
                     PostSelling posventa = new PostSelling();
                     ofertaSheet = createPDF.createSheet("PosventaYBROWXXXX");
-                    posventa.ExtractPostSelling(text,ofertaSheet, compare);
+                    posventa.ExtractPostSelling(text, ofertaSheet, compare);
 
                     Trenes Tren = new Trenes();
                     ofertaSheet = createPDF.createSheet("Trenes");
@@ -68,9 +68,10 @@ public class PDFHandling {
                 String filePath = excelScan.nextLine().replace("\"", "");
                 if (FileAnalysis.isFile(filePath)) {
                     FileCreationForExcel createExcel = new FileCreationForExcel();
+                    FileAccess access = new FileAccess();
                     //File Starting
-                    new FileAccess().setFile(filePath);
-                    Workbook PlantillaWorkBook = FileAccess.getWorkBook();
+                    access.setFile(filePath);
+                    Workbook PlantillaWorkBook = access.getWorkBook();
                     Sheet OfertaSheet;
                     //File Creation and Oferta Extraction
                     createExcel.createFile();
@@ -78,37 +79,36 @@ public class PDFHandling {
 
                     CMPlantilla_Descuentos dtos = new CMPlantilla_Descuentos();
                     if (dtos.isDescuentoSheet(PlantillaWorkBook)) {
-                         OfertaSheet = createExcel.createSheet("PlantillaCM_Descuentos");
-                        dtos.ExtractDescuentosFromCMP(PlantillaWorkBook, compare, OfertaSheet);
+                        OfertaSheet = createExcel.createSheet("PlantillaCM_Descuentos");
+                        dtos.ExtractDescuentosFromCMP(PlantillaWorkBook, compare, OfertaSheet, access);
                     }
 
                     CMPlantilla_Indice indice = new CMPlantilla_Indice();
-                    if(indice.isSheetIndice(PlantillaWorkBook)){
-                         OfertaSheet = createExcel.createSheet("PlantillaCM_Indice");
-                        indice.ExtractInfoFromCMP(OfertaSheet , PlantillaWorkBook);
+                    if (indice.isSheetIndice(PlantillaWorkBook)) {
+                        OfertaSheet = createExcel.createSheet("PlantillaCM_Indice");
+                        indice.ExtractInfoFromCMP(OfertaSheet, PlantillaWorkBook, access);
                     }
 
                     CMPlantilla_Posventa posventa = new CMPlantilla_Posventa();
-                    if(posventa.isSheetPosventa(PlantillaWorkBook)){
-                         OfertaSheet = createExcel.createSheet("PlantillaCM_Posventa");
-                        new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, OfertaSheet, compare);
+                    if (posventa.isSheetPosventa(PlantillaWorkBook)) {
+                        OfertaSheet = createExcel.createSheet("PlantillaCM_Posventa");
+                        new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, OfertaSheet, compare, access);
                     }
 
                     CMPlantilla_MinutosInfinityBusiness MinutosIB = new CMPlantilla_MinutosInfinityBusiness();
-                    if(MinutosIB.isMinutosBISheet(PlantillaWorkBook)) {
-                         OfertaSheet = createExcel.createSheet("PlantillaCM_Minutos");
-                        MinutosIB.ExtractMinutosFromCMP(OfertaSheet, compare, PlantillaWorkBook);
+                    if (MinutosIB.isMinutosBISheet(PlantillaWorkBook)) {
+                        OfertaSheet = createExcel.createSheet("PlantillaCM_Minutos");
+                        MinutosIB.ExtractMinutosFromCMP(OfertaSheet, compare, PlantillaWorkBook, access);
                     }
 
                     CMPlantilla_MinutosDescuentosYTarifas Minutos = new CMPlantilla_MinutosDescuentosYTarifas();
-                    if(Minutos.isMinutosSheet(PlantillaWorkBook)){
-                        if(createExcel.getWorkbook().getSheet("PlantillaCM_Minutos") == null) {
+                    if (Minutos.isMinutosSheet(PlantillaWorkBook)) {
+                        if (createExcel.getWorkbook().getSheet("PlantillaCM_Minutos") == null) {
                             OfertaSheet = createExcel.createSheet("PlantillaCM_Minutos");
-                        }
-                        else {
+                        } else {
                             OfertaSheet = createExcel.getSheet("PlantillaCM_Minutos");
                         }
-                        Minutos.ExtractMinutosFromCMP(PlantillaWorkBook ,OfertaSheet, Minutos.analyzeSheet(OfertaSheet) , Minutos.getRowNum(), compare);
+                        Minutos.ExtractMinutosFromCMP(PlantillaWorkBook, OfertaSheet, Minutos.analyzeSheet(OfertaSheet), Minutos.getRowNum(), compare, access);
                     }
 
                     boolean isSheet = false;
@@ -122,11 +122,10 @@ public class PDFHandling {
                         trenIB.ExtractTrenesBIFromCMP(PlantillaWorkBook, OfertaSheet, compare);
                         isSheet = true;
                     }
-                    if(!isSheet){
-                        if(createExcel.getWorkbook().getSheet("PlantillaCM_Trenes") == null) {
+                    if (!isSheet) {
+                        if (createExcel.getWorkbook().getSheet("PlantillaCM_Trenes") == null) {
                             OfertaSheet = createExcel.createSheet("PlantillaCM_Trenes");
-                        }
-                        else {
+                        } else {
                             OfertaSheet = createExcel.getSheet("PlantillaCM_Trenes");
                         }
                         trenIB.logInfo(OfertaSheet);
@@ -134,14 +133,14 @@ public class PDFHandling {
 
                     CMPlantilla_Trenes trenes = new CMPlantilla_Trenes();
                     boolean isSheetTrenes = false;
-                    while(trenes.isTrenSheet(PlantillaWorkBook)) {
+                    while (trenes.isTrenSheet(PlantillaWorkBook)) {
                         OfertaSheet = createExcel.getSheet("PlantillaCM_Trenes");
                         trenes.ExtractTrenesFromCMP(PlantillaWorkBook, OfertaSheet, compare);
                         isSheetTrenes = true;
                     }
-                    if (!isSheetTrenes){
+                    if (!isSheetTrenes) {
                         OfertaSheet = createExcel.getSheet("PlantillaCM_Trenes");
-                        trenes.logInfo(PlantillaWorkBook , OfertaSheet);
+                        trenes.logInfo(PlantillaWorkBook, OfertaSheet);
                     }
                     Long End = System.currentTimeMillis();
                     System.out.println(End - start);
@@ -153,8 +152,9 @@ public class PDFHandling {
                     createExcel.BringFile();
                     createExcel.CloseFile();
                     createExcel.closeStreamingOfNewFile();
-                    FileAccess.CloseWorkBook();
-                    FileAccess.CloseStreaming();
+                    access.CloseWorkBook();
+                    access.CloseStreaming();
+                    access.deleteFile();
 
                 } else {
                     System.out.println("incorrect Entry. Try again");
@@ -170,9 +170,10 @@ public class PDFHandling {
                 String pdfFilePath = pdfScan.nextLine().replace("\"", "");
                 if (FileAnalysis.isFile(excelFilePath) && FileAnalysis.isFile(pdfFilePath)) {
                     FileCreationForPdfAndExcel createFileForTwoOffers = new FileCreationForPdfAndExcel();
+                    FileAccess access = new FileAccess();
                     //File Excel Reading
-                    new FileAccess().setFile(excelFilePath);
-                    Workbook PlantillaWorkBook = FileAccess.getWorkBook();
+                    access.setFile(excelFilePath);
+                    Workbook PlantillaWorkBook = access.getWorkBook();
                     //File Creation.
                     createFileForTwoOffers.createFile();
                     Sheet OfertaSheet;
@@ -180,56 +181,53 @@ public class PDFHandling {
 
                     CMPlantilla_Descuentos dtos = new CMPlantilla_Descuentos();
                     if (dtos.isDescuentoSheet(PlantillaWorkBook)) {
-                      OfertaSheet = FileCreationForPdfAndExcel.createSheet("Descuentos");
-                        dtos.ExtractDescuentosFromCMP(PlantillaWorkBook, compare, OfertaSheet);
+                        OfertaSheet = FileCreationForPdfAndExcel.createSheet("Descuentos");
+                        dtos.ExtractDescuentosFromCMP(PlantillaWorkBook, compare, OfertaSheet, access);
                     }
 
                     CMPlantilla_Posventa posventa = new CMPlantilla_Posventa();
-                    if(posventa.isSheetPosventa(PlantillaWorkBook)){
-                         OfertaSheet = FileCreationForPdfAndExcel.createSheet("Posventa");
-                        posventa.ExtractPosventaFromCMP(PlantillaWorkBook, OfertaSheet, compare);
+                    if (posventa.isSheetPosventa(PlantillaWorkBook)) {
+                        OfertaSheet = FileCreationForPdfAndExcel.createSheet("Posventa");
+                        posventa.ExtractPosventaFromCMP(PlantillaWorkBook, OfertaSheet, compare, access);
                     }
 
                     CMPlantilla_Indice indice = new CMPlantilla_Indice();
-                    if(indice.isSheetIndice(PlantillaWorkBook)){
-                         OfertaSheet = FileCreationForPdfAndExcel.createSheet("Indice");
-                        indice.ExtractInfoFromCMP(OfertaSheet , PlantillaWorkBook);
+                    if (indice.isSheetIndice(PlantillaWorkBook)) {
+                        OfertaSheet = FileCreationForPdfAndExcel.createSheet("Indice");
+                        indice.ExtractInfoFromCMP(OfertaSheet, PlantillaWorkBook, access);
                     }
 
                     CMPlantilla_MinutosInfinityBusiness MinutosIB = new CMPlantilla_MinutosInfinityBusiness();
-                    if(MinutosIB.isMinutosBISheet(PlantillaWorkBook)) {
-                         OfertaSheet = FileCreationForPdfAndExcel.createSheet("Minutos");
-                        MinutosIB.ExtractMinutosFromCMP(OfertaSheet, compare, PlantillaWorkBook);
+                    if (MinutosIB.isMinutosBISheet(PlantillaWorkBook)) {
+                        OfertaSheet = FileCreationForPdfAndExcel.createSheet("Minutos");
+                        MinutosIB.ExtractMinutosFromCMP(OfertaSheet, compare, PlantillaWorkBook, access);
                     }
 
                     CMPlantilla_MinutosDescuentosYTarifas Minutos = new CMPlantilla_MinutosDescuentosYTarifas();
-                    if(Minutos.isMinutosSheet(PlantillaWorkBook)){
-                        if(createFileForTwoOffers.getWorkbook().getSheet("Minutos") == null) {
-                         OfertaSheet = FileCreationForPdfAndExcel.createSheet("Minutos");
+                    if (Minutos.isMinutosSheet(PlantillaWorkBook)) {
+                        if (createFileForTwoOffers.getWorkbook().getSheet("Minutos") == null) {
+                            OfertaSheet = FileCreationForPdfAndExcel.createSheet("Minutos");
+                        } else {
+                            OfertaSheet = FileCreationForPdfAndExcel.getSheet("Minutos");
                         }
-                        else {
-                        OfertaSheet = FileCreationForPdfAndExcel.getSheet("Minutos");
-                        }
-                        Minutos.ExtractMinutosFromCMP(PlantillaWorkBook ,OfertaSheet, Minutos.analyzeSheet(OfertaSheet) , Minutos.getRowNum(), compare);
+                        Minutos.ExtractMinutosFromCMP(PlantillaWorkBook, OfertaSheet, Minutos.analyzeSheet(OfertaSheet), Minutos.getRowNum(), compare, access);
                     }
 
                     boolean isSheet = false;
                     CMPlantilla_TrenesInfinityBusiness trenIB = new CMPlantilla_TrenesInfinityBusiness();
-                    while (trenIB.isInfinityBusinessTrenesSheet(PlantillaWorkBook)){
-                        if(createFileForTwoOffers.getWorkbook().getSheet("Trenes") == null) {
-                        OfertaSheet = FileCreationForPdfAndExcel.createSheet("Trenes");
-                    }
-                    else {
-                        OfertaSheet = FileCreationForPdfAndExcel.getSheet("Trenes");
-                    }
-                    trenIB.ExtractTrenesBIFromCMP(PlantillaWorkBook, OfertaSheet, compare);
-                     isSheet = true;
-                    }
-                    if(!isSheet){
-                        if(createFileForTwoOffers.getWorkbook().getSheet("Trenes") == null) {
+                    while (trenIB.isInfinityBusinessTrenesSheet(PlantillaWorkBook)) {
+                        if (createFileForTwoOffers.getWorkbook().getSheet("Trenes") == null) {
                             OfertaSheet = FileCreationForPdfAndExcel.createSheet("Trenes");
+                        } else {
+                            OfertaSheet = FileCreationForPdfAndExcel.getSheet("Trenes");
                         }
-                        else {
+                        trenIB.ExtractTrenesBIFromCMP(PlantillaWorkBook, OfertaSheet, compare);
+                        isSheet = true;
+                    }
+                    if (!isSheet) {
+                        if (createFileForTwoOffers.getWorkbook().getSheet("Trenes") == null) {
+                            OfertaSheet = FileCreationForPdfAndExcel.createSheet("Trenes");
+                        } else {
                             OfertaSheet = FileCreationForPdfAndExcel.getSheet("Trenes");
                         }
                         trenIB.logInfo(OfertaSheet);
@@ -242,9 +240,9 @@ public class PDFHandling {
                         trenesCM.ExtractTrenesFromCMP(PlantillaWorkBook, OfertaSheet, compare);
                         isSheetTrenes = true;
                     }
-                    if (!isSheetTrenes){
+                    if (!isSheetTrenes) {
                         OfertaSheet = FileCreationForPdfAndExcel.getSheet("Trenes");
-                        trenesCM.logInfo(PlantillaWorkBook , OfertaSheet);
+                        trenesCM.logInfo(PlantillaWorkBook, OfertaSheet);
                     }
 
                     //File PDF Reading
@@ -252,40 +250,36 @@ public class PDFHandling {
 
                     //Extract Offer From PDF.
                     Discounts dtosForPDF = new Discounts();
-                    if(createFileForTwoOffers.getWorkbook().getSheet("Descuentos") == null) {
+                    if (createFileForTwoOffers.getWorkbook().getSheet("Descuentos") == null) {
                         OfertaSheet = FileCreationForPdfAndExcel.createSheet("Descuentos");
-                    }
-                    else {
-                       OfertaSheet = FileCreationForPdfAndExcel.getSheet("Descuentos");
+                    } else {
+                        OfertaSheet = FileCreationForPdfAndExcel.getSheet("Descuentos");
                     }
                     dtosForPDF.ExtractDiscounts(text, OfertaSheet, compare);
 
-                    Minutes minutos  = new Minutes();
-                    if(createFileForTwoOffers.getWorkbook().getSheet("Minutos") == null) {
+                    Minutes minutos = new Minutes();
+                    if (createFileForTwoOffers.getWorkbook().getSheet("Minutos") == null) {
                         OfertaSheet = FileCreationForPdfAndExcel.createSheet("Minutos");
-                    }
-                    else {
+                    } else {
                         OfertaSheet = FileCreationForPdfAndExcel.getSheet("Minutos");
                     }
                     minutos.ExtractMinutes(text, OfertaSheet, compare);
 
 
                     PostSelling posventaForPDF = new PostSelling();
-                    if(createFileForTwoOffers.getWorkbook().getSheet("Posventa") == null) {
+                    if (createFileForTwoOffers.getWorkbook().getSheet("Posventa") == null) {
                         OfertaSheet = FileCreationForPdfAndExcel.createSheet("Posventa");
-                    }
-                    else {
+                    } else {
                         OfertaSheet = FileCreationForPdfAndExcel.getSheet("Posventa");
                     }
-                    posventaForPDF.ExtractPostSelling(text, OfertaSheet , compare);
+                    posventaForPDF.ExtractPostSelling(text, OfertaSheet, compare);
 
 
                     Trenes Tren = new Trenes();
 
-                    if(createFileForTwoOffers.getWorkbook().getSheet("Trenes") == null) {
+                    if (createFileForTwoOffers.getWorkbook().getSheet("Trenes") == null) {
                         OfertaSheet = FileCreationForPdfAndExcel.createSheet("Trenes");
-                    }
-                    else {
+                    } else {
                         OfertaSheet = FileCreationForPdfAndExcel.getSheet("Trenes");
                     }
                     Tren.ExtractTrenes(text, OfertaSheet, compare);
@@ -296,8 +290,9 @@ public class PDFHandling {
                     createFileForTwoOffers.BringFile();
                     createFileForTwoOffers.CloseFile();
                     createFileForTwoOffers.closeStreamingOfNewFile();
-                    FileAccess.CloseWorkBook();
-                    FileAccess.CloseStreaming();
+                    access.CloseWorkBook();
+                    access.CloseStreaming();
+                    access.deleteFile();
                 } else {
                     System.out.println("incorrect Entry. Try Again");
                 }

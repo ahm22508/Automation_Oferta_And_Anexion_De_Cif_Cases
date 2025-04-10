@@ -14,35 +14,38 @@ import java.util.Properties;
 
 public class FileAccess {
 
-    private File PlantillaFile;
-    private static FileInputStream OpenFile;
-    private static Workbook OpenSheet;
-
+    private  FileInputStream OpenFile;
+    private  Workbook OpenSheet;
+    private File newFile;
 
             public void setFile(String FilePath) throws Exception {
-                PlantillaFile = new File(FilePath);
-                 OpenFile = new FileInputStream(PlantillaFile);
-            }
-            public File getFile(){
-                return PlantillaFile;
+                File PlantillaFile = new File(FilePath);
+                String newFileName = "C:\\Oferta Extractor\\data\\Plantilla.xlsm";
+                 newFile = new File(newFileName.replace("\"" , ""));
+                if (PlantillaFile.renameTo(newFile)) {
+                    OpenFile = new FileInputStream(newFile);
+                }
             }
 
-        public static Workbook getWorkBook() throws Exception{
+        public Workbook getWorkBook() throws Exception{
                   return OpenSheet = new XSSFWorkbook(OpenFile);
         }
-        public static void CloseWorkBook() throws Exception{
+        public void CloseWorkBook() throws Exception{
                 if (OpenSheet != null){
                     OpenSheet.close();
                 }
         }
-        public static void CloseStreaming() throws Exception{
+        public void CloseStreaming() throws Exception{
                 if(OpenFile != null){
                     OpenFile.close();
                 }
         }
 
-        public static Sheet getSheet(String SheetName){
+        public Sheet getSheet(String SheetName){
                 return OpenSheet.getSheet(SheetName);
+            }
+            public void deleteFile(){
+                newFile.delete();
             }
 
             public static CSVParser ReadCSV() throws Exception{

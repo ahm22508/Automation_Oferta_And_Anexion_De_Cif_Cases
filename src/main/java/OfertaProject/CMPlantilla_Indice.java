@@ -20,8 +20,8 @@ public class CMPlantilla_Indice {
         return false;
     }
 
-    public void ExtractInfoFromCMP(Sheet OfertaSheet, Workbook ofertaWorkbook) {
-        Sheet IndiceSheet = FileAccess.getSheet(ofertaWorkbook.getSheetName(i));
+    public void ExtractInfoFromCMP(Sheet OfertaSheet, Workbook ofertaWorkbook, FileAccess access) {
+        Sheet IndiceSheet = access.getSheet(ofertaWorkbook.getSheetName(i));
         //Extract the specific data
                         Row row1;
                         for (Row row : IndiceSheet) {

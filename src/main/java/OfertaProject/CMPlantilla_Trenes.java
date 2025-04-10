@@ -52,12 +52,13 @@ public class CMPlantilla_Trenes {
 
         //Sheet analisis.
         for (Row TrenRow : OfertaSheet) {
-            Cell DuplicationCell = TrenRow.getCell(0);
-            if (DuplicationCell != null) {
-                DuplicationTrenes.add(DuplicationCell.toString());
-            }
-            for (Cell TrenCell : TrenRow) {
-                RowNum = TrenCell.getRow().getRowNum() + 1;
+            for (Cell DuplicationCell : TrenRow) {
+                if (DuplicationCell != null) {
+                    DuplicationTrenes.add(DuplicationCell.toString());
+                }
+                for (Cell TrenCell : TrenRow) {
+                    RowNum = TrenCell.getRow().getRowNum() + 1;
+                }
             }
         }
 

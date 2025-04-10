@@ -20,9 +20,9 @@ public class CMPlantilla_Posventa {
         return false;
     }
 
-    public void ExtractPosventaFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet, Comparison compare){
+    public void ExtractPosventaFromCMP(Workbook PlantillaWorkBook , Sheet OfertaSheet, Comparison compare, FileAccess access){
 
-                Sheet PosventaSheet = FileAccess.getSheet(PlantillaWorkBook.getSheetName(i));
+                Sheet PosventaSheet = access.getSheet(PlantillaWorkBook.getSheetName(i));
                 //Extract the specific data
                 Pattern PatternPosventaLine = Pattern.compile("POS+[A-Z]{2}");
                 Pattern PatternPosventaAccount = Pattern.compile("POC+[A-Z]{2}");
