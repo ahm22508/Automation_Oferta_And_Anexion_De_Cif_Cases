@@ -10,16 +10,16 @@ import java.util.regex.Pattern;
 
 public class PostSelling {
 
+    private Row row;
+    private int i = RowNumCounting.getRowNumForPosVenta() + 1;
 
-    public void ExtractPostSelling(String text, Sheet OfertaSheet, Comparison compare){
+    public void ExtractPostSelling(String text, Sheet OfertaSheet, Comparison compare) {
 
         //Extract specific data
         Pattern pattern1 = Pattern.compile("(?<!/)(?!\\d+\\.\\d+)\\b([1-9]\\d{0,4}|0)\\b");
         Matcher matcher1 = pattern1.matcher(text);
         Pattern pattern = Pattern.compile("\\bPOS+[A-Z]{2}\\b");
         Matcher matcher = pattern.matcher(text);
-        Pattern pattern2 = Pattern.compile("BRW+\\d+");
-        Matcher matcher2 = pattern2.matcher(text);
         Pattern pattern3 = Pattern.compile("POC+[A-Z]{2}");
         Matcher matcher3 = pattern3.matcher(text);
         Pattern pattern4 = Pattern.compile("POS[A-Z]\\d");
@@ -28,30 +28,12 @@ public class PostSelling {
         HeaderCell.createCell(0).setCellValue("Posventa Y BONO");
         HeaderCell.createCell(1).setCellValue("Value");
 
-        Set<String> TariffTypes = new HashSet<>(Arrays.asList("XPS", "LVSH5", "LVAPC", "MVCS", "M2M", "SIP01", "MPMVA", "MPMVD", "TIDCA", "MPCOU"));
-        Set<String> CodesInPdf = new HashSet<>();
-        Map<String, String> Description = new HashMap<>();
-        Description.put("XPS", "REDBOX");
-        Description.put("LVAPC", "Primaria Antigua");
-        Description.put("LVSH5", "Primaria");
-        Description.put("MVCS", "Normal");
-        Description.put("M2M", "M2M");
-        Description.put("SIP01", "SIP");
-        Description.put("MPMVA", "Integrado");
-        Description.put("MPMVD", "Integrado SIP");
-        Description.put("MPMVE", "Integrada Primaria Actual");
-        Description.put("TIDCA", "Infinity");
-        Description.put("MPCOU", "Integrado Colaboración");
-        Description.put("MPIA2", "Integrada 2.0");
-
-        Row row;
-        int i = RowNumCounting.getRowNumForPosVenta()+1;
         int FirstValue = 0;
         HashSet<String> Posventas = new HashSet<>();
         while (matcher.find()) {
             if (matcher1.find(matcher.end())) {
                 String Posventa = matcher.group();
-                if(!compare.getPosventaComparator().contains(Posventa)){
+                if (!compare.getPosventaComparator().contains(Posventa)) {
                     if (!Posventas.contains(Posventa)) {
                         Posventas.add(Posventa);
                         row = OfertaSheet.createRow(i++);
@@ -78,7 +60,7 @@ public class PostSelling {
         while (matcher4.find()) {
             if (matcher1.find(matcher4.end())) {
                 String Posventa = matcher4.group();
-                if (!compare.getPosventaComparator().contains(Posventa)){
+                if (!compare.getPosventaComparator().contains(Posventa)) {
                     if (!ExceptionalPosventas.contains(Posventa)) {
                         ExceptionalPosventas.add(Posventa);
                         row = OfertaSheet.createRow(i++);
@@ -97,26 +79,50 @@ public class PostSelling {
         }
         if (Posventas.isEmpty()) {
             while (matcher3.find()) {
-                if (!compare.getPosventaComparator().contains(matcher3.group())){
+                if (!compare.getPosventaComparator().contains(matcher3.group())) {
                     row = OfertaSheet.createRow(i++);
                     row.createCell(0).setCellValue(matcher3.group());
                 }
             }
         }
+    }
+
+    public void extractBonoBrow(String text, Sheet OfertaSheet) {
+        Pattern pattern2 = Pattern.compile("BRW+\\d+");
+        Matcher matcher2 = pattern2.matcher(text);
         while (matcher2.find()) {
             row = OfertaSheet.createRow(i++);
             row.createCell(0).setCellValue(matcher2.group());
         }
+    }
+
+    public void extractInsights(String text, Sheet OfertaSheet) {
+
+        Set<String> TariffTypes = new HashSet<>(Arrays.asList("XPS", "LVSH5", "LVAPC", "MVCS", "M2M", "SIP01", "MPMVA", "MPMVD", "TIDCA", "MPCOU"));
+        Set<String> CodesInPdf = new HashSet<>();
+        Map<String, String> Description = new HashMap<>();
+        Description.put("XPS", "REDBOX");
+        Description.put("LVAPC", "Primaria Antigua");
+        Description.put("LVSH5", "Primaria");
+        Description.put("MVCS", "Normal");
+        Description.put("M2M", "M2M");
+        Description.put("SIP01", "SIP");
+        Description.put("MPMVA", "Integrado");
+        Description.put("MPMVD", "Integrado SIP");
+        Description.put("MPMVE", "Integrada Primaria Actual");
+        Description.put("TIDCA", "Infinity");
+        Description.put("MPCOU", "Integrado Colaboración");
+        Description.put("MPIA2", "Integrada 2.0");
 
         if (text.contains("POV") && text.contains("SOA")) {
             row = OfertaSheet.createRow(i++);
-            row.createCell(0).setCellValue("Esa Oferta lleva POVFS y SOA, entonces hay que cargarla en el Gescore");
+            row.createCell(0).setCellValue("Esa Oferta lleva POVFS y SOA, entonces hay que cargarla en el Gescore, pero primero asegura de que la cuenta tiene MOVILES como GU, lleva una sola VPM y hay lineas a activar restantes para el cliente");
         } else if (text.contains("SOA")) {
             row = OfertaSheet.createRow(i++);
-            row.createCell(0).setCellValue("Esa Oferta lleva SOA, entonces hay que cargarla en el Gescore");
+            row.createCell(0).setCellValue("Esa Oferta lleva SOA, entonces hay que cargarla en el Gescore, pero primero asegura de que la cuenta tiene MOVILES como GU, lleva una sola VPM y hay lineas a activar restantes para el cliente");
         } else if (text.contains("POF") || text.contains("POVF")) {
             row = OfertaSheet.createRow(i++);
-            row.createCell(0).setCellValue("Esa Oferta lleva POVFS, entonces hay que cargarla en el Gescore");
+            row.createCell(0).setCellValue("Esa Oferta lleva POVFS, entonces hay que cargarla en el Gescore, pero primero asegura de que la cuenta tiene MOVILES como GU, lleva una sola VPM y hay lineas a activar restantes para el cliente");
         }
         for (String Type : TariffTypes) {
             if (text.contains(Type)) {
@@ -127,7 +133,7 @@ public class PostSelling {
         }
         if (CodesInPdf.size() > 1) {
             row = OfertaSheet.createRow(i++);
-            row.createCell(0).setCellValue("Ese PDF contiene más de una tarifa como:");
+            row.createCell(0).setCellValue("Preguantale al ejecutivo que oferta aplicamos porque Ese PDF contiene más de una tarifa como:");
         }
         for (String Code : CodesInPdf) {
             row = OfertaSheet.createRow(i++);
@@ -138,4 +144,5 @@ public class PostSelling {
             }
         }
     }
+
 }

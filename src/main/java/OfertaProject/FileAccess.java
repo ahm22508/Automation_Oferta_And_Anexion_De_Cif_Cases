@@ -45,7 +45,9 @@ public class FileAccess {
                 return OpenSheet.getSheet(SheetName);
             }
             public void deleteFile(){
-                newFile.delete();
+               if( newFile.delete()){
+                   System.out.println("File Deleted...");
+               }
             }
 
             public static CSVParser ReadCSV() throws Exception{
