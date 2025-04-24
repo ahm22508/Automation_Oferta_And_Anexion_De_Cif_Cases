@@ -1,5 +1,6 @@
-package OfertaProject;
+package Plantilla;
 
+import DataHandling.Comparison;
 import org.apache.poi.ss.usermodel.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +30,6 @@ public class CMPlantilla_TrenesInfinityBusiness {
         int rowNum;
 
         Sheet sheet = PlantillaWorkBook.getSheet(PlantillaWorkBook.getSheetName(counter));
-        System.out.println(sheet.getSheetName());
         Row HeaderRow = OfertaSheet.createRow(0);
         Cell HeaderCell = HeaderRow.createCell(0);
         HeaderCell.setCellValue("All Trenes From CM-Plantilla...");

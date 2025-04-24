@@ -1,5 +1,7 @@
-package OfertaProject;
+package Plantilla;
 
+import DataHandling.Comparison;
+import FileOperation.FileAccess;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.apache.poi.ss.usermodel.*;
@@ -39,7 +41,7 @@ public class CMPlantilla_MinutosDescuentosYTarifas {
     }
 
 
-    public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook, Sheet OfertaSheet ,HashSet<String> DuplicationMinutos ,int rowNum, Comparison compare, FileAccess access) {
+    public void ExtractMinutosFromCMP(Workbook PlantillaWorkBook, Sheet OfertaSheet , HashSet<String> DuplicationMinutos , int rowNum, Comparison compare, FileAccess access) {
 
        Sheet MinutosSheet = access.getSheet(PlantillaWorkBook.getSheetName(i));
 

@@ -1,6 +1,11 @@
-package OfertaProject;
+package pdfOperation;
 
 
+import DataHandling.Comparison;
+import DataHandling.ExtractingData;
+import AuxiliaryTools.preLoadWorkbook;
+import FileOperation.*;
+import Plantilla.*;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -157,7 +162,6 @@ public class PDFHandling {
                         createExcel.closeStreamingOfNewFile();
                         access.CloseWorkBook();
                         access.CloseStreaming();
-                        access.deleteFile();
 
                     } else {
                         System.out.println("incorrect Entry. Try again");
@@ -297,7 +301,7 @@ public class PDFHandling {
                         createFileForTwoOffers.closeStreamingOfNewFile();
                         access.CloseWorkBook();
                         access.CloseStreaming();
-                        access.deleteFile();
+
                     } else {
                         System.out.println("incorrect Entry. Try Again");
                     }

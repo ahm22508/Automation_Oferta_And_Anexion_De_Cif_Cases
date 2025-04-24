@@ -1,5 +1,7 @@
-package OfertaProject;
+package pdfOperation;
 
+import DataHandling.Comparison;
+import AuxiliaryTools.RowNumCounting;
 import org.apache.poi.ss.usermodel.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,5 +1,7 @@
-package OfertaProject;
+package pdfOperation;
 
+import DataHandling.Comparison;
+import AuxiliaryTools.RowNumCounting;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;

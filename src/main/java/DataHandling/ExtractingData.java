@@ -1,4 +1,4 @@
-package OfertaProject;
+package DataHandling;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;

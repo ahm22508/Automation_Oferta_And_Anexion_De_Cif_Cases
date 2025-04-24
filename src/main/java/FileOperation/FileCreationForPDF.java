@@ -1,4 +1,4 @@
-package OfertaProject;
+package FileOperation;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -8,8 +8,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class FileCreationForExcel {
-    private final File OfertaFile = new File("C:\\Oferta Extractor\\PlantillaCM.xlsx");
+public class FileCreationForPDF {
+
+    private final File OfertaFile = new File("C:\\Oferta Extractor\\OfertaPDFDeActivacion.xlsx");
     private FileOutputStream OpenFile;
     private final Workbook OpenSheet = new XSSFWorkbook();
 
@@ -21,17 +22,18 @@ public class FileCreationForExcel {
             OpenFile.close();
         }
     }
-
     public Workbook getWorkbook(){
-            return OpenSheet;
+        return OpenSheet;
     }
 
-    public Sheet getSheet(String sheetName){
-        return OpenSheet.getSheet(sheetName);
+    public Sheet createSheet(String newSheetName){
+        return OpenSheet.createSheet(newSheetName);
     }
-    public Sheet createSheet(String sheetName){
-        return OpenSheet.createSheet(sheetName);
+
+    public Sheet getSheet(String SheetName){
+        return OpenSheet.getSheet(SheetName);
     }
+
     public void SaveFile()throws Exception{
         OpenSheet.write(OpenFile);
     }
@@ -40,7 +42,8 @@ public class FileCreationForExcel {
     }
 
     public void BringFile() throws Exception{
-            Desktop desk = Desktop.getDesktop();
-               desk.open(OfertaFile);
-           }
-        }
+        Desktop desk = Desktop.getDesktop();
+        desk.open(OfertaFile);
+    }
+
+}

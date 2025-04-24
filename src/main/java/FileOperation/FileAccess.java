@@ -1,4 +1,4 @@
-package OfertaProject;
+package FileOperation;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -16,16 +16,12 @@ public class FileAccess {
 
     private  FileInputStream OpenFile;
     private  Workbook OpenSheet;
-    private File newFile;
 
-            public void setFile(String FilePath) throws Exception {
-                File PlantillaFile = new File(FilePath);
-                String newFileName = "C:\\Oferta Extractor\\data\\Plantilla.xlsm";
-                 newFile = new File(newFileName.replace("\"" , ""));
-                if (PlantillaFile.renameTo(newFile)) {
-                    OpenFile = new FileInputStream(newFile);
-                }
-            }
+
+    public void setFile(String FilePath) throws Exception {
+       File PlantillaFile = new File(FilePath);
+        OpenFile = new FileInputStream(PlantillaFile);
+    }
 
         public Workbook getWorkBook() throws Exception{
                   return OpenSheet = new XSSFWorkbook(OpenFile);
@@ -43,11 +39,6 @@ public class FileAccess {
 
         public Sheet getSheet(String SheetName){
                 return OpenSheet.getSheet(SheetName);
-            }
-            public void deleteFile(){
-               if( newFile.delete()){
-                   System.out.println("File Deleted...");
-               }
             }
 
             public static CSVParser ReadCSV() throws Exception{
