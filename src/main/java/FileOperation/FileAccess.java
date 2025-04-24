@@ -44,7 +44,7 @@ public class FileAccess {
             public static CSVParser ReadCSV() throws Exception{
               CSVParser CSVReader = null;
                 try {
-                    FileReader DTOFile = new FileReader(accessToDTOFile());
+                    FileReader DTOFile = new FileReader(accessToPropertiesFile()[0]);
                     CSVReader = CSVFormat.DEFAULT.parse(DTOFile);
                 }
                 catch (IOException EX){
@@ -53,10 +53,19 @@ public class FileAccess {
                 return CSVReader;
             }
 
-            public static String accessToDTOFile() throws Exception{
+            public static String[] accessToPropertiesFile() throws Exception{
+                String [] ourProperties = new String[6];
                 Properties proper = new Properties();
-                FileInputStream file = new FileInputStream("C:\\Oferta Extractor\\data\\DTOS.properties");
+                FileInputStream file = new FileInputStream("C:\\Oferta Extractor\\data\\app.properties");
                 proper.load(file);
-                return proper.getProperty("url");
+                ourProperties[0] = proper.getProperty("DTOS.File");
+                ourProperties[1] = proper.getProperty("isPdfFile");
+                ourProperties[2] = proper.getProperty("isExcelFile");
+                ourProperties[3] = proper.getProperty("isPdfAndExcelFile");
+                ourProperties[4] = proper.getProperty("PdfFile");
+                ourProperties[5] = proper.getProperty("ExcelFile");
+
+                return ourProperties;
             }
+
     }
