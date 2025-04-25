@@ -26,9 +26,9 @@ public class PDFHandling {
 
                 // PDF part
 
-                if (FileAccess.accessToPropertiesFile()[1].equals("true")) {
+                if (FileAccess.accessToPropertiesFile().get(1).equals("true")) {
 
-                    String filePath = FileAccess.accessToPropertiesFile()[4];
+                    String filePath = FileAccess.accessToPropertiesFile().get(4);
 
                     if (FileAnalysis.isFile(filePath)) {
                         //File Reading
@@ -73,9 +73,9 @@ public class PDFHandling {
                 //Excel Part
 
 
-                if (FileAccess.accessToPropertiesFile()[2].equals("true")) {
+                if (FileAccess.accessToPropertiesFile().get(2).equals("true")) {
 
-                    String filePath = FileAccess.accessToPropertiesFile()[5];
+                    String filePath = FileAccess.accessToPropertiesFile().get(5);
                     if (FileAnalysis.isFile(filePath)) {
                         FileCreationForExcel createExcel = new FileCreationForExcel();
                         //File Starting
@@ -164,10 +164,10 @@ public class PDFHandling {
 
                 }
 
-                if (FileAccess.accessToPropertiesFile()[3].equals("true")) {
+                if (FileAccess.accessToPropertiesFile().get(3).equals("true")) {
 
-                    String pdfFilePath = FileAccess.accessToPropertiesFile()[4];
-                    String excelFilePath = FileAccess.accessToPropertiesFile()[5];
+                    String pdfFilePath = FileAccess.accessToPropertiesFile().get(4);
+                    String excelFilePath = FileAccess.accessToPropertiesFile().get(5);
 
                     if (FileAnalysis.isFile(excelFilePath) && FileAnalysis.isFile(pdfFilePath)) {
                         FileCreationForPdfAndExcel createFileForTwoOffers = new FileCreationForPdfAndExcel();
