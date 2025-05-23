@@ -94,7 +94,7 @@ public class Trenes {
         String[] MPMVE = {"DVFGC", "DVFFN", "DVFOM", "DVFMV"};
         HashSet<String> TrenesMultiCifEnElPDF = new HashSet<>();
 
-        if (text.contains("MPMVE") || text.contains("MultiCIF")) {
+        if (text.contains("MultiCIF")) {
             for (String Tren : CommonTrenes) {
                 if (!FinalValue.contains(Tren)) {
                     if (!compare.getTrenesComparator().contains(Tren)) {
