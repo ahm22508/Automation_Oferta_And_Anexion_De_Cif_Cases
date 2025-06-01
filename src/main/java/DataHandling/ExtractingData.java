@@ -9,10 +9,9 @@ import java.util.Map;
 
 public class ExtractingData {
     private  PdfDocument pdfDoc;
-    public String ReadPdf(String filePath) throws IOException{
-        StringBuilder text = new StringBuilder();
-       pdfDoc = new PdfDocument(new PdfReader(filePath));
-
+    public String ReadPdf(String filePath) throws IOException {
+            StringBuilder text = new StringBuilder();
+            pdfDoc = new PdfDocument(new PdfReader(filePath));
             int numberOfPages = pdfDoc.getNumberOfPages();
             for (int i = 1; i <= numberOfPages; i++) {
                 String pageText = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
@@ -21,8 +20,9 @@ public class ExtractingData {
                 }
                 text.append(pageText);
             }
-        return text.toString();
-    }
+            return text.toString();
+        }
+
 
     public void closePDFReader(){
         pdfDoc.close();

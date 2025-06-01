@@ -5,22 +5,25 @@ import DataHandling.ExtractingData;
 import AuxiliaryTools.preLoadWorkbook;
 import FileOperation.*;
 import Plantilla.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pdfOperation.Discounts;
 import pdfOperation.Minutes;
 import pdfOperation.PostSelling;
 import pdfOperation.Trenes;
 
+import java.util.Objects;
 
 
 public class Main {
+private final static Logger log = (Logger) LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
 
-        try{
+        try {
+
             preLoadWorkbook.preloading();
 
             Comparison compare = new Comparison();
@@ -30,10 +33,10 @@ public class Main {
 
             // PDF part
 
-            if (FileAccess.accessToPropertiesFile().get(1).equals("true")) {
+            if (Objects.equals(FileAccess.accessToPropertiesFile("isPdfFile") , "true")) {
 
-                String filePath = FileAccess.accessToPropertiesFile().get(4).replace("\"", "").replace("\\", "\\\\");
-
+                String filePath = Objects.requireNonNull(FileAccess.accessToPropertiesFile("PdfFile"));
+                System.out.println(filePath);
                 if (FileAnalysis.isFile(filePath)) {
                     //File Reading
                     String text = extract.ReadPdf(filePath);
@@ -71,15 +74,18 @@ public class Main {
                     extract.closePDFReader();
 
                 }
+                else {
+                    log.error("Incorrect Pdf Path. check it please.");
+                }
             }
 
 
             //Excel Part
 
 
-            if (FileAccess.accessToPropertiesFile().get(2).equals("true")) {
+            if (Objects.equals(FileAccess.accessToPropertiesFile("isExcelFile") , "true")) {
 
-                String filePath = FileAccess.accessToPropertiesFile().get(5).replace("\"", "").replace("\\", "\\\\");
+                String filePath = Objects.requireNonNull(FileAccess.accessToPropertiesFile("ExcelFile"));
                 if (FileAnalysis.isFile(filePath)) {
                     FileCreationForExcel createExcel = new FileCreationForExcel();
                     //File Starting
@@ -165,13 +171,18 @@ public class Main {
                     access.CloseStreaming();
 
                 }
+                else {
+                    log.error("Incorrect Excel Path. check it please.");
+                }
 
             }
 
-            if (FileAccess.accessToPropertiesFile().get(3).equals("true")) {
+            if (Objects.equals(FileAccess.accessToPropertiesFile("isPdfAndExcelFile"), "true")) {
 
-                String pdfFilePath = FileAccess.accessToPropertiesFile().get(4).replace("\"", "").replace("\\", "\\\\");
-                String excelFilePath = FileAccess.accessToPropertiesFile().get(5).replace("\"", "").replace("\\", "\\\\");
+                String pdfFilePath = Objects.requireNonNull(FileAccess.accessToPropertiesFile("PdfFile"));
+                String excelFilePath = Objects.requireNonNull(FileAccess.accessToPropertiesFile("ExcelFile"));
+                System.out.println(pdfFilePath);
+                System.out.println(excelFilePath);
 
                 if (FileAnalysis.isFile(excelFilePath) && FileAnalysis.isFile(pdfFilePath)) {
                     FileCreationForPdfAndExcel createFileForTwoOffers = new FileCreationForPdfAndExcel();
@@ -290,7 +301,6 @@ public class Main {
                     Tren.ExtractTrenes(text, OfertaSheet, compare);
                     Tren.extractTrenesMultiCIFYMPMVE(text, compare, OfertaSheet);
 
-
                     createFileForTwoOffers.SaveFile();
                     createFileForTwoOffers.BringFile();
                     createFileForTwoOffers.CloseFile();
@@ -298,11 +308,14 @@ public class Main {
                     access.CloseWorkBook();
                     access.CloseStreaming();
                 }
+                else {
+                    log.error("Incorrect Excel or Pdf Path. check it please.");
+                }
             }
         }
-        catch (Exception ex){
-            Logger log = LoggerFactory.getLogger(Main.class);
-            log.error("An Error Occurred: " , ex);
+        catch (Exception ex) {
+            log.error("Error occurred: " , ex );
         }
     }
 }
+

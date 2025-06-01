@@ -7,13 +7,17 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Objects;
 
 public class FileCreationForPdfAndExcel {
 
-    private final File OfertaFile = new File("C:\\Oferta Extractor\\OfertaPDFDeActivacion&PlantillaCM.xlsx");
+    private final File OfertaFile = new File(Objects.requireNonNull(FileAccess.accessToPropertiesFile("NewFileForPdfAndExcel")));
     private FileOutputStream OpenFile;
     private static final Workbook OpenSheet = new XSSFWorkbook();
 
+    public FileCreationForPdfAndExcel() throws Exception{
+
+    }
     public void createFile() throws Exception{
         OpenFile = new FileOutputStream(OfertaFile);
     }
