@@ -9,10 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import pdfOperation.Discounts;
-import pdfOperation.Minutes;
-import pdfOperation.PostSelling;
-import pdfOperation.Trenes;
+import pdfOperation.*;
 
 import java.util.Objects;
 
@@ -59,11 +56,14 @@ private final static Logger log = (Logger) LogManager.getLogger(Main.class);
                     posventa.extractBonoBrow(text, ofertaSheet);
                     posventa.extractInsights(text, ofertaSheet);
 
-
                     Trenes Tren = new Trenes();
                     ofertaSheet = createPDF.createSheet("Trenes");
                     Tren.ExtractTrenes(text, ofertaSheet, compare);
                     Tren.extractTrenesMultiCIFYMPMVE(text, compare, ofertaSheet);
+
+                    ServiceManagedValue serviceManagedValue = new ServiceManagedValue();
+                    ofertaSheet = createPDF.createSheet("ServiceValueManaged");
+                    serviceManagedValue.ExtractServiceManagedValue(text, ofertaSheet, compare);
 
 
                     // File saving and showing in the screen.
@@ -110,7 +110,13 @@ private final static Logger log = (Logger) LogManager.getLogger(Main.class);
                     CMPlantilla_Posventa posventa = new CMPlantilla_Posventa();
                     if (posventa.isSheetPosventa(PlantillaWorkBook)) {
                         OfertaSheet = createExcel.createSheet("PlantillaCM_Posventa");
-                        new CMPlantilla_Posventa().ExtractPosventaFromCMP(PlantillaWorkBook, OfertaSheet, compare, access);
+                        posventa.ExtractPosventaFromCMP(PlantillaWorkBook, OfertaSheet, compare, access);
+                    }
+
+                    CMPlantilla_ServiceManagedValue ServiceManagedValue = new CMPlantilla_ServiceManagedValue();
+                    if (ServiceManagedValue.isSheetServiceValueManaged(PlantillaWorkBook)) {
+                        OfertaSheet = createExcel.createSheet("PlantillaCM_ServiceManagedValue");
+                        ServiceManagedValue.ExtractServiceManagedValueFromCMP(PlantillaWorkBook, OfertaSheet, compare, access);
                     }
 
                     CMPlantilla_MinutosInfinityBusiness MinutosIB = new CMPlantilla_MinutosInfinityBusiness();
@@ -206,6 +212,12 @@ private final static Logger log = (Logger) LogManager.getLogger(Main.class);
                         posventa.ExtractPosventaFromCMP(PlantillaWorkBook, OfertaSheet, compare, access);
                     }
 
+                    CMPlantilla_ServiceManagedValue ServiceManagedValue = new CMPlantilla_ServiceManagedValue();
+                    if (ServiceManagedValue.isSheetServiceValueManaged(PlantillaWorkBook)) {
+                        OfertaSheet = FileCreationForPdfAndExcel.createSheet("ServiceManagedValue");
+                        ServiceManagedValue.ExtractServiceManagedValueFromCMP(PlantillaWorkBook, OfertaSheet, compare, access);
+                    }
+
                     CMPlantilla_Indice indice = new CMPlantilla_Indice();
                     if (indice.isSheetIndice(PlantillaWorkBook)) {
                         OfertaSheet = FileCreationForPdfAndExcel.createSheet("Indice");
@@ -280,6 +292,14 @@ private final static Logger log = (Logger) LogManager.getLogger(Main.class);
                     }
                     minutos.ExtractMinutes(text, OfertaSheet, compare);
 
+                    ServiceManagedValue serviceManagedValue = new ServiceManagedValue();
+                    if (createFileForTwoOffers.getWorkbook().getSheet("ServiceManagedValue") == null) {
+                        OfertaSheet = FileCreationForPdfAndExcel.createSheet("ServiceManagedValue");
+                    } else {
+                        OfertaSheet = FileCreationForPdfAndExcel.getSheet("ServiceManagedValue");
+                    }
+                    serviceManagedValue.ExtractServiceManagedValue(text, OfertaSheet, compare);
+
 
                     PostSelling posventaForPDF = new PostSelling();
                     if (createFileForTwoOffers.getWorkbook().getSheet("Posventa") == null) {
@@ -300,6 +320,7 @@ private final static Logger log = (Logger) LogManager.getLogger(Main.class);
                     }
                     Tren.ExtractTrenes(text, OfertaSheet, compare);
                     Tren.extractTrenesMultiCIFYMPMVE(text, compare, OfertaSheet);
+
 
                     createFileForTwoOffers.SaveFile();
                     createFileForTwoOffers.BringFile();

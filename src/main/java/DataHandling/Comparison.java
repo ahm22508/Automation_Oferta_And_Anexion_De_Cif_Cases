@@ -9,6 +9,7 @@ public class Comparison {
     private final HashSet<String> PosventaComparator = new HashSet<>();
     private final HashSet<String> MinutosComparator = new HashSet<>();
     private final HashSet<String> TrenesComparator = new HashSet<>();
+    private final HashSet<String> ServiceManagedValueComparator = new HashSet<>();
 
     public void addToDescuentosComparator (String Tren){
         DescuentosComparator.add(Tren);
@@ -28,12 +29,15 @@ public class Comparison {
     public HashSet<String> getMinutosComparator(){
         return MinutosComparator;
     }
-
     public void addToTrenesComparator(String Tren){
         TrenesComparator.add(Tren);
     }
-    public HashSet<String> getTrenesComparator(){
-        return TrenesComparator;
+    public HashSet<String> getTrenesComparator(){return TrenesComparator;}
+    public void addToServiceManagedValueComparator (String Tren){
+        ServiceManagedValueComparator.add(Tren);
+    }
+    public HashSet<String> getServiceManagedValueComparator(){
+        return ServiceManagedValueComparator;
     }
 
 }

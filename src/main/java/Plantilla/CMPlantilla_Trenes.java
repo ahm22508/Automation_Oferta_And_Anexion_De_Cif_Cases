@@ -34,6 +34,7 @@ public class CMPlantilla_Trenes {
         Sheet sheet = PlantillaWorkBook.getSheet(PlantillaWorkBook.getSheetName(counter));
         counter++;
         Sheet InfinitySheet = PlantillaWorkBook.getSheet("Infinity Business");
+        String[] ArrayOfPrimarios = {"DPRID", "DVFME", "DVFES", "DVFGC", "DVFIN", "DVFFN", "DVFOM", "DVFMV"};
 
         //Map To Resolve The Current Modification Exception...
         HashSet<String> DuplicationTrenes = new HashSet<>();
@@ -84,6 +85,11 @@ public class CMPlantilla_Trenes {
                                     row1.createCell(0).setCellValue(matcher.group());
                                     row1.createCell(1).setCellValue(Percentage);
                                     compare.addToTrenesComparator(matcher.group());
+                                    for(String TrenPrimario : ArrayOfPrimarios){
+                                        if(matcher.group().equals(TrenPrimario)){
+                                            row1.createCell(2).setCellValue("Tren De Primarios... Se aplica solo si el Pdf contiene Plan Primario o el fichero del CM contiene pestaña de Trenes Primarios");
+                                        }
+                                    }
                                 }
                             }
 
@@ -108,6 +114,11 @@ public class CMPlantilla_Trenes {
                             row1.createCell(0).setCellValue(matcher.group());
                             row1.createCell(1).setCellValue(Math.floor(Equation * 100) / 100);
                             compare.addToTrenesComparator(matcher.group());
+                            for(String TrenPrimario : ArrayOfPrimarios){
+                                if(matcher.group().equals(TrenPrimario)){
+                                    row1.createCell(2).setCellValue("Tren De Primarios... Se aplica solo si el Pdf contiene Plan Primario o el fichero del CM contiene pestaña de Trenes Primarios");
+                                }
+                            }
                             if (String.valueOf(ModifyNum).contains(".99")) {
                                 row1.createCell(1).setCellValue((Math.floor(Equation * 100) / 100) + 0.01);
                             }
@@ -129,6 +140,11 @@ public class CMPlantilla_Trenes {
                                             row1.createCell(0).setCellValue(matcher.group());
                                             row1.createCell(1).setCellValue(Percentage);
                                             compare.addToTrenesComparator(matcher.group());
+                                            for(String TrenPrimario : ArrayOfPrimarios){
+                                                if(matcher.group().equals(TrenPrimario)){
+                                                    row1.createCell(2).setCellValue("Tren De Primarios... Se aplica solo en cuentas primarias si el Pdf contiene Plan Primario o el fichero del CM contiene pestaña de Trenes Primarios");
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -192,7 +208,11 @@ public class CMPlantilla_Trenes {
                                     row1.createCell(0).setCellValue(TrenCell.getStringCellValue());
                                     row1.createCell(1).setCellValue(matcherNum.group());
                                     compare.addToTrenesComparator(TrenCell.toString());
-
+                                    for(String TrenPrimario : ArrayOfPrimarios){
+                                        if(matcher.group().equals(TrenPrimario)){
+                                            row1.createCell(2).setCellValue("Tren De Primarios... Se aplica solo si el Pdf contiene Plan Primario o el fichero del CM contiene pestaña de Trenes Primarios");
+                                        }
+                                    }
                                 }
                             }
                         }

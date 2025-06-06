@@ -28,13 +28,15 @@ public class CMPlantilla_Posventa {
                 //Extract the specific data
                 Pattern PatternPosventaLine = Pattern.compile("POS+[A-Z]{2}");
                 Pattern PatternPosventaAccount = Pattern.compile("POC+[A-Z]{2}");
-                int rowNum = 0;
+                Pattern patternBrow = Pattern.compile("BRW+\\d+");
+               int rowNum = 0;
                 Row row1;
 
                 for (Row row : PosventaSheet) {
                     for (Cell cell : row) {
                         Matcher matcherPosventaLine = PatternPosventaLine.matcher(cell.toString());
                         Matcher matcherPosventaAccount = PatternPosventaAccount.matcher(cell.toString());
+                        Matcher matcherBonoBrow = patternBrow.matcher(cell.toString());
                         if (matcherPosventaLine.find()) {
                             for (Cell ProvisionCell : row) {
                                 if (ProvisionCell.toString().contains("SI")) {
@@ -52,6 +54,16 @@ public class CMPlantilla_Posventa {
                                     row1.createCell(0).setCellValue(matcherPosventaLine.group());
                                     row1.createCell(1).setCellValue("Posventa a nivel de Servicio y a nivel de linea es: " + matcherPosventaAccount.group().replace("POC", "POS"));
                                     compare.addToPosventaComparator(matcherPosventaAccount.group());
+                                }
+                            }
+                        }
+                        if(matcherBonoBrow.find()){
+                            for (Cell ProvisionCell : row) {
+                                if (ProvisionCell.toString().contains("SI")) {
+                                    row1 = OfertaSheet.createRow(rowNum++);
+                                    row1.createCell(0).setCellValue(matcherBonoBrow.group());
+                                    row1.createCell(1).setCellValue("Se aplica a nivel de cuenta");
+                                    row1.createCell(2).setCellValue("Si hay varios pregunta al ejecutivo que Bono aplicamos.");
                                 }
                             }
                         }

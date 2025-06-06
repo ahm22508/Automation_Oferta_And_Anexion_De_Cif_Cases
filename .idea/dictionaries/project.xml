@@ -21,8 +21,10 @@
       <w>complem</w>
       <w>complementarios</w>
       <w>contiene</w>
+      <w>correspondiente</w>
       <w>cpint</w>
       <w>cuenta</w>
+      <w>cuentas</w>
       <w>defecto</w>
       <w>descuento</w>
       <w>descuentos</w>
@@ -87,6 +89,7 @@
       <w>nums</w>
       <w>oferta</w>
       <w>otro</w>
+      <w>pestaña</w>
       <w>pkpid</w>
       <w>plantilla</w>
       <w>porcentaje</w>
@@ -99,6 +102,8 @@
       <w>preguantale</w>
       <w>pregunta</w>
       <w>primaria</w>
+      <w>primarias</w>
+      <w>primario</w>
       <w>primarios</w>
       <w>productos</w>
       <w>puedes</w>
@@ -114,6 +119,7 @@
       <w>tiene</w>
       <w>tren</w>
       <w>trenes</w>
+      <w>varios</w>
     </words>
   </dictionary>
 </component>
